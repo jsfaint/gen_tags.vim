@@ -26,13 +26,13 @@ function! s:add_cscope(file)
   endif
 endfunction
 
-function s:add_ctags(file)
+function! s:add_ctags(file)
   if filereadable(a:file)
     exec 'set tags' . "+=" . a:file
   endif
 endfunction
 
-function s:add_ext(file)
+function! s:add_ext(file)
   if filereadable(a:file)
     exec 'source' a:file
   endif
