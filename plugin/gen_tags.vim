@@ -20,6 +20,19 @@ let s:ctags_db="prj_tags"
 let s:cscope_db="cscope.out"
 let s:ext="ext.vim"
 
+"Check cscope support
+if !has("cscope")
+    echomsg "Need cscope support"
+    echomsg "gen_tags.vim need cscope support"
+    finish
+endif
+
+if !executable('ctags') && !executable('ctags.exe')
+  echomsg "ctags not found"
+  echomsg "gen_tags.vim need ctags to generate tags"
+  finish
+endif
+
 function! s:add_cscope(file)
   if filereadable(a:file)
     exec 'silent cs add'  a:file
@@ -131,12 +144,6 @@ nmap <silent> <leader>gt :GenCtags<cr>
 nmap <silent> <leader>gc :GenCscope<cr>
 nmap <silent> <leader>ga :GenAll<cr>
 nmap <silent> <leader>ge :EditExt<cr>
-
-"Check cscope support
-if !has("cscope")
-    echo "Need cscope support"
-    exit
-endif
 
 "Add db while startup
 call s:Add_DBs()
