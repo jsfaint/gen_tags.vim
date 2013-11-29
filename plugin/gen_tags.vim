@@ -81,7 +81,12 @@ function! s:Ctags_db_gen()
   call s:make_ctags_dir()
   let l:dir=expand(s:dir . "/" . s:get_db_name())
   let l:cmd="ctags -f ". l:dir . "/" . s:ctags_db . " -R " . getcwd()
-  call system(l:cmd)
+
+  if s:has_vimproc()
+    call vimproc#system(l:cmd)
+  else
+    call system(l:cmd)
+  endif
 
   let l:file=l:dir . "/" . s:ctags_db
 
@@ -103,7 +108,12 @@ function! s:Cscope_db_gen()
   silent cs kill 0
   let l:dir=expand(s:dir . "/" . s:get_db_name())
   let l:cmd="cscope -Rb -f " . l:dir . "/" . s:cscope_db
-  call system(l:cmd)
+
+  if s:has_vimproc()
+    call vimproc#system(l:cmd)
+  else
+    call system(l:cmd)
+  endif
 
   let l:file=l:dir . "/" . s:cscope_db
   call s:add_cscope(l:file)
@@ -131,6 +141,13 @@ function! s:Edit_ext()
   let l:dir=expand(s:dir . "/" . s:get_db_name())
   let l:file=l:dir . "/" . s:ext
   exec 'edit' l:file
+endfunction
+
+"Check if has vimproc
+function! s:has_vimproc(...)
+  let l:has_vimproc = 0
+  silent! let l:has_vimproc = vimproc#version()
+  return l:has_vimproc
 endfunction
 
 "Command list
