@@ -51,13 +51,9 @@ function! s:add_ext(file)
   endif
 endfunction
 
-"Get db name, replase / \ : with %, beacause they are not valid filename
+"Get db name, remove / : with , beacause they are not valid filename
 function! s:get_db_name()
-  if has('win32')
-    let l:fold=substitute(getcwd(), '\', '', 'g')
-  elseif has('unix')
-    let l:fold=substitute(getcwd(), '/', '', 'g')
-  endif
+  let l:fold=substitute(getcwd(), '/', '', 'g')
 
   return substitute(l:fold, ':', '', 'g')
 endfunction
@@ -79,11 +75,11 @@ function! s:Ctags_db_gen()
   echo "Generate ctags database"
 
   call s:make_ctags_dir()
-  let l:dir=expand(s:dir . "/" . s:get_db_name())
-  let l:cmd="ctags -f ". l:dir . "/" . s:ctags_db . " -R " . getcwd()
+  let l:dir=expand(s:dir . '/' . s:get_db_name())
+  let l:cmd='ctags -f '. l:dir . '/' . s:ctags_db . ' -R ' . getcwd()
 
   if s:has_vimproc()
-    call vimproc#system(l:cmd)
+    call vimproc#system2(l:cmd)
   else
     call system(l:cmd)
   endif
@@ -106,11 +102,11 @@ function! s:Cscope_db_gen()
   call s:make_ctags_dir()
 
   silent! cs kill 0
-  let l:dir=expand(s:dir . "/" . s:get_db_name())
-  let l:cmd="cscope -Rb -f " . l:dir . "/" . s:cscope_db
+  let l:dir=expand(s:dir . '/' . s:get_db_name())
+  let l:cmd='cscope -Rb -f ' . l:dir . '/' . s:cscope_db
 
   if s:has_vimproc()
-    call vimproc#system(l:cmd)
+    call vimproc#system2(l:cmd)
   else
     call system(l:cmd)
   endif
@@ -161,6 +157,10 @@ nmap <silent> <leader>gt :GenCtags<cr>
 nmap <silent> <leader>gc :GenCscope<cr>
 nmap <silent> <leader>ga :GenAll<cr>
 nmap <silent> <leader>ge :EditExt<cr>
+
+if has('win32')
+  set shellslash
+endif
 
 "Add db while startup
 call s:Add_DBs()
