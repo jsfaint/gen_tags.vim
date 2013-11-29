@@ -35,7 +35,7 @@ endif
 
 function! s:add_cscope(file)
   if filereadable(a:file)
-    exec 'silent cs add'  a:file
+    exec 'silent! cs add'  a:file
   endif
 endfunction
 
@@ -105,7 +105,7 @@ function! s:Cscope_db_gen()
 
   call s:make_ctags_dir()
 
-  silent cs kill 0
+  silent! cs kill 0
   let l:dir=expand(s:dir . "/" . s:get_db_name())
   let l:cmd="cscope -Rb -f " . l:dir . "/" . s:cscope_db
 
