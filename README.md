@@ -25,3 +25,16 @@ e.g.: Add libpcap databse
 set tags+=~\.ctags_dir\esrclibpcap-1.3.0\\prj_tags
 cs add ~\.ctags_dir\esrclibpcap-1.3.0\cscope.out e:\src\libpcap-1.3.0\
 ```
+
+##Hotkey
+The following hotkey is set for cscope find function.
+```
+Ctrl+\ c    Find functions calling this function
+Ctrl+\ d    Find functions called by this function
+Ctrl+\ e    Find this egrep pattern
+Ctrl+\ f    Find this file
+Ctrl+\ g    Find this definition
+Ctrl+\ i    Find files #including this file
+Ctrl+\ s    Find this C symbol
+Ctrl+\ t    Find this text string
+```
