@@ -18,7 +18,7 @@
 let s:dir=expand("$HOME/.cache/ctags_dir")
 let s:ctags_db="prj_tags"
 let s:cscope_db="cscope.out"
-let s:ext="ext.vim"
+let s:ext="ext.conf"
 
 "Check cscope support
 if !has("cscope")
@@ -58,9 +58,14 @@ function! s:add_ctags(file)
   endif
 endfunction
 
+"Only add ctags db as extension database
 function! s:add_ext(file)
   if filereadable(a:file)
-    exec 'source' a:file
+    let l:list=readfile(a:file)
+    for l:item in l:list
+      let l:file=expand(s:dir . "/" . l:item . "/" . s:ctags_db)
+      call s:add_ctags(l:file)
+    endfor
   endif
 endfunction
 

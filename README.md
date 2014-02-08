@@ -4,8 +4,7 @@ A simple script for vim to easy to generate ctags and cscope database and auto a
 
 ##Usage
 
-
-the generated db will be palced under ~/.ctags_dir/[foldername]
+the generated db will be palced under `~/.cache/ctags_dir/[foldername]`
 
 ##Commands
 * `:GenCtags`<br/>
@@ -18,13 +17,19 @@ Generate cscope database
 Generate ctags and cscope database
 
 * `:EditExt`<br/>
-Edit an extenstion vim script for this project, use for add third-party library ctags/cscope database
+Edit an extenstion vim script for this project, use for add third-party library ctags database
 
-e.g.: Add libpcap databse
+e.g.: For libpcap under `e:\src\libpcap-1.3.0` add the following content to ext.conf
+
 ```
-set tags+=~\.ctags_dir\esrclibpcap-1.3.0\\prj_tags
-cs add ~\.ctags_dir\esrclibpcap-1.3.0\cscope.out e:\src\libpcap-1.3.0\
+esrclibpcap-1.3.0
 ```
+
+##Key Mapping
+* `<leader>ga` run `:GenAll` command
+* `<leader>gc` run `:GenCscop` command
+* `<leader>gt` run `:GenCtags` command
+* `<leader>ge` run `:EditExt` command
 
 ##Hotkey
 The following hotkey is set for cscope find function.
