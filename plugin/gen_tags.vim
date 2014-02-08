@@ -15,7 +15,7 @@
 "       :EditExt or <leader>ge
 " ============================================================================
 
-let s:dir=expand("$HOME/.cache/.ctags_dir")
+let s:dir=expand("$HOME/.cache/ctags_dir")
 let s:ctags_db="prj_tags"
 let s:cscope_db="cscope.out"
 let s:ext="ext.vim"
