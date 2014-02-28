@@ -1,10 +1,7 @@
 #gen_tags.vim
 
-A simple script for vim to easy to generate ctags and cscope database and auto add them when reopen the folder.
-
-##Usage
-
-the generated db will be palced under `~/.cache/ctags_dir/[foldername]`
+A simple script for vim to easy to generate ctags and cscope database and auto add them when reopen the folder.<br/>
+THe generated db will be placed under `~/.cache/ctags_dir/[foldername]`<br/>
 
 ##Commands
 * `:GenCtags`<br/>
