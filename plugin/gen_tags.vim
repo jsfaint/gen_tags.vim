@@ -1,7 +1,7 @@
 " ============================================================================
 " File: gen_tags.vim
 " Arthur: Jason Jia <jsfaint@gmail.com>
-" Description:  1. Generate ctags and cscope db under the given foler.
+" Description:  1. Generate ctags and cscope db under the given folder.
 "               2. Add db when vim is open.
 " Required: this script requires enable ctags and cscope support.
 " Usage:
@@ -15,10 +15,12 @@
 "       :EditExt or <leader>ge
 " ============================================================================
 
-let s:dir=expand("$HOME/.cache/ctags_dir")
+let s:dir=expand("$HOME/.cache/tags_dir")
 let s:ctags_db="prj_tags"
-let s:cscope_db="cscope.out"
 let s:ext="ext.conf"
+if exists("g:gen_tags#cscope_enabled")
+  let s:cscope_db="cscope.out"
+endif
 
 "Check cscope support
 if !has("cscope")
@@ -33,17 +35,19 @@ if !executable('ctags') && !executable('ctags.exe')
   finish
 endif
 
-set cscopetag
+if exists("g:gen_tags#cscope_enabled")
+  set cscopetag
 
-"Hotkey for cscope
-nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
-nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
-nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
-nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+  "Hotkey for cscope
+  nmap <C-\>c :cs find c <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>d :cs find d <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>e :cs find e <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>f :cs find f <C-R>=expand("<cfile>")<CR><CR>
+  nmap <C-\>g :cs find g <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
+  nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
+  nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
+endif
 
 "Functions start from here
 function! s:add_cscope(file)
@@ -139,16 +143,25 @@ function! s:Add_DBs()
   let l:file=expand(s:dir . "/" . s:get_db_name() . "/" . s:ctags_db)
   call s:add_ctags(l:file)
 
-  let l:file=expand(s:dir . "/" . s:get_db_name() . "/" . s:cscope_db)
-  call s:add_cscope(l:file)
-
   let l:file=expand(s:dir . "/" . s:get_db_name() . "/" . s:ext)
   call s:add_ext(l:file)
+
+  if exists("g:gen_tags#cscope_enabled")
+    let l:file=expand(s:dir . "/" . s:get_db_name() . "/" . s:cscope_db)
+    call s:add_cscope(l:file)
+  endif
 endfunction
 
 function! s:Gen_all()
-  call s:Ctags_db_gen()
-  call s:Cscope_db_gen()
+  exec "GenCtags"
+
+  if exists("g:gen_tags#cscope_enabled")
+    exec "GenCscope"
+  else
+    if exists("GenGtags")
+      exec "GenGtags"
+    endif
+  endif
 endfunction
 
 function! s:Edit_ext()
@@ -158,7 +171,7 @@ function! s:Edit_ext()
 endfunction
 
 "Check if has vimproc
-function! s:has_vimproc(...)
+function! s:has_vimproc()
   let l:has_vimproc = 0
   silent! let l:has_vimproc = vimproc#version()
   return l:has_vimproc
@@ -166,18 +179,21 @@ endfunction
 
 "Command list
 command! -nargs=0 -bar GenCtags call s:Ctags_db_gen()
-command! -nargs=0 -bar GenCscope call s:Cscope_db_gen()
 command! -nargs=0 -bar GenAll call s:Gen_all()
 command! -nargs=0 -bar EditExt call s:Edit_ext()
 
 "Mapping hotkey
 nmap <silent> <leader>gt :GenCtags<cr>
-nmap <silent> <leader>gc :GenCscope<cr>
 nmap <silent> <leader>ga :GenAll<cr>
 nmap <silent> <leader>ge :EditExt<cr>
 
 if has('win32')
   set shellslash
+endif
+
+if exists("g:gen_tags#cscope_enabled")
+  command! -nargs=0 -bar GenCscope call s:Cscope_db_gen()
+  nmap <silent> <leader>gc :GenCscope<cr>
 endif
 
 "Add db while startup

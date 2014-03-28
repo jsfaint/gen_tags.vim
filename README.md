@@ -1,14 +1,25 @@
 #gen_tags.vim
 
-A simple script for vim to easy to generate ctags and cscope database and auto add them when reopen the folder.<br/>
-THe generated db will be placed under `~/.cache/ctags_dir/[foldername]`<br/>
+A simple plugin for vim to easy to generate ctags and cscope/gtags database and auto add them when reopen the folder.<br/>
+The generated db will be placed under `~/.cache/tags_dir/[foldername]`<br/>
+
+GNU Global will generate **GTAGS**, **GRTAGS** and **GPATH** under the project folder.
+
+This plugin contains two vim script.
+1. `gen_tags.vim`
+    This is the old script which support ctags and cscope.
+2. `gen_gtags.vim`
+    GNU Global support, this script can be used indenpendently.
 
 ##Commands
 * `:GenCtags`<br/>
 Generate ctags database
 
-* `:GenCscop`<br/>
+* `:GenCscope`<br/>
 Generate cscope database
+
+* `:GenGtags`<br/>
+Generate GTAGS
 
 * `:GenAll`<br/>
 Generate ctags and cscope database
@@ -18,18 +29,21 @@ Edit an extenstion vim script for this project, use for add third-party library 
 
 e.g.: For libpcap under `e:\src\libpcap-1.3.0` add the following content to ext.conf
 
+**cscope and gtags are conflicted, you can enable cscope and disable gtags by add `let g:gen_tags#cscope_enabled=1` to your vimrc file**
+
 ```
 esrclibpcap-1.3.0
 ```
 
 ##Key Mapping
 * `<leader>ga` run `:GenAll` command
-* `<leader>gc` run `:GenCscop` command
+* `<leader>gg` run `:GenGtags` command
 * `<leader>gt` run `:GenCtags` command
+* `<leader>gc` run `:GenCscope` command
 * `<leader>ge` run `:EditExt` command
 
 ##Hotkey
-The following hotkey is set for cscope find function.
+The following hotkey is set for cscope/gtags-cscope find function.
 ```
 Ctrl+\ c    Find functions calling this function
 Ctrl+\ d    Find functions called by this function
