@@ -5,10 +5,14 @@ The generated db will be placed under `~/.cache/tags_dir/[foldername]`<br/>
 
 GNU Global will generate **GTAGS**, **GRTAGS** and **GPATH** under the project folder.
 
-This plugin contains two vim script.
+This plugin contains two vim scripts.
+
 1. `gen_tags.vim`
+
     This is the old script which support ctags and cscope.
+
 2. `gen_gtags.vim`
+
     GNU Global support, this script can be used indenpendently.
 
 ##Commands
