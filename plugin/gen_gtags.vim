@@ -44,13 +44,7 @@ nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
 function! s:add_gtags(file)
   if filereadable(a:file)
     "exec 'silent! cs add GTAGS'
-    exec 'cs add GTAGS'
-  endif
-endfunction
-
-function! s:add_ctags(file)
-  if filereadable(a:file)
-    exec 'set tags' . "+=" . a:file
+    exec 'cs add' a:file
   endif
 endfunction
 
@@ -69,6 +63,8 @@ function! s:gtags_db_gen(file)
   else
     call system(l:cmd)
   endif
+
+  call s:add_gtags(a:file)
 
   echo "Done"
 endfunction
