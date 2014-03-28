@@ -5,6 +5,8 @@ The generated db will be placed under `~/.cache/tags_dir/[foldername]`<br/>
 
 GNU Global will generate **GTAGS**, **GRTAGS** and **GPATH** under the project folder.
 
+**WARNING**: cscope and gtags are conflicted, you can enable cscope and disable gtags by add `let g:gen_tags#cscope_enabled=1` to your vimrc file
+
 This plugin contains two vim scripts.
 
 1. `gen_tags.vim`
@@ -32,8 +34,6 @@ Generate ctags and cscope database
 Edit an extenstion vim script for this project, use for add third-party library ctags database
 
 e.g.: For libpcap under `e:\src\libpcap-1.3.0` add the following content to ext.conf
-
-**cscope and gtags are conflicted, you can enable cscope and disable gtags by add `let g:gen_tags#cscope_enabled=1` to your vimrc file**
 
 ```
 esrclibpcap-1.3.0
