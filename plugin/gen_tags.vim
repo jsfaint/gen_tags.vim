@@ -153,15 +153,16 @@ function! s:Add_DBs()
 endfunction
 
 function! s:Gen_all()
-  exec "GenCtags"
+  echo "Generate All tags"
+  exec "silent! GenCtags"
 
   if exists("g:gen_tags#cscope_enabled")
-    exec "GenCscope"
+    exec "silent! GenCscope"
   else
-    if exists("GenGtags")
-      exec "GenGtags"
-    endif
+    exec "silent! GenGtags"
   endif
+
+  echo "Done"
 endfunction
 
 function! s:Edit_ext()
