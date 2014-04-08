@@ -1,12 +1,12 @@
 " ============================================================================
 " File: gen_gtags.vim
 " Arthur: Jason Jia <jsfaint@gmail.com>
-" Description:  1. Generate gtags db under the project folder.
+" Description:  1. Generate GTAGS under the project folder.
 "               2. Add db when vim is open.
-" Required: this script requires enable cscope support.
+" Required: This script requires enable cscope support and GNU global.
 " Usage:
-"   1. Generate gtags
-"   :GenGtags or <leader>gg
+"   1. Generate GTAGS
+"   :GenGTAGS or <leader>gg
 " ============================================================================
 
 if exists("g:gen_tags#cscope_enabled")
@@ -23,7 +23,7 @@ if !has("cscope")
 endif
 
 if !executable('gtags') && !executable('gtags.exe')
-  echomsg "GNU global not found"
+  echomsg "GNU Global not found"
   echomsg "gen_gtags.vim need GNU Global"
   finish
 endif
@@ -50,7 +50,7 @@ endfunction
 
 "Generate gtags
 function! s:gtags_db_gen(file)
-  echo "Generate gtags"
+  echo "Generate GTAGS"
 
   if filereadable(a:file)
     let l:cmd='global -u'
@@ -81,10 +81,10 @@ function! s:has_vimproc()
 endfunction
 
 "Command list
-command! -nargs=0 -bar GenGtags call s:gtags_db_gen(s:file)
+command! -nargs=0 -bar GenGTAGS call s:gtags_db_gen(s:file)
 
 "Mapping hotkey
-nmap <silent> <leader>gg :GenGtags<cr>
+nmap <silent> <leader>gg :GenGTAGS<cr>
 
 "Add db while startup
 call s:Add_DBs()

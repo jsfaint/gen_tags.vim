@@ -159,7 +159,7 @@ function! s:Gen_all()
   if exists("g:gen_tags#cscope_enabled")
     exec "silent! GenCscope"
   else
-    exec "silent! GenGtags"
+    exec "silent! GenGTAGS"
   endif
 
   echo "Done"

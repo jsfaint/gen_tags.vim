@@ -24,7 +24,7 @@ Generate ctags database
 * `:GenCscope`<br/>
 Generate cscope database
 
-* `:GenGtags`<br/>
+* `:GenGTAGS`<br/>
 Generate GTAGS
 
 * `:GenAll`<br/>
@@ -41,7 +41,7 @@ esrclibpcap-1.3.0
 
 ##Key Mapping
 * `<leader>ga` run `:GenAll` command
-* `<leader>gg` run `:GenGtags` command
+* `<leader>gg` run `:GenGTAGS` command
 * `<leader>gt` run `:GenCtags` command
 * `<leader>gc` run `:GenCscope` command
 * `<leader>ge` run `:EditExt` command
