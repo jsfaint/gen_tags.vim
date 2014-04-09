@@ -8,11 +8,6 @@
 "   1. Generate GTAGS
 "   :GenGTAGS or <leader>gg
 " ============================================================================
-
-if exists("g:gen_tags#cscope_enabled")
-  finish
-endif
-
 let s:file="GTAGS"
 
 "Check cscope support
@@ -48,7 +43,7 @@ function! s:add_gtags(file)
   endif
 endfunction
 
-"Generate gtags
+"Generate GTAGS
 function! s:gtags_db_gen(file)
   echo "Generate GTAGS"
 
