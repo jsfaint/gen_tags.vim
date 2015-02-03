@@ -80,11 +80,18 @@ command! -nargs=0 -bar GenGTAGS call s:gtags_db_gen(s:file)
 "Mapping hotkey
 nmap <silent> <leader>gg :GenGTAGS<cr>
 
-function! UpdateGtags(f)
-  let dir = fnamemodify(a:f, ':p:h')
-  exe 'silent !cd ' . dir . ' && global -u &> /dev/null &'
+function! UpdateGtags()
+  let l:cmd='global -u'
+
+  if s:has_vimproc()
+    call vimproc#system2(l:cmd)
+  else
+    call system(l:cmd)
+  endif
+
+  echo "Update GTAGS complete."
 endfunction
-au BufWritePost *.[ch] call UpdateGtags(expand('<afile>'))
+au BufWritePost *.[chcppmphp] call UpdateGtags()
 
 "Add db while startup
 call s:Add_DBs()
