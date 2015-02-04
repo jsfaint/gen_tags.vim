@@ -81,10 +81,14 @@ command! -nargs=0 -bar GenGTAGS call s:gtags_db_gen(s:file)
 nmap <silent> <leader>gg :GenGTAGS<cr>
 
 function! UpdateGtags()
+  if !filereadable('GTAGS')
+    return
+  endif
+
   let l:cmd='global -u'
 
   if s:has_vimproc()
-    call vimproc#system2(l:cmd)
+    call vimproc#system_bg(l:cmd)
   else
     call system(l:cmd)
   endif
