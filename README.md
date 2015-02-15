@@ -1,8 +1,8 @@
 #gen_tags.vim
 
-A simple plugin for vim to easy to generate ctags and gtags database and auto add them when reopen the folder.<br/>
-The generated db will be placed under `~/.cache/tags_dir/[foldername]`<br/>
+A simple plugin generate ctags and gtags database for vim.
 
+The generated ctags db will be placed under `~/.cache/tags_dir/[foldername]`<br/>
 GNU Global will generate **GTAGS**, **GRTAGS** and **GPATH** under the project folder.
 
 This plugin contains two vim scripts.
@@ -13,7 +13,7 @@ This plugin contains two vim scripts.
 
 2. `gen_gtags.vim`
 
-    GNU Global support, this script can be used indenpendently.
+    GNU Global support, this script can be used indenpendently. Use if_cscope interface in Vim.
 
 ##Commands
 * `:GenCtags`<br/>
