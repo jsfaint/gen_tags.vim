@@ -82,7 +82,7 @@ command! -nargs=0 -bar GenGTAGS call s:gtags_db_gen(s:file)
 nmap <silent> <leader>gg :GenGTAGS<cr>
 
 function! UpdateGtags()
-  if !filereadable('GTAGS')
+  if !filereadable(s:file)
     return
   endif
 
