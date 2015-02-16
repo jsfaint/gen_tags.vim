@@ -47,7 +47,8 @@ function! s:gtags_db_gen(file)
   echo "Generate GTAGS"
 
   if filereadable(a:file)
-    let l:cmd='global -u'
+    call UpdateGtags()
+    return
   else
     let l:cmd='gtags'
   endif
