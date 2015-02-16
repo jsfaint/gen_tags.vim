@@ -1,5 +1,6 @@
-#gen_tags.vim
+# gen_tags.vim
 
+## Description
 A simple plugin generate ctags and gtags database for vim.
 
 The generated ctags db will be placed under `~/.cache/tags_dir/[foldername]`<br/>
@@ -15,7 +16,24 @@ This plugin contains two vim scripts.
 
     GNU Global support, this script can be used indenpendently. Use if_cscope interface in Vim.
 
-##Commands
+## Installation
+
+### Neobundle
+Add `NeoBundle 'jsfaint/gen_tags.vim'` to your vimrc  
+Then launch `vim` and run `:NeobundleCheck`
+
+To install from command line: `vim +PluginInstall +qall`
+
+### Vundle
+Add `Plugin 'jsfaint/gen_tags.vim'` to your vimrc  
+then aunch `vim` and run `:PluginInstall`
+
+To install from command line: `vim +PluginInstall +qall`
+
+### Traditional method
+Put two vim script(`gen_tags.vim`, `gen_gtags.vim`) under `plugin` directory.
+
+## Commands
 * `:GenCtags`<br/>
 Generate ctags database
 
@@ -34,13 +52,13 @@ e.g.: For libpcap under `e:\src\libpcap-1.3.0` add the following content to ext.
 esrclibpcap-1.3.0
 ```
 
-##Key Mapping
+## Key Mapping
 * `<leader>ga` run `:GenAll` command
 * `<leader>gg` run `:GenGTAGS` command
 * `<leader>gt` run `:GenCtags` command
 * `<leader>ge` run `:EditExt` command
 
-##Hotkey
+## Hotkey
 The following hotkey is set for gtags find function which use cscope interface.
 ```
 Ctrl+\ c    Find functions calling this function
