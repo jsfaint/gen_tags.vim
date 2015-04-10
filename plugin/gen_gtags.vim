@@ -93,10 +93,8 @@ function! UpdateGtags()
   else
     call system(l:cmd)
   endif
-
-  echo "Update GTAGS complete."
 endfunction
-au BufWritePost *.[chcppmphp] call UpdateGtags()
+au BufWritePost * call UpdateGtags()
 
 "Add db while startup
 call s:Add_DBs()
