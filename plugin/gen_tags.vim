@@ -102,6 +102,7 @@ function! s:Gen_all()
 endfunction
 
 function! s:Edit_ext()
+  call s:make_ctags_dir()
   let l:dir=expand(s:dir . "/" . s:get_db_name())
   let l:file=l:dir . "/" . s:ext
   exec 'edit' l:file
