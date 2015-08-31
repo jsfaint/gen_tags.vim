@@ -44,14 +44,14 @@ endfunction
 
 "Generate GTAGS
 function! s:gtags_db_gen(file)
-  echo "Generate GTAGS"
-
   if filereadable(a:file)
     call UpdateGtags()
     return
   else
     let l:cmd='gtags'
   endif
+
+  echon "Generate " | echohl NonText | echon "GTAGS" | echohl None
 
   if s:has_vimproc()
     call vimproc#system2(l:cmd)
@@ -61,7 +61,7 @@ function! s:gtags_db_gen(file)
 
   call s:add_gtags(a:file)
 
-  echo "Done"
+  echon " " | echohl Function | echon "[Done]" | echohl None
 endfunction
 
 function! s:Add_DBs()
@@ -86,6 +86,8 @@ function! UpdateGtags()
     return
   endif
 
+  echon "Update " | echohl NonText | echon "GTAGS" | echohl None
+
   let l:cmd='global -u'
 
   if s:has_vimproc()
@@ -93,6 +95,8 @@ function! UpdateGtags()
   else
     call system(l:cmd)
   endif
+
+  echon " " | echohl Function | echon "[Done]" | echohl None
 endfunction
 au BufWritePost * call UpdateGtags()
 

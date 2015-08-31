@@ -61,7 +61,7 @@ endfunction
 
 "Generate ctags tags in cwd db dir.
 function! s:Ctags_db_gen()
-  echo "Generate ctags database"
+  echon "Generate " | echohl NonText | echon "ctags" | echohl None | echon " database "
 
   call s:make_ctags_dir()
   let l:dir=expand(s:dir . '/' . s:get_db_name())
@@ -81,7 +81,7 @@ function! s:Ctags_db_gen()
     call s:add_ctags(l:file)
   endif
 
-  echo "Done"
+  echohl Function | echon "[Done]" | echohl None
 endfunction
 
 function! s:Add_DBs()
@@ -93,12 +93,12 @@ function! s:Add_DBs()
 endfunction
 
 function! s:Gen_all()
-  echo "Generate All tags"
+  echon "Generate " | echohl NonText | echon "All supported" | echohl None | echon " tags "
 
   exec "silent! GenCtags"
   exec "silent! GenGTAGS"
 
-  echo "Done"
+  echohl Function | echon "[Done]" | echohl None
 endfunction
 
 function! s:Edit_ext()
