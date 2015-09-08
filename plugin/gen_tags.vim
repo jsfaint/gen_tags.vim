@@ -115,8 +115,10 @@ function! s:Ctags_db_gen(filename, dir)
   call s:make_ctags_dir(l:dir)
 
   if a:filename == ""
-    let l:cmd='ctags -f '. l:dir . '/' . s:ctags_db . ' -R ' . getcwd()
+    let l:file=l:dir . "/" . s:ctags_db
+    let l:cmd='ctags -f '. l:file . ' -R ' . getcwd()
   else
+    let l:file=a:filename
     let l:cmd='ctags -f '. a:filename . ' -R ' . a:dir
   endif
 
@@ -125,8 +127,6 @@ function! s:Ctags_db_gen(filename, dir)
   else
     call system(l:cmd)
   endif
-
-  let l:file=l:dir . "/" . s:ctags_db
 
   "Search for existence tags string.
   let l:ret = stridx(&tags, l:dir)
@@ -179,9 +179,9 @@ endfunction
 function! s:Tags_clear()
   "Remove project ctags
   let l:file=expand(s:get_project_ctags_name())
-    if filereadable(l:file)
-      call delete(l:file)
-    endif
+  if filereadable(l:file)
+    call delete(l:file)
+  endif
 
   "Remove extend ctags
   let l:list=s:get_extend_ctags_list()
