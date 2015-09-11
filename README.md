@@ -1,19 +1,27 @@
 # gen_tags.vim
 
-  This plugin aim to simple the usage of ctags and gtags for Vim.<br/>
-  It is used for generate and autoload exists tags.
+  This plugin aim to simple the usage of [ctags](http://ctags.sourceforge.net/) and [gtags](http://www.gnu.org/software/global/) for Vim.<br/>
+  It is used for generate and auto load exists tags.
 
-  This plugin contains two Vim scripts, both of the script can be use indenpendently.
+  This plugin contains two Vim scripts, both of the script can be use independently.
 
   1. `gen_tags.vim`
 
-    This is the old script which support ctags.  
+    This is the old script which support ctags.<br/>
     The generated ctags DB will be placed under `~/.cache/tags_dir/[foldername]`<br/>
 
   2. `gen_gtags.vim`
 
-    GNU Global use gtags-cscope with if_cscope interface in Vim.  
-    GNU Global will generate **GTAGS**, **GRTAGS** and **GPATH** under the project folder.
+    [GNU Global](http://www.gnu.org/software/global/) use gtags-cscope with if_cscope interface in Vim.<br/>
+    [GNU Global](http://www.gnu.org/software/global/) will generate **GTAGS**, **GRTAGS** and **GPATH** under the project folder.
+
+## Difference between ctags and gtags
+
+  GNU global(aka gtags) is more powerful than ctags, which support definition and reference, but ctags only support symbol.
+
+  As we can use GNU global why did I still support ctags in this plugin?<br/>
+  That's because GNU global only support 6 languages (C, C++, Yacc, Java, PHP4 and assembly) natively.<br/>
+  ctags can support more language(41 showed on the website).
 
 ## Installation
 
@@ -105,5 +113,5 @@
   Ctrl+\ t    Find this text string
   ```
 
-Thanks for reading :)  
+Thanks for reading :)<br/>
 If you have any question or suggestion, please mail me <jsfaint@gmail.com>

@@ -36,29 +36,49 @@ function! s:has_vimproc()
 endfunction
 
 function! s:find_project_root()
-  return getcwd()
+  if has('win32') || has('win64')
+    let l:path=getcwd()
+    let l:path=substitute(l:path, '\\', '/', 'g')
+    return l:path
+  else
+    return getcwd()
+  endif
+
 endfunction
 
 "Get db name, remove / : with , beacause they are not valid filename
 function! s:get_db_name(path)
-  let l:fold=substitute(a:path, '/\|\\\|\ \|:', '', 'g')
+  let l:fold=substitute(a:path, '/\|\\\|\ \|:\|\.', '', 'g')
   return l:fold
+endfunction
+
+function! s:fix_path_for_windows(path)
+  if has('win32') || has('win64')
+    let l:path=substitute(a:path, '\\', '/', 'g')
+    return l:path
+  else
+    return a:path
+  endif
 endfunction
 
 function! s:get_project_ctags_dir()
   let l:dir=expand(s:tagdir . "/" . s:get_db_name(s:find_project_root()))
+
+  let l:dir=s:fix_path_for_windows(l:dir)
 
   return l:dir
 endfunction
 
 function! s:get_project_ctags_name()
   let l:file=expand(s:get_project_ctags_dir() . "/" . s:ctags_db)
+  let l:file=s:fix_path_for_windows(l:file)
 
   return l:file
 endfunction
 
 function! s:get_extend_ctags_list()
   let l:file=expand(s:get_project_ctags_dir() . "/" . s:ext)
+  let l:file=s:fix_path_for_windows(l:file)
 
   if filereadable(l:file)
     let l:list=readfile(l:file)
@@ -74,7 +94,9 @@ function! s:get_extend_ctags_name(item)
   else
     let l:item=a:item
   endif
+
   let l:file=expand(s:get_project_ctags_dir() . "/" . s:get_db_name(l:item))
+  let l:file=s:fix_path_for_windows(l:file)
 
   return l:file
 endfunction
@@ -98,9 +120,8 @@ endfunction
 
 "Only add ctags db as extension database
 function! s:add_ext()
-  let l:list=s:get_extend_ctags_list()
-  for l:item in l:list
-    let l:file=expand(s:get_extend_ctags_name(l:item))
+  for l:item in s:get_extend_ctags_list()
+    let l:file=s:get_extend_ctags_name(l:item)
     call s:add_ctags(l:file)
   endfor
 endfunction
@@ -110,16 +131,16 @@ endfunction
 function! s:Ctags_db_gen(filename, dir)
   echon "Generate " | echohl NonText | echon "project" | echohl None | echon " ctags database "
 
-  let l:dir=expand(s:get_project_ctags_dir())
+  let l:dir=s:get_project_ctags_dir()
 
   call s:make_ctags_dir(l:dir)
 
   if a:filename == ""
     let l:file=l:dir . "/" . s:ctags_db
-    let l:cmd='ctags -f '. l:file . ' -R ' . getcwd()
+    let l:cmd='ctags -f '. l:file . ' -R ' . s:find_project_root()
   else
     let l:file=a:filename
-    let l:cmd='ctags -f '. a:filename . ' -R ' . a:dir
+    let l:cmd='ctags -f '. l:file . ' -R ' . a:dir
   endif
 
   if s:has_vimproc()
@@ -138,7 +159,7 @@ function! s:Ctags_db_gen(filename, dir)
 endfunction
 
 function! s:Add_DBs()
-  let l:file=expand(s:get_project_ctags_name())
+  let l:file=s:get_project_ctags_name()
   call s:add_ctags(l:file)
 
   call s:add_ext()
@@ -159,7 +180,8 @@ function! s:Gen_all()
 endfunction
 
 function! s:Edit_ext()
-  let l:dir=expand(s:get_project_ctags_dir())
+  let l:dir=s:get_project_ctags_dir()
+  echo l:dir
   call s:make_ctags_dir(l:dir)
   let l:file=l:dir . "/" . s:ext
   exec 'split' l:file
@@ -167,10 +189,9 @@ endfunction
 
 "Geterate extend ctags
 function! s:Ext_db_gen()
-  let l:list=s:get_extend_ctags_list()
-
-  for l:item in l:list
-    let l:file=expand(s:get_extend_ctags_name(l:item))
+  for l:item in s:get_extend_ctags_list()
+    let l:file=s:get_extend_ctags_name(l:item)
+    echo l:file l:item
     call s:Ctags_db_gen(l:file, l:item)
   endfor
 endfunction
@@ -178,15 +199,14 @@ endfunction
 "Delete exist tags file
 function! s:Tags_clear()
   "Remove project ctags
-  let l:file=expand(s:get_project_ctags_name())
+  let l:file=s:get_project_ctags_name()
   if filereadable(l:file)
     call delete(l:file)
   endif
 
   "Remove extend ctags
-  let l:list=s:get_extend_ctags_list()
-  for l:item in l:list
-    let l:file=expand(s:get_extend_ctags_name(l:item))
+  for l:item in s:get_extend_ctags_list()
+    let l:file=s:get_extend_ctags_name(l:item)
     if filereadable(l:file)
       call delete(l:file)
     endif
@@ -204,10 +224,6 @@ command! -nargs=0 -bar ClearTags call s:Tags_clear()
 nmap <silent> <leader>gt :GenCtags<cr>
 nmap <silent> <leader>ga :GenAll<cr>
 nmap <silent> <leader>ge :EditExt<cr>
-
-if has('win32') || has('win64')
-  set shellslash
-endif
 
 "Add db while startup
 call s:Add_DBs()
