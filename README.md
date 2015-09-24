@@ -15,13 +15,16 @@
     [GNU Global](http://www.gnu.org/software/global/) use gtags-cscope with if_cscope interface in Vim.<br/>
     [GNU Global](http://www.gnu.org/software/global/) will generate **GTAGS**, **GRTAGS** and **GPATH** under the project folder.
 
+
+  If [vimproc](https://github.com/Shougo/vimproc.vim) was enabled [gen_tags.vim](https://github.com/jsfaint/gen_tags.vim) will generate and update tags in background.
+
 ## Difference between ctags and gtags
 
-  GNU global(aka gtags) is more powerful than ctags, which support definition and reference, but ctags only support symbol.
+  GNU global(aka gtags) is more powerful than ctags, which support definition, reference, calling, called, include, string and etc, but ctags only support definition.
 
   As we can use GNU global why did I still support ctags in this plugin?<br/>
   That's because GNU global only support 6 languages (C, C++, Yacc, Java, PHP4 and assembly) natively.<br/>
-  ctags can support more language(41 showed on the website).
+  ctags can support more languages(41 showed on the website).
 
 ## Installation
 
@@ -99,9 +102,11 @@
 
     Clear GTAGS files
 
-### Hotkey
+### Key Mapping
 
-  The following hotkey is set for GTAGS find function which use cscope interface (`if_cscope`).
+  `ctrl+]` is the default mapping support by Vim for definition
+
+  The following mapping is set for GTAGS find function which use cscope interface (`if_cscope`).
   ```
   Ctrl+\ c    Find functions calling this function
   Ctrl+\ d    Find functions called by this function

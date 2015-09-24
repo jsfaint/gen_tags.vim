@@ -106,11 +106,11 @@ function! UpdateGtags()
 
   if s:has_vimproc()
     call vimproc#system_bg(l:cmd)
+    echon " " | echohl Function | echon "[Background]" | echohl None
   else
     call system(l:cmd)
+    echon " " | echohl Function | echon "[Done]" | echohl None
   endif
-
-  echon " " | echohl Function | echon "[Done]" | echohl None
 endfunction
 au BufWritePost * call UpdateGtags()
 
