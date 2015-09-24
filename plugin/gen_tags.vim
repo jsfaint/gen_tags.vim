@@ -226,6 +226,10 @@ nmap <silent> <leader>ga :GenAll<cr>
 nmap <silent> <leader>ge :EditExt<cr>
 
 function! UpdateCtags()
+  if !s:has_vimproc()
+    return
+  endif
+
   let l:dir=s:get_project_ctags_dir()
   let l:file=l:dir . "/" . s:ctags_db
 
