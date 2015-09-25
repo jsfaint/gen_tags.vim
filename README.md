@@ -120,4 +120,6 @@ It's good for Microsoft windows, because the CMD window is boring, even the comm
   ```
 
 Thanks for reading :)<br/>
-If you have any question or suggestion, please mail me <jsfaint@gmail.com>
+If you like this plugin, please star it on github!
+
+And one more thing, bug reports and pull-requests are greatly appreciated :)
