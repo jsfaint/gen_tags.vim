@@ -145,10 +145,14 @@ function! s:Ctags_db_gen(filename, dir)
 
   if s:has_vimproc()
     call vimproc#system_bg(l:cmd)
-    echohl Function | echon "[Background]" | echohl None
   else
+    if has('unix')
+      let l:cmd = l:cmd . ' &'
+    else
+      let l:cmd = 'cmd /c start ' . l:cmd
+    endif
+
     call system(l:cmd)
-    echohl Function | echon "[Done]" | echohl None
   endif
 
   "Search for existence tags string.
@@ -156,6 +160,8 @@ function! s:Ctags_db_gen(filename, dir)
   if l:ret == -1
     call s:add_ctags(l:file)
   endif
+
+  echohl Function | echon "[Background]" | echohl None
 endfunction
 
 function! s:Add_DBs()
@@ -226,10 +232,6 @@ nmap <silent> <leader>ga :GenAll<cr>
 nmap <silent> <leader>ge :EditExt<cr>
 
 function! UpdateCtags()
-  if !s:has_vimproc()
-    return
-  endif
-
   let l:dir=s:get_project_ctags_dir()
   let l:file=l:dir . "/" . s:ctags_db
 

@@ -15,7 +15,9 @@
     [GNU Global](http://www.gnu.org/software/global/) use gtags-cscope with if_cscope interface in Vim.<br/>
     [GNU Global](http://www.gnu.org/software/global/) will generate **GTAGS**, **GRTAGS** and **GPATH** under the project folder.
 
-If [vimproc](https://github.com/Shougo/vimproc.vim) was enabled [gen_tags.vim](https://github.com/jsfaint/gen_tags.vim) will generate and update tags in background.
+Generate ctags and update gtags will run in background.<br/>
+If [vimproc](https://github.com/Shougo/vimproc.vim) was enabled [gen_tags.vim](https://github.com/jsfaint/gen_tags.vim) will use it.<br/>
+It's good for Microsoft windows, because the CMD window is boring, even the command is running in background.
 
 ## Difference between ctags and gtags
 
