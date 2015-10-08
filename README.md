@@ -26,6 +26,8 @@ It's good for Microsoft windows, because the CMD window is boring, even the comm
   As we can use GNU global why did I still support ctags in this plugin?<br/>
   That's because GNU global only support 6 languages (C, C++, Yacc, Java, PHP4 and assembly) natively.<br/>
   ctags can support more languages(41 showed on the website).
+  
+  Actually global can support more languages with Pygments plugin parser, for more details please refer `PLUGIN_HOWTO.pygments` in global document.
 
 ## Installation
 
