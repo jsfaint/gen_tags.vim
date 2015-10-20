@@ -64,7 +64,7 @@ function! s:Gtags_db_gen(file)
     let l:cmd='gtags'
   endif
 
-  echon "Generate " | echohl NonText | echon "GTAGS" | echohl None
+  echon "Generate " | echohl NonText | echon "GTAGS" | echohl None | echo
 
   if s:has_vimproc()
     call vimproc#system2(l:cmd)
@@ -74,7 +74,7 @@ function! s:Gtags_db_gen(file)
 
   call s:add_gtags(a:file)
 
-  echon " " | echohl Function | echon "[Done]" | echohl None
+  echohl Function | echo "[Done]" | echohl None
 endfunction
 
 

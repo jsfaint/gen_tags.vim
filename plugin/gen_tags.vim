@@ -187,7 +187,6 @@ endfunction
 
 function! s:Edit_ext()
   let l:dir=s:get_project_ctags_dir()
-  echo l:dir
   call s:make_ctags_dir(l:dir)
   let l:file=l:dir . "/" . s:ext
   exec 'split' l:file
@@ -197,7 +196,6 @@ endfunction
 function! s:Ext_db_gen()
   for l:item in s:get_extend_ctags_list()
     let l:file=s:get_extend_ctags_name(l:item)
-    echo l:file l:item
     call s:Ctags_db_gen(l:file, l:item)
   endfor
 endfunction
