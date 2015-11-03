@@ -10,7 +10,7 @@
 "   2. Clear GTAGS
 "   :ClearGTAGS
 " ============================================================================
-let s:file="GTAGS"
+let s:file = "GTAGS"
 
 "Check cscope support
 if !has("cscope")
@@ -38,42 +38,49 @@ nmap <C-\>i :cs find i <C-R>=expand("<cfile>")<CR><CR>
 nmap <C-\>s :cs find s <C-R>=expand("<cword>")<CR><CR>
 nmap <C-\>t :cs find t <C-R>=expand("<cword>")<CR><CR>
 
-"Check if has vimproc
-function! s:has_vimproc()
-  let l:has_vimproc = 0
-  silent! let l:has_vimproc = vimproc#version()
-  return l:has_vimproc
-endfunction
-
 function! s:add_gtags(file)
   if filereadable(a:file)
-    exec 'silent! cs add GTAGS'
+    let l:cmd = 'silent! cs add ' . a:file
+    exec l:cmd
   endif
 endfunction
 
 function! s:Add_DBs()
-  call s:add_gtags(s:file)
+  let l:path = gen_tags#find_project_root()
+  let l:file = l:path . '/' . s:file
+  call s:add_gtags(l:file)
 endfunction
 
 "Generate GTAGS
-function! s:Gtags_db_gen(file)
-  if filereadable(a:file)
+function! s:Gtags_db_gen()
+  let l:path = gen_tags#find_project_root()
+  let l:file = l:path . '/' . s:file
+
+  if filereadable(l:file)
     call UpdateGtags()
     return
   else
-    let l:cmd='gtags'
+    let l:cmd = 'gtags -c ' . l:path
   endif
 
   echon "Generate " | echohl NonText | echon "GTAGS" | echohl None | echo
 
-  if s:has_vimproc()
+  "Backup cwd
+  let l:bak = getcwd()
+  let $GTAGSROOT = l:path
+  lcd $GTAGSROOT
+
+  if gen_tags#has_vimproc()
     call vimproc#system2(l:cmd)
   else
     call system(l:cmd)
   endif
 
-  call s:add_gtags(a:file)
+  call s:add_gtags(l:file)
 
+  "Restore cwd
+  let $GTAGSROOT = l:bak
+  lcd $GTAGSROOT
   echohl Function | echo "[Done]" | echohl None
 endfunction
 
@@ -89,7 +96,7 @@ function! s:Gtags_clear()
 endfunction
 
 "Command list
-command! -nargs=0 -bar GenGTAGS call s:Gtags_db_gen(s:file)
+command! -nargs=0 -bar GenGTAGS call s:Gtags_db_gen()
 command! -nargs=0 -bar ClearGTAGS call s:Gtags_clear()
 
 "Mapping hotkey
@@ -102,9 +109,9 @@ function! UpdateGtags()
 
   echon "Update " | echohl NonText | echon "GTAGS" | echohl None
 
-  let l:cmd='global -u'
+  let l:cmd = 'global -u'
 
-  if s:has_vimproc()
+  if gen_tags#has_vimproc()
     call vimproc#system_bg(l:cmd)
   else
     if has('unix')

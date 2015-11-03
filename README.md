@@ -3,11 +3,11 @@
   This plugin aim to simple the usage of [ctags](http://ctags.sourceforge.net/) and [gtags](http://www.gnu.org/software/global/) for Vim.<br/>
   It is used for generate and auto load exists tags.
 
-  This plugin contains two Vim scripts, both of the script can be use independently.
+  This plugin contains two Vim scripts.
 
-  1. `gen_tags.vim`
+  1. `gen_ctags.vim`
 
-    This is the old script which support ctags.<br/>
+    Manage ctags db for project<br/>
     The generated ctags DB will be placed under `~/.cache/tags_dir/[foldername]`<br/>
 
   2. `gen_gtags.vim`
@@ -15,9 +15,12 @@
     [GNU Global](http://www.gnu.org/software/global/) use gtags-cscope with if_cscope interface in Vim.<br/>
     [GNU Global](http://www.gnu.org/software/global/) will generate **GTAGS**, **GRTAGS** and **GPATH** under the project folder.
 
-Generate ctags and update gtags will run in background.<br/>
+Generate ctags and update gtags will run in background.
+
 If [vimproc](https://github.com/Shougo/vimproc.vim) was enabled [gen_tags.vim](https://github.com/jsfaint/gen_tags.vim) will use it.<br/>
 It's good for Microsoft windows, because the CMD window is boring, even the command is running in background.
+
+When vimproc enabled and the project is managed by git , gen_gtags.vim will detect git root then generate GTAGS under the git root.
 
 ## Difference between ctags and gtags
 
@@ -26,7 +29,7 @@ It's good for Microsoft windows, because the CMD window is boring, even the comm
   As we can use GNU global why did I still support ctags in this plugin?<br/>
   That's because GNU global only support 6 languages (C, C++, Yacc, Java, PHP4 and assembly) natively.<br/>
   ctags can support more languages(41 showed on the website).
-  
+
   Actually global can support more languages with Pygments plugin parser, for more details please refer `PLUGIN_HOWTO.pygments` in global document.
 
 ## Installation
@@ -49,7 +52,7 @@ It's good for Microsoft windows, because the CMD window is boring, even the comm
 
   Put two Vim script(`gen_tags.vim`, `gen_gtags.vim`) under `plugin` directory.
 
-## gen_tags.vim
+## gen_ctags.vim
 
 ### Commands
 
