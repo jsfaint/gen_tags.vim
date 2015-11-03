@@ -9,18 +9,18 @@
 
     Manage ctags db for project<br/>
     The generated ctags DB will be placed under `~/.cache/tags_dir/[foldername]`<br/>
+    gen_ctags.vim will detect git root and use it as project root path.
 
   2. `gen_gtags.vim`
 
     [GNU Global](http://www.gnu.org/software/global/) use gtags-cscope with if_cscope interface in Vim.<br/>
-    [GNU Global](http://www.gnu.org/software/global/) will generate **GTAGS**, **GRTAGS** and **GPATH** under the project folder.
+    [GNU Global](http://www.gnu.org/software/global/) will generate **GTAGS**, **GRTAGS** and **GPATH** under the project folder.<br/>
+    gen_gtags.vim will detect git root then generate GTAGS under the git root.
 
 Generate ctags and update gtags will run in background.
 
 If [vimproc](https://github.com/Shougo/vimproc.vim) was enabled [gen_tags.vim](https://github.com/jsfaint/gen_tags.vim) will use it.<br/>
 It's good for Microsoft windows, because the CMD window is boring, even the command is running in background.
-
-When vimproc enabled and the project is managed by git , gen_gtags.vim will detect git root then generate GTAGS under the git root.
 
 ## Difference between ctags and gtags
 
