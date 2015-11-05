@@ -36,10 +36,9 @@ function! gen_tags#find_project_root()
 
   if l:is_git
     if gen_tags#has_vimproc()
-      let l:sub = vimproc#popen2(l:git_cmd)
-      let l:line = l:sub.stdout.read()
-      let l:line = substitute(l:line, '\r\|\n', '', 'g')
-      return l:line
+      let l:sub = vimproc#system2(l:git_cmd)
+      let l:sub = substitute(l:sub, '\r\|\n', '', 'g')
+      return l:sub
     else
       silent let l:sub = system(l:git_cmd)
       let l:sub = substitute(l:sub, '\r\|\n', '', 'g')
