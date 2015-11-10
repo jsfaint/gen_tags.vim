@@ -67,8 +67,8 @@ function! s:Gtags_db_gen()
 
   "Backup cwd
   let l:bak = getcwd()
-  let $GTAGSROOT = l:path
-  lcd $GTAGSROOT
+  let $GTAGSPATH = l:path
+  lcd $GTAGSPATH
 
   if gen_tags#has_vimproc()
     call vimproc#system2(l:cmd)
@@ -76,11 +76,12 @@ function! s:Gtags_db_gen()
     call system(l:cmd)
   endif
 
-  call s:add_gtags(l:file)
-
   "Restore cwd
-  let $GTAGSROOT = l:bak
-  lcd $GTAGSROOT
+  let $GTAGSPATH = l:bak
+  lcd $GTAGSPATH
+  let $GTAGSPATH = ''
+
+  call s:add_gtags(l:file)
   echohl Function | echo "[Done]" | echohl None
 endfunction
 
