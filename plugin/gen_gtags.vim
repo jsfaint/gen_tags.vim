@@ -104,7 +104,10 @@ command! -nargs=0 -bar ClearGTAGS call s:Gtags_clear()
 nmap <silent> <leader>gg :GenGTAGS<cr>
 
 function! UpdateGtags()
-  if !filereadable(s:file)
+  let l:path = gen_tags#find_project_root()
+  let l:file = l:path . '/' . s:file
+
+  if !filereadable(l:file)
     return
   endif
 
