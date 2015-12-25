@@ -129,7 +129,10 @@ function! UpdateGtags()
 
   echon " " | echohl Function | echon "[Background]" | echohl None
 endfunction
-au BufWritePost * call UpdateGtags()
+augroup gen_gtags
+    au!
+    au BufWritePost * call UpdateGtags()
+augroup END
 
 "Add db while startup
 call s:Add_DBs()

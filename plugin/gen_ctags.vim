@@ -221,7 +221,10 @@ function! UpdateCtags()
 
   call s:Ctags_db_gen("", "")
 endfunction
-au BufWritePost * call UpdateCtags()
+augroup gen_ctags
+    au!
+    au BufWritePost * call UpdateCtags()
+augroup END
 
 "Add db while startup
 call s:Add_DBs()
