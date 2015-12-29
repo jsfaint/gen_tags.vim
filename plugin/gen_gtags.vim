@@ -87,11 +87,13 @@ endfunction
 
 
 function! s:Gtags_clear()
+  let l:path = gen_tags#find_project_root()
   let l:list = ["GTAGS", "GPATH", "GRTAGS"]
 
   for l:item in l:list
-    if filereadable(l:item)
-      call delete(l:item)
+    let l:file = l:path . '/' . l:item
+    if filereadable(l:file)
+      call delete(l:file)
     endif
   endfor
 endfunction
