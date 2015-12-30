@@ -90,6 +90,8 @@ function! s:Gtags_clear()
   let l:path = gen_tags#find_project_root()
   let l:list = ["GTAGS", "GPATH", "GRTAGS"]
 
+  execute 'cscope kill -1'
+
   for l:item in l:list
     let l:file = l:path . '/' . l:item
     if filereadable(l:file)
