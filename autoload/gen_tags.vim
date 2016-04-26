@@ -15,23 +15,27 @@ endfunction
 "if the project managed by git, find the git root.
 "else return the current work directory.
 function! gen_tags#find_project_root()
-  let l:git_cmd = 'git rev-parse --show-toplevel'
+  if executable('git')
+    let l:git_cmd = 'git rev-parse --show-toplevel'
 
-  "check if in git repository.
-  if gen_tags#has_vimproc()
-    call vimproc#system2(l:git_cmd)
-    if vimproc#get_last_status() == 0
-      let l:is_git = 1
+    "check if in git repository.
+    if gen_tags#has_vimproc()
+      call vimproc#system2(l:git_cmd)
+      if vimproc#get_last_status() == 0
+        let l:is_git = 1
+      else
+        let l:is_git = 0
+      endif
     else
-      let l:is_git = 0
+      silent let l:sub = system(l:git_cmd)
+      if v:shell_error == 0
+        let l:is_git = 1
+      else
+        let l:is_git = 0
+      endif
     endif
   else
-    silent let l:sub = system(l:git_cmd)
-    if v:shell_error == 0
-      let l:is_git = 1
-    else
-      let l:is_git = 0
-    endif
+    let l:is_git = 0
   endif
 
   if l:is_git
