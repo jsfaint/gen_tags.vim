@@ -54,21 +54,51 @@ endfunction
 "Generate GTAGS
 function! s:Gtags_db_gen()
   let l:path = gen_tags#find_project_root()
-  let l:file = l:path . '/' . s:file
+  let w:file = l:path . '/' . s:file
 
-  if filereadable(l:file)
+  "If gtags file exist, run update procedure.
+  if filereadable(w:file)
     call UpdateGtags()
     return
-  else
-    let l:cmd = 'gtags -c ' . l:path
   endif
 
-  echon "Generate " | echohl NonText | echon "GTAGS" | echohl None | echo
+  let l:cmd = 'gtags -c ' . l:path
+
+  function! s:Backup_cwd(path)
+    let l:bak = getcwd()
+    let $GTAGSPATH = a:path
+    lcd $GTAGSPATH
+
+    return l:bak
+  endfunction
+
+  function! s:Restore_cwd(bak)
+    "Restore cwd
+    let $GTAGSPATH = a:bak
+    lcd $GTAGSPATH
+    let $GTAGSPATH = ''
+  endfunction
+
+  function! CloseHandler(job)
+    call s:Restore_cwd(w:bak)
+
+    call s:add_gtags(w:file)
+    unlet w:file
+    unlet w:bak
+  endfunction
 
   "Backup cwd
-  let l:bak = getcwd()
-  let $GTAGSPATH = l:path
-  lcd $GTAGSPATH
+  let w:bak = s:Backup_cwd(l:path)
+
+  "Has job feature, generate gtags in background
+  if has('job')
+    echon "Generate " | echohl NonText | echon "GTAGS" | echohl None | echon " in " |echohl Function | echon "[Background]" | echohl None
+    let l:job = job_start(l:cmd, {"close_cb": "CloseHandler"})
+    return
+  endif
+
+  "Without job feature, use vimproc or system.
+  echon "Generate " | echohl NonText | echon "GTAGS" | echohl None | echo
 
   if gen_tags#has_vimproc()
     call vimproc#system2(l:cmd)
@@ -76,15 +106,9 @@ function! s:Gtags_db_gen()
     call system(l:cmd)
   endif
 
-  "Restore cwd
-  let $GTAGSPATH = l:bak
-  lcd $GTAGSPATH
-  let $GTAGSPATH = ''
-
-  call s:add_gtags(l:file)
+  call CloseHandler()
   echohl Function | echo "[Done]" | echohl None
 endfunction
-
 
 function! s:Gtags_clear()
   let l:path = gen_tags#find_project_root()
@@ -119,7 +143,9 @@ function! UpdateGtags()
 
   let l:cmd = 'global -u'
 
-  if gen_tags#has_vimproc()
+  if has('job')
+    call job_start(l:cmd)
+  elseif gen_tags#has_vimproc()
     call vimproc#system_bg(l:cmd)
   else
     if has('unix')

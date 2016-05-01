@@ -111,7 +111,7 @@ endfunction
 "Generate ctags tags in cwd db dir.
 "if the first parameter is null, will generate project ctags
 function! s:Ctags_db_gen(filename, dir)
-  echon "Generate " | echohl NonText | echon "project" | echohl None | echon " ctags database "
+  echon "Generate " | echohl NonText | echon "project" | echohl None | echon " ctags database in "
 
   let l:dir = s:get_project_ctags_dir()
 
@@ -125,7 +125,9 @@ function! s:Ctags_db_gen(filename, dir)
     let l:cmd = 'ctags -f '. l:file . ' -R ' . a:dir
   endif
 
-  if gen_tags#has_vimproc()
+  if has('job')
+    call job_start(l:cmd)
+  elseif gen_tags#has_vimproc()
     call vimproc#system_bg(l:cmd)
   else
     if has('unix')
