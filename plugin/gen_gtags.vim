@@ -79,7 +79,7 @@ function! s:Gtags_db_gen()
     let $GTAGSPATH = ''
   endfunction
 
-  function! CloseHandler(job)
+  function! s:gtags_db_gen_done()
     call s:Restore_cwd(w:bak)
 
     call s:add_gtags(w:file)
@@ -93,7 +93,12 @@ function! s:Gtags_db_gen()
   "Has job feature, generate gtags in background
   if has('job')
     echon "Generate " | echohl NonText | echon "GTAGS" | echohl None | echon " in " |echohl Function | echon "[Background]" | echohl None
+
     let l:job = job_start(l:cmd, {"close_cb": "CloseHandler"})
+    function! CloseHandler(job)
+      call s:gtags_db_gen_done()
+    endfunction
+
     return
   endif
 
@@ -106,7 +111,7 @@ function! s:Gtags_db_gen()
     call system(l:cmd)
   endif
 
-  call CloseHandler()
+  call s:gtags_db_gen_done()
   echohl Function | echo "[Done]" | echohl None
 endfunction
 
@@ -157,7 +162,7 @@ function! UpdateGtags()
     call system(l:cmd)
   endif
 
-  echon " " | echohl Function | echon "[Background]" | echohl None
+  echon " in " | echohl Function | echon "[Background]" | echohl None
 endfunction
 augroup gen_gtags
     au!
