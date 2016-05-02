@@ -133,9 +133,6 @@ endfunction
 command! -nargs=0 -bar GenGTAGS call s:Gtags_db_gen()
 command! -nargs=0 -bar ClearGTAGS call s:Gtags_clear()
 
-"Mapping hotkey
-nmap <silent> <leader>gg :GenGTAGS<cr>
-
 function! UpdateGtags()
   let l:path = gen_tags#find_project_root()
   let l:file = l:path . '/' . s:file

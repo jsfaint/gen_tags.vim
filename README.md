@@ -56,11 +56,11 @@ It's good for Microsoft windows, because the CMD window is boring, even the comm
 
 ### Commands
 
-  * `:GenCtags` or `<leader>gt`
+  * `:GenCtags`
 
     Generate ctags database
 
-  * `:GenAll` or `<leader>ga`
+  * `:GenAll`
 
     Generate ctags and extend database
 
@@ -68,7 +68,7 @@ It's good for Microsoft windows, because the CMD window is boring, even the comm
 
     Generate extend ctags for third-party library
 
-  * `:EditExt` or `<leader>ge`
+  * `:EditExt`
 
     Edit an extend configuration file for this project, use for add third-party library ctags database
 
@@ -78,7 +78,7 @@ It's good for Microsoft windows, because the CMD window is boring, even the comm
     e:/src/libpcap-1.3.0
     ```
 
-  * `:ClearTags`
+  * `:ClearCtags`
 
     Remove exist tag files.
 
@@ -100,7 +100,7 @@ It's good for Microsoft windows, because the CMD window is boring, even the comm
     ```
 
 ### Commands
-  * `:GenGTAGS` or `<leader>gg`
+  * `:GenGTAGS`
 
     Generate GTAGS
 

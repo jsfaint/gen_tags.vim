@@ -14,8 +14,8 @@
 "       :EditExt or <leader>ge
 "   4. Generate Extend ctags based on the content of ext.conf
 "       :GenExt
-"   5. Clear tags file
-"       :ClearTags
+"   5. Clear ctags file
+"       :ClearCtags
 " ============================================================================
 
 let s:tagdir = expand("$HOME/.cache/tags_dir")
@@ -185,7 +185,7 @@ function! s:Ext_db_gen()
 endfunction
 
 "Delete exist tags file
-function! s:Tags_clear()
+function! s:Ctags_clear()
   "Remove project ctags
   let l:file = s:get_project_ctags_name()
   if filereadable(l:file)
@@ -206,12 +206,7 @@ command! -nargs=0 -bar GenCtags call s:Ctags_db_gen("", "")
 command! -nargs=0 -bar GenAll call s:Gen_all()
 command! -nargs=0 -bar EditExt call s:Edit_ext()
 command! -nargs=0 -bar GenExt call s:Ext_db_gen()
-command! -nargs=0 -bar ClearTags call s:Tags_clear()
-
-"Mapping hotkey
-nmap <silent> <leader>gt :GenCtags<cr>
-nmap <silent> <leader>ga :GenAll<cr>
-nmap <silent> <leader>ge :EditExt<cr>
+command! -nargs=0 -bar ClearCtags call s:Ctags_clear()
 
 function! UpdateCtags()
   let l:dir = s:get_project_ctags_dir()
