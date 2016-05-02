@@ -130,8 +130,8 @@ function! s:Gtags_clear()
 endfunction
 
 "Command list
-command! -nargs=0 -bar GenGTAGS call s:Gtags_db_gen()
-command! -nargs=0 -bar ClearGTAGS call s:Gtags_clear()
+command! -nargs=0 GenGTAGS call s:Gtags_db_gen()
+command! -nargs=0 ClearGTAGS call s:Gtags_clear()
 
 function! UpdateGtags()
   let l:path = gen_tags#find_project_root()

@@ -202,11 +202,11 @@ function! s:Ctags_clear()
 endfunction
 
 "Command list
-command! -nargs=0 -bar GenCtags call s:Ctags_db_gen("", "")
-command! -nargs=0 -bar GenAll call s:Gen_all()
-command! -nargs=0 -bar EditExt call s:Edit_ext()
-command! -nargs=0 -bar GenExt call s:Ext_db_gen()
-command! -nargs=0 -bar ClearCtags call s:Ctags_clear()
+command! -nargs=0 GenCtags call s:Ctags_db_gen("", "")
+command! -nargs=0 GenAll call s:Gen_all()
+command! -nargs=0 EditExt call s:Edit_ext()
+command! -nargs=0 GenExt call s:Ext_db_gen()
+command! -nargs=0 ClearCtags call s:Ctags_clear()
 
 function! UpdateCtags()
   let l:dir = s:get_project_ctags_dir()
