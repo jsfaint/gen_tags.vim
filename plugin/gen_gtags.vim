@@ -54,10 +54,10 @@ endfunction
 "Generate GTAGS
 function! s:Gtags_db_gen()
   let l:path = gen_tags#find_project_root()
-  let w:file = l:path . '/' . s:file
+  let b:file = l:path . '/' . s:file
 
   "If gtags file exist, run update procedure.
-  if filereadable(w:file)
+  if filereadable(b:file)
     call UpdateGtags()
     return
   endif
@@ -80,15 +80,15 @@ function! s:Gtags_db_gen()
   endfunction
 
   function! s:gtags_db_gen_done()
-    call s:Restore_cwd(w:bak)
+    call s:Restore_cwd(b:bak)
 
-    call s:add_gtags(w:file)
-    unlet w:file
-    unlet w:bak
+    call s:add_gtags(b:file)
+    unlet b:file
+    unlet b:bak
   endfunction
 
   "Backup cwd
-  let w:bak = s:Backup_cwd(l:path)
+  let b:bak = s:Backup_cwd(l:path)
 
   "Has job feature, generate gtags in background
   if has('job')
