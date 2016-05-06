@@ -58,3 +58,31 @@ function! gen_tags#find_project_root()
     endif
   endif
 endfunction
+
+function! gen_tags#system(cmd)
+  let l:cmd = a:cmd
+
+  if gen_tags#has_vimproc()
+    call vimproc#system2(l:cmd)
+  else
+    call system(l:cmd)
+  endif
+endfunction
+
+function! gen_tags#system_bg(cmd)
+  let l:cmd = a:cmd
+
+  if has('job')
+    call job_start(l:cmd)
+  elseif gen_tags#has_vimproc()
+    call vimproc#system_bg(l:cmd)
+  else
+    if has('unix')
+      let l:cmd = l:cmd . ' &'
+    else
+      let l:cmd = 'cmd /c start ' . l:cmd
+    endif
+
+    call system(l:cmd)
+  endif
+endfunction

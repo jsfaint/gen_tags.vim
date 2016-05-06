@@ -105,11 +105,7 @@ function! s:Gtags_db_gen()
   "Without job feature, use vimproc or system.
   echon "Generate " | echohl NonText | echon "GTAGS" | echohl None | echo
 
-  if gen_tags#has_vimproc()
-    call vimproc#system2(l:cmd)
-  else
-    call system(l:cmd)
-  endif
+  call gen_tags#system(l:cmd)
 
   call s:gtags_db_gen_done()
   echohl Function | echo "[Done]" | echohl None
@@ -145,19 +141,7 @@ function! UpdateGtags()
 
   let l:cmd = 'global -u'
 
-  if has('job')
-    call job_start(l:cmd)
-  elseif gen_tags#has_vimproc()
-    call vimproc#system_bg(l:cmd)
-  else
-    if has('unix')
-      let l:cmd = l:cmd . ' &'
-    else
-      let l:cmd = 'cmd /c start ' . l:cmd
-    endif
-
-    call system(l:cmd)
-  endif
+  call gen_tags#system_bg(l:cmd)
 
   echon " in " | echohl Function | echon "[Background]" | echohl None
 endfunction

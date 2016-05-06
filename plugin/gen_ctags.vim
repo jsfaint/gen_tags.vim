@@ -125,19 +125,7 @@ function! s:Ctags_db_gen(filename, dir)
     let l:cmd = 'ctags -f '. l:file . ' -R ' . a:dir
   endif
 
-  if has('job')
-    call job_start(l:cmd)
-  elseif gen_tags#has_vimproc()
-    call vimproc#system_bg(l:cmd)
-  else
-    if has('unix')
-      let l:cmd = l:cmd . ' &'
-    else
-      let l:cmd = 'cmd /c start ' . l:cmd
-    endif
-
-    call system(l:cmd)
-  endif
+  call gen_tags#system_bg(l:cmd)
 
   "Search for existence tags string.
   let l:ret = stridx(&tags, l:dir)
