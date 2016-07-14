@@ -124,6 +124,14 @@ It's good for Microsoft windows, because the CMD window is boring, even the comm
   Ctrl+\ t    Find this text string
   ```
 
+## Variables
+
+* `g:ctags_opts`
+
+Set ctags options. The `-R` is set by default, so there is no need to add `-R` in `g:ctags_opts`.<br/>
+The default `g:ctags_opts` is '', you need to set it in your vimrc :smile:
+
+
 Thanks for reading :)<br/>
 If you like this plugin, please star it on github!
 

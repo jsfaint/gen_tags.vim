@@ -28,6 +28,10 @@ if !executable('ctags')
   finish
 endif
 
+if !exists('g:ctags_opts')
+  let g:ctags_opts = ''
+endif
+
 "Get db name, remove / : with , beacause they are not valid filename
 function! s:get_db_name(path)
   let l:fold = substitute(a:path, '/\|\\\|\ \|:\|\.', '', 'g')
@@ -119,10 +123,10 @@ function! s:Ctags_db_gen(filename, dir)
 
   if a:filename == ""
     let l:file = l:dir . "/" . s:ctags_db
-    let l:cmd = 'ctags -f '. l:file . ' -R ' . gen_tags#find_project_root()
+    let l:cmd = 'ctags -f '. l:file . ' -R ' . g:ctags_opts .' ' . gen_tags#find_project_root()
   else
     let l:file = a:filename
-    let l:cmd = 'ctags -f '. l:file . ' -R ' . a:dir
+    let l:cmd = 'ctags -f '. l:file . ' -R ' . g:ctags_opts . ' ' . a:dir
   endif
 
   call gen_tags#system_bg(l:cmd)
