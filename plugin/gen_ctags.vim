@@ -7,11 +7,11 @@
 " Required: This script requires ctags.
 " Usage:
 "   1. Generate All tags:
-"       :GenAll or <leader>ga
+"       :GenAll
 "   2. Generate ctags db:
-"       :GenCtags or <leader>gt
+"       :GenCtags
 "   3. Edit Extend project list
-"       :EditExt or <leader>ge
+"       :EditExt
 "   4. Generate Extend ctags based on the content of ext.conf
 "       :GenExt
 "   5. Clear ctags file
