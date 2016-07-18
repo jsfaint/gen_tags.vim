@@ -131,6 +131,14 @@ It's good for Microsoft windows, because the CMD window is boring, even the comm
 Set ctags options. The `-R` is set by default, so there is no need to add `-R` in `g:ctags_opts`.<br/>
 The default `g:ctags_opts` is '', you need to set it in your vimrc :smile:
 
+* `g:gtags_split`
+
+Set gtags find display behavior. The default `g:gtags_split` is ''.<br/>
+'' means don't split the display.<br/>
+'h' means horizontal splitting.<br/>
+'v' means vertical splitting.<br/>
+
+----
 
 Thanks for reading :)<br/>
 If you like this plugin, please star it on github!
