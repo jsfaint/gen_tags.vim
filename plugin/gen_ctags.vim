@@ -99,9 +99,7 @@ function! s:make_ctags_dir(dir)
 endfunction
 
 function! s:add_ctags(file)
-  if filereadable(a:file)
-    exec 'set tags' . "+=" . a:file
-  endif
+  exec 'set tags' . "+=" . a:file
 endfunction
 
 "Only add ctags db as extension database
@@ -142,9 +140,10 @@ endfunction
 
 function! s:Add_DBs()
   let l:file = s:get_project_ctags_name()
-  call s:add_ctags(l:file)
-
-  call s:add_ext()
+  if filereadable(l:file)
+    call s:add_ctags(l:file)
+    call s:add_ext()
+  endif
 endfunction
 
 "Generate project and library ctags
