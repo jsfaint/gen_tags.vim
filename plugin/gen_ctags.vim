@@ -177,19 +177,8 @@ endfunction
 
 "Delete exist tags file
 function! s:Ctags_clear()
-  "Remove project ctags
-  let l:file = s:get_project_ctags_name()
-  if filereadable(l:file)
-    call delete(l:file)
-  endif
-
-  "Remove extend ctags
-  for l:item in s:get_extend_ctags_list()
-    let l:file = s:get_extend_ctags_name(l:item)
-    if filereadable(l:file)
-      call delete(l:file)
-    endif
-  endfor
+  let l:dir = s:get_project_ctags_dir()
+  call delete(l:dir, "rf")
 endfunction
 
 "Command list
