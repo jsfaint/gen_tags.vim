@@ -38,33 +38,24 @@ function! s:get_db_name(path)
   return l:fold
 endfunction
 
-function! s:fix_path_for_windows(path)
-  if has('win32') || has('win64')
-    let l:path = substitute(a:path, '\\', '/', 'g')
-    return l:path
-  else
-    return a:path
-  endif
-endfunction
-
 function! s:get_project_ctags_dir()
   let l:dir = expand(s:tagdir . "/" . s:get_db_name(gen_tags#find_project_root()))
 
-  let l:dir = s:fix_path_for_windows(l:dir)
+  let l:dir = gen_tags#fix_path_for_windows(l:dir)
 
   return l:dir
 endfunction
 
 function! s:get_project_ctags_name()
   let l:file = expand(s:get_project_ctags_dir() . "/" . s:ctags_db)
-  let l:file = s:fix_path_for_windows(l:file)
+  let l:file = gen_tags#fix_path_for_windows(l:file)
 
   return l:file
 endfunction
 
 function! s:get_extend_ctags_list()
   let l:file = expand(s:get_project_ctags_dir() . "/" . s:ext)
-  let l:file = s:fix_path_for_windows(l:file)
+  let l:file = gen_tags#fix_path_for_windows(l:file)
 
   if filereadable(l:file)
     let l:list = readfile(l:file)
@@ -82,7 +73,7 @@ function! s:get_extend_ctags_name(item)
   endif
 
   let l:file = expand(s:get_project_ctags_dir() . "/" . s:get_db_name(l:item))
-  let l:file = s:fix_path_for_windows(l:file)
+  let l:file = gen_tags#fix_path_for_windows(l:file)
 
   return l:file
 endfunction

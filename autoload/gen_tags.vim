@@ -86,3 +86,13 @@ function! gen_tags#system_bg(cmd)
     call system(l:cmd)
   endif
 endfunction
+
+" Fix shellslash for windows
+function! gen_tags#fix_path_for_windows(path)
+  if has('win32') || has('win64')
+    let l:path = substitute(a:path, '\\', '/', 'g')
+    return l:path
+  else
+    return a:path
+  endif
+endfunction
