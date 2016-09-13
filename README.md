@@ -82,7 +82,7 @@ It's good for Microsoft windows, because the CMD window is boring, even the comm
 
     ```
     :ClearCtags      Remove tags files.
-    :ClearCtags all  Remove tags files, ext.conf and the folder.
+    :ClearCtags!     Remove tags files, ext.conf and the folder.
     ```
 
 ## gen_gtags.vim

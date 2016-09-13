@@ -167,8 +167,8 @@ function! s:Ext_db_gen()
 endfunction
 
 "Delete exist tags file
-function! s:Ctags_clear(...)
-  if a:0 == 0
+function! s:Ctags_clear(bang)
+  if a:bang == ''
     "Remove project ctags
     let l:file = s:get_project_ctags_name()
     if filereadable(l:file)
@@ -183,16 +183,10 @@ function! s:Ctags_clear(...)
       endif
     endfor
   else
-    if a:1 == 'all'
-      "Remove all files include tag folder
-      let l:dir = s:get_project_ctags_dir()
-      call delete(l:dir, "rf")
-    endif
+    "Remove all files include tag folder
+    let l:dir = s:get_project_ctags_dir()
+    call delete(l:dir, "rf")
   endif
-endfunction
-
-function! s:complete_list(Arglead, Cmdline, Cursorpos) abort
-  return 'all'
 endfunction
 
 "Command list
@@ -200,7 +194,7 @@ command! -nargs=0 GenCtags call s:Ctags_db_gen("", "")
 command! -nargs=0 GenAll call s:Gen_all()
 command! -nargs=0 EditExt call s:Edit_ext()
 command! -nargs=0 GenExt call s:Ext_db_gen()
-command! -nargs=? -complete=custom,s:complete_list ClearCtags call s:Ctags_clear(<f-args>)
+command! -nargs=0 -bang ClearCtags call s:Ctags_clear('<bang>')
 
 function! UpdateCtags()
   let l:dir = s:get_project_ctags_dir()
