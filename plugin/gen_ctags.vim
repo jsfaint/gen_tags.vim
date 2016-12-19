@@ -118,7 +118,7 @@ function! s:Ctags_db_gen(filename, dir)
     let l:cmd = 'ctags -f '. l:file . ' -R ' . g:ctags_opts . ' ' . a:dir
   endif
 
-  call gen_tags#system_bg(l:cmd)
+  call gen_tags#system_async(l:cmd)
 
   "Search for existence tags string.
   let l:ret = stridx(&tags, l:dir)

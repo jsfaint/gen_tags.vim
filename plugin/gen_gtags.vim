@@ -103,7 +103,7 @@ function! s:Gtags_db_gen()
     let $GTAGSPATH = ''
   endfunction
 
-  function! s:gtags_db_gen_done()
+  function! s:gtags_db_gen_done(...)
     call s:Restore_cwd(b:bak)
 
     call s:add_gtags(b:file)
@@ -114,24 +114,10 @@ function! s:Gtags_db_gen()
   "Backup cwd
   let b:bak = s:Backup_cwd(l:path)
 
-  "Has job feature, generate gtags in background
-  if has('job')
-    echon "Generate " | echohl NonText | echon "GTAGS" | echohl None | echon " in " |echohl Function | echon "[Background]" | echohl None
-
-    let l:job = job_start(l:cmd, {"close_cb": "CloseHandler"})
-    function! CloseHandler(job)
-      call s:gtags_db_gen_done()
-    endfunction
-
-    return
-  endif
-
-  "Without job feature, use vimproc or system.
   echon "Generate " | echohl NonText | echon "GTAGS" | echohl None | echo
 
-  call gen_tags#system(l:cmd)
+  call gen_tags#system_async(l:cmd, function('s:gtags_db_gen_done'))
 
-  call s:gtags_db_gen_done()
   echohl Function | echo "[Done]" | echohl None
 endfunction
 
@@ -165,14 +151,13 @@ function! UpdateGtags()
 
   let l:cmd = 'global -u'
 
-  call gen_tags#system_bg(l:cmd)
+  call gen_tags#system_async(l:cmd)
 
   echon " in " | echohl Function | echon "[Background]" | echohl None
 endfunction
+
 augroup gen_gtags
     au!
     au BufWritePost * call UpdateGtags()
+    au VimEnter * call s:Add_DBs()
 augroup END
-
-"Add db while startup
-call s:Add_DBs()
