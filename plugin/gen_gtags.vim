@@ -114,11 +114,8 @@ function! s:Gtags_db_gen()
   "Backup cwd
   let b:bak = s:Backup_cwd(l:path)
 
-  echon "Generate " | echohl NonText | echon "GTAGS" | echohl None | echo
-
+  echon "Generate " | echohl NonText | echon "GTAGS" | echohl None | echon " in " |echohl Function | echon "[Background]" | echohl None
   call gen_tags#system_async(l:cmd, function('s:gtags_db_gen_done'))
-
-  echohl Function | echo "[Done]" | echohl None
 endfunction
 
 function! s:Gtags_clear()
@@ -147,13 +144,9 @@ function! UpdateGtags()
     return
   endif
 
-  echon "Update " | echohl NonText | echon "GTAGS" | echohl None
-
+  echon "Update " | echohl NonText | echon "GTAGS" | echohl None | echon " in " |echohl Function | echon "[Background]" | echohl None
   let l:cmd = 'global -u'
-
   call gen_tags#system_async(l:cmd)
-
-  echon " in " | echohl Function | echon "[Background]" | echohl None
 endfunction
 
 augroup gen_gtags
