@@ -8,6 +8,10 @@
 "if the project managed by git, find the git root.
 "else return the current work directory.
 function! gen_tags#find_project_root()
+  if exists('g:gen_tags#project_root')
+    return g:gen_tags#project_root
+  endif
+
   if executable('git')
     let l:git_cmd = 'git rev-parse --show-toplevel'
 
@@ -25,16 +29,18 @@ function! gen_tags#find_project_root()
   if l:is_git
     silent let l:sub = system(l:git_cmd)
     let l:sub = substitute(l:sub, '\r\|\n', '', 'g')
-    return l:sub
+    let g:gen_tags#project_root = l:sub
   else
     if has('win32') || has('win64')
       let l:path=getcwd()
       let l:path=substitute(l:path, '\\', '/', 'g')
-      return l:path
+      let g:gen_tags#project_root = l:path
     else
-      return getcwd()
+      let g:gen_tags#project_root = getcwd()
     endif
   endif
+
+  return g:gen_tags#project_root
 endfunction
 
 function! gen_tags#system_async(cmd, ...)
