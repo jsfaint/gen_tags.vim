@@ -3,7 +3,7 @@
   This plugin aim to simple the usage of [ctags](http://ctags.sourceforge.net/) and [gtags](http://www.gnu.org/software/global/) for [Vim](https://github.com/vim/vim) and [NeoVim](https://github.com/neovim/neovim).<br/>
   It is used for generate and maintain tags for you.
 
-  This plugin support both [ctags](http://ctags.sourceforge.net/) and [gtags(aka GNU global)](http://www.gnu.org/software/global/) contains two Vim scripts.
+  This plugin support both [ctags](http://ctags.sourceforge.net/) and [gtags(aka GNU global)](http://www.gnu.org/software/global/).
 
   gen_tags.vim will detect git root and use it as the project root path.
 
@@ -26,18 +26,14 @@
   Add `NeoBundle 'jsfaint/gen_tags.vim'` to your vimrc<br/>
   Then launch `vim` and run `:NeobundleCheck`
 
-  To install from command line: `vim +PluginInstall +qall`
-
 * Vundle
 
   Add `Plugin 'jsfaint/gen_tags.vim'` to your vimrc<br/>
   Then launch `vim` and run `:PluginInstall`
 
-  To install from command line: `vim +PluginInstall +qall`
-
 * Traditional method
 
-  Put two Vim script(`gen_tags.vim`, `gen_gtags.vim`) under `plugin` directory.
+  Unzip the zip file under your .vim(*unix) or vimfiles(windows) directory.
 
 ## gen_ctags.vim
 
