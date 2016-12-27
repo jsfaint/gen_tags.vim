@@ -209,7 +209,5 @@ endfunction
 augroup gen_ctags
     au!
     au BufWritePost * call UpdateCtags()
+    au BufWinEnter * call s:Add_DBs()
 augroup END
-
-"Add db while startup
-call s:Add_DBs()

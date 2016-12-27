@@ -152,5 +152,5 @@ endfunction
 augroup gen_gtags
     au!
     au BufWritePost * call UpdateGtags()
-    au VimEnter * call s:Add_DBs()
+    au BufWinEnter * call s:Add_DBs()
 augroup END

@@ -8,10 +8,6 @@
 "if the project managed by git, find the git root.
 "else return the current work directory.
 function! gen_tags#find_project_root()
-  if exists('g:gen_tags#project_root')
-    return g:gen_tags#project_root
-  endif
-
   if executable('git')
     let l:git_cmd = 'git rev-parse --show-toplevel'
 
