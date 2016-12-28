@@ -46,13 +46,13 @@ function! gen_tags#system_async(cmd, ...)
     if a:0 == 0
       call jobstart(l:cmd)
     else
-      call jobstart(l:cmd, {'on_exit': function('a:1')})
+      call jobstart(l:cmd, {'on_exit': a:1})
     endif
   elseif has('job')
     if a:0 == 0
       call job_start(l:cmd)
     else
-      call job_start(l:cmd, {'close_cb': 'a:1'})
+      call job_start(l:cmd, {'close_cb': a:1})
     endif
   else
     if has('unix')
