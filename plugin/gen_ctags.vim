@@ -18,13 +18,13 @@
 "       :ClearCtags
 " ============================================================================
 
-let s:tagdir = expand("$HOME/.cache/tags_dir")
-let s:ctags_db = "prj_tags"
-let s:ext = "ext.conf"
+let s:tagdir = expand('$HOME/.cache/tags_dir')
+let s:ctags_db = 'prj_tags'
+let s:ext = 'ext.conf'
 
 if !executable('ctags')
-  echomsg "ctags not found"
-  echomsg "gen_tags.vim need ctags to generate tags"
+  echomsg 'ctags not found'
+  echomsg 'gen_tags.vim need ctags to generate tags'
   finish
 endif
 
@@ -39,7 +39,7 @@ function! s:get_db_name(path)
 endfunction
 
 function! s:get_project_ctags_dir()
-  let l:dir = expand(s:tagdir . "/" . s:get_db_name(gen_tags#find_project_root()))
+  let l:dir = expand(s:tagdir . '/' . s:get_db_name(gen_tags#find_project_root()))
 
   let l:dir = gen_tags#fix_path_for_windows(l:dir)
 
@@ -47,14 +47,14 @@ function! s:get_project_ctags_dir()
 endfunction
 
 function! s:get_project_ctags_name()
-  let l:file = expand(s:get_project_ctags_dir() . "/" . s:ctags_db)
+  let l:file = expand(s:get_project_ctags_dir() . '/' . s:ctags_db)
   let l:file = gen_tags#fix_path_for_windows(l:file)
 
   return l:file
 endfunction
 
 function! s:get_extend_ctags_list()
-  let l:file = expand(s:get_project_ctags_dir() . "/" . s:ext)
+  let l:file = expand(s:get_project_ctags_dir() . '/' . s:ext)
   let l:file = gen_tags#fix_path_for_windows(l:file)
 
   if filereadable(l:file)
@@ -72,7 +72,7 @@ function! s:get_extend_ctags_name(item)
     let l:item = a:item
   endif
 
-  let l:file = expand(s:get_project_ctags_dir() . "/" . s:get_db_name(l:item))
+  let l:file = expand(s:get_project_ctags_dir() . '/' . s:get_db_name(l:item))
   let l:file = gen_tags#fix_path_for_windows(l:file)
 
   return l:file
@@ -90,7 +90,7 @@ function! s:make_ctags_dir(dir)
 endfunction
 
 function! s:add_ctags(file)
-  exec 'set tags' . "+=" . a:file
+  exec 'set tags' . '+=' . a:file
 endfunction
 
 "Only add ctags db as extension database
@@ -104,14 +104,14 @@ endfunction
 "Generate ctags tags in cwd db dir.
 "if the first parameter is null, will generate project ctags
 function! s:Ctags_db_gen(filename, dir)
-  echon "Generate " | echohl NonText | echon "project" | echohl None | echon " ctags database in "
+  echon 'Generate ' | echohl NonText | echon 'project' | echohl None | echon ' ctags database in '
 
   let l:dir = s:get_project_ctags_dir()
 
   call s:make_ctags_dir(l:dir)
 
-  if a:filename == ""
-    let l:file = l:dir . "/" . s:ctags_db
+  if a:filename ==# ''
+    let l:file = l:dir . '/' . s:ctags_db
     let l:cmd = 'ctags -f '. l:file . ' -R ' . g:ctags_opts .' ' . gen_tags#find_project_root()
   else
     let l:file = a:filename
@@ -126,7 +126,7 @@ function! s:Ctags_db_gen(filename, dir)
     call s:add_ctags(l:file)
   endif
 
-  echohl Function | echon "[Background]" | echohl None
+  echohl Function | echon '[Background]' | echohl None
 endfunction
 
 function! s:Add_DBs()
@@ -139,22 +139,22 @@ endfunction
 
 "Generate project and library ctags
 function! s:Gen_all()
-  echon "Generate "
-  echohl NonText | echon "project" | echohl None
-  echon " and "
-  echohl NonText | echon "library"
-  echohl None | echon " tags "
+  echon 'Generate '
+  echohl NonText | echon 'project' | echohl None
+  echon ' and '
+  echohl NonText | echon 'library'
+  echohl None | echon ' tags '
 
-  exec "silent! GenCtags"
-  exec "silent! GenExt"
+  exec 'silent! GenCtags'
+  exec 'silent! GenExt'
 
-  echohl Function | echon "[Done]" | echohl None
+  echohl Function | echon '[Done]' | echohl None
 endfunction
 
 function! s:Edit_ext()
   let l:dir = s:get_project_ctags_dir()
   call s:make_ctags_dir(l:dir)
-  let l:file = l:dir . "/" . s:ext
+  let l:file = l:dir . '/' . s:ext
   exec 'split' l:file
 endfunction
 
@@ -168,7 +168,7 @@ endfunction
 
 "Delete exist tags file
 function! s:Ctags_clear(bang)
-  if a:bang == ''
+  if a:bang ==# ''
     "Remove project ctags
     let l:file = s:get_project_ctags_name()
     if filereadable(l:file)
@@ -185,12 +185,12 @@ function! s:Ctags_clear(bang)
   else
     "Remove all files include tag folder
     let l:dir = s:get_project_ctags_dir()
-    call delete(l:dir, "rf")
+    call delete(l:dir, 'rf')
   endif
 endfunction
 
 "Command list
-command! -nargs=0 GenCtags call s:Ctags_db_gen("", "")
+command! -nargs=0 GenCtags call s:Ctags_db_gen('', '')
 command! -nargs=0 GenAll call s:Gen_all()
 command! -nargs=0 EditExt call s:Edit_ext()
 command! -nargs=0 GenExt call s:Ext_db_gen()
@@ -198,13 +198,13 @@ command! -nargs=0 -bang ClearCtags call s:Ctags_clear('<bang>')
 
 function! UpdateCtags()
   let l:dir = s:get_project_ctags_dir()
-  let l:file = l:dir . "/" . s:ctags_db
+  let l:file = l:dir . '/' . s:ctags_db
 
   if !filereadable(l:file)
     return
   endif
 
-  call s:Ctags_db_gen("", "")
+  call s:Ctags_db_gen('', '')
 endfunction
 augroup gen_ctags
     au!

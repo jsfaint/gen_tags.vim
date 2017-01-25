@@ -7,7 +7,7 @@
 "Find the root of the project
 "if the project managed by git, find the git root.
 "else return the current work directory.
-function! gen_tags#find_project_root()
+function! gen_tags#find_project_root() abort
   if exists('g:gen_tags#project_root')
     return g:gen_tags#project_root
   endif
@@ -43,7 +43,7 @@ function! gen_tags#find_project_root()
   return g:gen_tags#project_root
 endfunction
 
-function! gen_tags#system_async(cmd, ...)
+function! gen_tags#system_async(cmd, ...) abort
   let l:cmd = a:cmd
 
   if has('nvim')
@@ -73,7 +73,7 @@ function! gen_tags#system_async(cmd, ...)
 endfunction
 
 " Fix shellslash for windows
-function! gen_tags#fix_path_for_windows(path)
+function! gen_tags#fix_path_for_windows(path) abort
   if has('win32') || has('win64')
     let l:path = substitute(a:path, '\\', '/', 'g')
     return l:path
