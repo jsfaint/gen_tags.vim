@@ -37,7 +37,7 @@
 
 ## gen_ctags.vim
 
-### Commands
+### Commands For Ctags
 
   * `:GenCtags`
 
@@ -57,13 +57,13 @@
 
     e.g.: For libpcap under `e:\src\libpcap-1.3.0` add the following content to `ext.conf`
 
-    ```
+    ```bash
     e:/src/libpcap-1.3.0
     ```
 
   * `:ClearCtags`
 
-    ```
+    ```viml
     :ClearCtags      Remove tags files.
     :ClearCtags!     Remove tags files, ext.conf and the folder.
     ```
@@ -75,17 +75,18 @@
 
   * Linux/OS X
 
-    ```
+    ```bash
     ln -s /usr/include/ .
     ```
 
   * Windows
 
-    ```
+    ```bash
     mklink /J include C:\TDM-GCC-32\include
     ```
 
-### Commands
+### Commands For Gtags
+
   * `:GenGTAGS`
 
     Generate GTAGS
@@ -99,7 +100,7 @@
   `ctrl+]` is the default mapping support by Vim for definition
 
   The following mapping is set for GTAGS find function which use cscope interface (`if_cscope`).
-  ```
+  ```text
   Ctrl+\ c    Find functions calling this function
   Ctrl+\ d    Find functions called by this function
   Ctrl+\ e    Find this egrep pattern
