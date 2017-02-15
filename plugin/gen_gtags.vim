@@ -33,7 +33,7 @@ set cscopetag
 set cscopeprg=gtags-cscope
 
 "Hotkey for cscope
-if g:gtags_split ==# ''
+if empty(g:gtags_split)
   nmap <C-\>c :cs find c <C-R>=expand('<cword>')<CR><CR>
   nmap <C-\>d :cs find d <C-R>=expand('<cword>')<CR><CR>
   nmap <C-\>e :cs find e <C-R>=expand('<cword>')<CR><CR>

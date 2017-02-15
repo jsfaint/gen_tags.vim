@@ -110,7 +110,7 @@ function! s:Ctags_db_gen(filename, dir)
 
   call s:make_ctags_dir(l:dir)
 
-  if a:filename ==# ''
+  if empty(a:filename)
     let l:file = l:dir . '/' . s:ctags_db
     let l:cmd = 'ctags -f '. l:file . ' -R ' . g:ctags_opts .' ' . gen_tags#find_project_root()
   else
@@ -168,7 +168,7 @@ endfunction
 
 "Delete exist tags file
 function! s:Ctags_clear(bang)
-  if a:bang ==# ''
+  if empty(a:bang)
     "Remove project ctags
     let l:file = s:get_project_ctags_name()
     if filereadable(l:file)
