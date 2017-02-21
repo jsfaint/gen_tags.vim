@@ -26,12 +26,12 @@ if !executable('gtags') && !executable('gtags.exe')
 endif
 
 "Options
-if !exists('g:gtags_split')
-  let g:gtags_split = ''
+if !exists('g:gen_tags#gtags_split')
+  let g:gen_tags#gtags_split = ''
 endif
 
-if !exists('g:gtags_auto_gen')
-  let g:gtags_auto_gen = 0
+if !exists('g:gen_tags#gtags_auto_gen')
+  let g:gen_tags#gtags_auto_gen = 0
 endif
 
 
@@ -39,7 +39,7 @@ set cscopetag
 set cscopeprg=gtags-cscope
 
 "Hotkey for cscope
-if empty(g:gtags_split)
+if empty(g:gen_tags#gtags_split)
   nmap <C-\>c :cs find c <C-R>=expand('<cword>')<CR><CR>
   nmap <C-\>d :cs find d <C-R>=expand('<cword>')<CR><CR>
   nmap <C-\>e :cs find e <C-R>=expand('<cword>')<CR><CR>
@@ -48,7 +48,7 @@ if empty(g:gtags_split)
   nmap <C-\>i :cs find i <C-R>=expand('<cfile>')<CR><CR>
   nmap <C-\>s :cs find s <C-R>=expand('<cword>')<CR><CR>
   nmap <C-\>t :cs find t <C-R>=expand('<cword>')<CR><CR>
-elseif g:gtags_split ==# 'h'
+elseif g:gen_tags#gtags_split ==# 'h'
   nmap <C-\>c :scs find c <C-R>=expand('<cword>')<CR><CR>
   nmap <C-\>d :scs find d <C-R>=expand('<cword>')<CR><CR>
   nmap <C-\>e :scs find e <C-R>=expand('<cword>')<CR><CR>
@@ -57,7 +57,7 @@ elseif g:gtags_split ==# 'h'
   nmap <C-\>i :scs find i <C-R>=expand('<cfile>')<CR><CR>
   nmap <C-\>s :scs find s <C-R>=expand('<cword>')<CR><CR>
   nmap <C-\>t :scs find t <C-R>=expand('<cword>')<CR><CR>
-elseif g:gtags_split ==# 'v'
+elseif g:gen_tags#gtags_split ==# 'v'
   nmap <C-\>c :vert scs find c <C-R>=expand('<cword>')<CR><CR>
   nmap <C-\>d :vert scs find d <C-R>=expand('<cword>')<CR><CR>
   nmap <C-\>e :vert scs find e <C-R>=expand('<cword>')<CR><CR>
@@ -176,7 +176,7 @@ augroup gen_gtags
     au BufWritePost * call UpdateGtags()
     au BufWinEnter * call s:Add_DBs()
 
-    if g:gtags_auto_gen
+    if g:gen_tags#gtags_auto_gen
       au BufReadPost * call AutoGenGtags()
     endif
 augroup END

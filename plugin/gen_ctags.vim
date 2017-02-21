@@ -28,12 +28,12 @@ if !executable('ctags')
   finish
 endif
 
-if !exists('g:ctags_opts')
-  let g:ctags_opts = ''
+if !exists('g:gen_tags#ctags_opts')
+  let g:gen_tags#ctags_opts = ''
 endif
 
-if !exists('g:ctags_auto_gen')
-  let g:ctags_auto_gen = 0
+if !exists('g:gen_tags#ctags_auto_gen')
+  let g:gen_tags#ctags_auto_gen = 0
 endif
 
 "Get db name, remove / : with , beacause they are not valid filename
@@ -116,10 +116,10 @@ function! s:Ctags_db_gen(filename, dir)
 
   if empty(a:filename)
     let l:file = l:dir . '/' . s:ctags_db
-    let l:cmd = 'ctags -f '. l:file . ' -R ' . g:ctags_opts .' ' . gen_tags#find_project_root()
+    let l:cmd = 'ctags -f '. l:file . ' -R ' . g:gen_tags#ctags_opts .' ' . gen_tags#find_project_root()
   else
     let l:file = a:filename
-    let l:cmd = 'ctags -f '. l:file . ' -R ' . g:ctags_opts . ' ' . a:dir
+    let l:cmd = 'ctags -f '. l:file . ' -R ' . g:gen_tags#ctags_opts . ' ' . a:dir
   endif
 
   call gen_tags#system_async(l:cmd)
@@ -232,7 +232,7 @@ augroup gen_ctags
     au BufWritePost * call UpdateCtags()
     au BufWinEnter * call s:Add_DBs()
 
-    if g:ctags_auto_gen
+    if g:gen_tags#ctags_auto_gen
       au BufReadPost * call AutoGenGtags()
     endif
 augroup END

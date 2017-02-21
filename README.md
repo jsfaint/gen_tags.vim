@@ -113,24 +113,24 @@
 
 ## Options
 
-* `g:ctags_opts`
+* `g:gen_tags#ctags_opts`
 
 Set ctags options. The `-R` is set by default, so there is no need to add `-R` in `g:ctags_opts`.<br/>
 The default `g:ctags_opts` is '', you need to set it in your vimrc :smile:
 
-* `g:gtags_split`
+* `g:gen_tags#gtags_split`
 
 Set gtags find display behavior. The default `g:gtags_split` is ''.<br/>
 '' means don't split the display.<br/>
 'h' means horizontal splitting.<br/>
 'v' means vertical splitting.<br/>
 
-* `g:ctags_auto_gen`
+* `g:gen_tags#ctags_auto_gen`
 
 Auto generate ctags when this variable is 1 and current file belongs to a git repo.<br/>
 The default `g:ctags_auto_gen` is 0
 
-* `g:gtags_auto_gen`
+* `g:gen_tags#gtags_auto_gen`
 
 Auto generate gtags when this variable is 1 and current file belongs to a git repo.<br/>
 The default `g:gtags_auto_gen` is 0
