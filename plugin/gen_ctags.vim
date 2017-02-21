@@ -6,15 +6,11 @@
 "               3. support generate third-party project ctags
 " Required: This script requires ctags.
 " Usage:
-"   1. Generate All tags:
-"       :GenAll
-"   2. Generate ctags db:
+"   1. Generate ctags db:
 "       :GenCtags
-"   3. Edit Extend project list
+"   2. Edit Extend project list
 "       :EditExt
-"   4. Generate Extend ctags based on the content of ext.conf
-"       :GenExt
-"   5. Clear ctags file
+"   3. Clear ctags file
 "       :ClearCtags
 " ============================================================================
 
@@ -36,14 +32,8 @@ if !exists('g:gen_tags#ctags_auto_gen')
   let g:gen_tags#ctags_auto_gen = 0
 endif
 
-"Get db name, remove / : with , beacause they are not valid filename
-function! s:get_db_name(path)
-  let l:fold = substitute(a:path, '/\|\\\|\ \|:\|\.', '', 'g')
-  return l:fold
-endfunction
-
 function! s:get_project_ctags_dir()
-  let l:dir = expand(s:tagdir . '/' . s:get_db_name(gen_tags#find_project_root()))
+  let l:dir = s:tagdir . '/' . gen_tags#get_db_name(gen_tags#find_project_root())
 
   let l:dir = gen_tags#fix_path_for_windows(l:dir)
 
@@ -51,15 +41,13 @@ function! s:get_project_ctags_dir()
 endfunction
 
 function! s:get_project_ctags_name()
-  let l:file = expand(s:get_project_ctags_dir() . '/' . s:ctags_db)
-  let l:file = gen_tags#fix_path_for_windows(l:file)
+  let l:file = s:get_project_ctags_dir() . '/' . s:ctags_db
 
   return l:file
 endfunction
 
 function! s:get_extend_ctags_list()
-  let l:file = expand(s:get_project_ctags_dir() . '/' . s:ext)
-  let l:file = gen_tags#fix_path_for_windows(l:file)
+  let l:file = s:get_project_ctags_dir() . '/' . s:ext
 
   if filereadable(l:file)
     let l:list = readfile(l:file)
@@ -70,14 +58,7 @@ function! s:get_extend_ctags_list()
 endfunction
 
 function! s:get_extend_ctags_name(item)
-  if has('win32') || has('win64')
-    let l:item = substitute(a:item, '\\', '/', 'g')
-  else
-    let l:item = a:item
-  endif
-
-  let l:file = expand(s:get_project_ctags_dir() . '/' . s:get_db_name(l:item))
-  let l:file = gen_tags#fix_path_for_windows(l:file)
+  let l:file = s:get_project_ctags_dir() . '/' . gen_tags#get_db_name(a:item)
 
   return l:file
 endfunction
@@ -105,11 +86,9 @@ function! s:add_ext()
   endfor
 endfunction
 
-"Generate ctags tags in cwd db dir.
-"if the first parameter is null, will generate project ctags
+"Generate ctags tags and set tags option
 function! s:Ctags_db_gen(filename, dir)
   echon 'Generate ' | echohl NonText | echon 'project' | echohl None | echon ' ctags database in '
-
   let l:dir = s:get_project_ctags_dir()
 
   call s:make_ctags_dir(l:dir)
@@ -141,21 +120,12 @@ function! s:Add_DBs()
   endif
 endfunction
 
-"Generate project and library ctags
-function! s:Gen_all()
-  echon 'Generate '
-  echohl NonText | echon 'project' | echohl None
-  echon ' and '
-  echohl NonText | echon 'library'
-  echohl None | echon ' tags '
-
-  exec 'silent! GenCtags'
-  exec 'silent! GenExt'
-
-  echohl Function | echon '[Done]' | echohl None
-endfunction
-
+"Edit extend conf file
 function! s:Edit_ext()
+  augroup gen_ctags
+    autocmd BufWritePost ext.conf call s:Ext_db_gen()
+  augroup END
+
   let l:dir = s:get_project_ctags_dir()
   call s:make_ctags_dir(l:dir)
   let l:file = l:dir . '/' . s:ext
@@ -168,6 +138,10 @@ function! s:Ext_db_gen()
     let l:file = s:get_extend_ctags_name(l:item)
     call s:Ctags_db_gen(l:file, l:item)
   endfor
+
+  augroup gen_ctags
+    autocmd! BufWritePost ext.conf
+  augroup END
 endfunction
 
 "Delete exist tags file
@@ -195,14 +169,11 @@ endfunction
 
 "Command list
 command! -nargs=0 GenCtags call s:Ctags_db_gen('', '')
-command! -nargs=0 GenAll call s:Gen_all()
 command! -nargs=0 EditExt call s:Edit_ext()
-command! -nargs=0 GenExt call s:Ext_db_gen()
 command! -nargs=0 -bang ClearCtags call s:Ctags_clear('<bang>')
 
 function! UpdateCtags()
-  let l:dir = s:get_project_ctags_dir()
-  let l:file = l:dir . '/' . s:ctags_db
+  let l:file = s:get_project_ctags_dir() . '/' . s:ctags_db
 
   if !filereadable(l:file)
     return
@@ -218,8 +189,7 @@ function! AutoGenCtags() abort
   endif
 
   " If tags exist, return
-  let l:dir = s:get_project_ctags_dir()
-  let l:file = l:dir . '/' . s:ctags_db
+  let l:file = s:get_project_ctags_dir() . '/' . s:ctags_db
   if filereadable(l:file)
     return
   endif

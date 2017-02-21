@@ -79,7 +79,7 @@ function! gen_tags#system_async(cmd, ...) abort
   endif
 endfunction
 
-" Fix shellslash for windows
+"Fix shellslash for windows
 function! gen_tags#fix_path_for_windows(path) abort
   if has('win32') || has('win64')
     let l:path = substitute(a:path, '\\', '/', 'g')
@@ -87,4 +87,10 @@ function! gen_tags#fix_path_for_windows(path) abort
   else
     return a:path
   endif
+endfunction
+
+"Get db name, remove / : with , beacause they are not valid filename
+function! gen_tags#get_db_name(path) abort
+  let l:fold = substitute(a:path, '/\|\\\|\ \|:\|\.', '', 'g')
+  return l:fold
 endfunction
