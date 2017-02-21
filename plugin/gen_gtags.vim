@@ -25,9 +25,15 @@ if !executable('gtags') && !executable('gtags.exe')
   finish
 endif
 
+"Options
 if !exists('g:gtags_split')
   let g:gtags_split = ''
 endif
+
+if !exists('g:gtags_auto_gen')
+  let g:gtags_auto_gen = 0
+endif
+
 
 set cscopetag
 set cscopeprg=gtags-cscope
@@ -149,8 +155,28 @@ function! UpdateGtags()
   call gen_tags#system_async(l:cmd)
 endfunction
 
+function! AutoGenGtags()
+  " If not in git repo, return
+  if empty(gen_tags#git_root())
+    return
+  endif
+
+  " If tags exist, return
+  let l:path = gen_tags#find_project_root()
+  let b:file = l:path . '/' . s:file
+  if filereadable(b:file)
+    return
+  endif
+
+  call s:Gtags_db_gen()
+endfunction
+
 augroup gen_gtags
     au!
     au BufWritePost * call UpdateGtags()
     au BufWinEnter * call s:Add_DBs()
+
+    if g:gtags_auto_gen
+      au BufReadPost * call AutoGenGtags()
+    endif
 augroup END

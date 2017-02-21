@@ -111,7 +111,7 @@
   Ctrl+\ t    Find this text string
   ```
 
-## Variables
+## Options
 
 * `g:ctags_opts`
 
@@ -124,6 +124,16 @@ Set gtags find display behavior. The default `g:gtags_split` is ''.<br/>
 '' means don't split the display.<br/>
 'h' means horizontal splitting.<br/>
 'v' means vertical splitting.<br/>
+
+* `g:ctags_auto_gen`
+
+Auto generate ctags when this variable is 1 and current file belongs to a git repo.<br/>
+The default `g:ctags_auto_gen` is 0
+
+* `g:gtags_auto_gen`
+
+Auto generate gtags when this variable is 1 and current file belongs to a git repo.<br/>
+The default `g:gtags_auto_gen` is 0
 
 ----
 

@@ -32,6 +32,10 @@ if !exists('g:ctags_opts')
   let g:ctags_opts = ''
 endif
 
+if !exists('g:ctags_auto_gen')
+  let g:ctags_auto_gen = 0
+endif
+
 "Get db name, remove / : with , beacause they are not valid filename
 function! s:get_db_name(path)
   let l:fold = substitute(a:path, '/\|\\\|\ \|:\|\.', '', 'g')
@@ -206,8 +210,29 @@ function! UpdateCtags()
 
   call s:Ctags_db_gen('', '')
 endfunction
+
+function! AutoGenCtags() abort
+  " If not in git repo, return
+  if empty(gen_tags#git_root())
+    return
+  endif
+
+  " If tags exist, return
+  let l:dir = s:get_project_ctags_dir()
+  let l:file = l:dir . '/' . s:ctags_db
+  if filereadable(l:file)
+    return
+  endif
+
+  call s:Ctags_db_gen('', '')
+endfunction
+
 augroup gen_ctags
     au!
     au BufWritePost * call UpdateCtags()
     au BufWinEnter * call s:Add_DBs()
+
+    if g:ctags_auto_gen
+      au BufReadPost * call AutoGenGtags()
+    endif
 augroup END

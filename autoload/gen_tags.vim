@@ -4,14 +4,7 @@
 " Description: This file contains some command function for other file.
 " ============================================================================
 
-"Find the root of the project
-"if the project managed by git, find the git root.
-"else return the current work directory.
-function! gen_tags#find_project_root() abort
-  if exists('g:gen_tags#project_root')
-    return g:gen_tags#project_root
-  endif
-
+function! gen_tags#git_root() abort
   if executable('git')
     let l:git_cmd = 'git rev-parse --show-toplevel'
 
@@ -29,8 +22,22 @@ function! gen_tags#find_project_root() abort
   if l:is_git
     silent let l:sub = system(l:git_cmd)
     let l:sub = substitute(l:sub, '\r\|\n', '', 'g')
-    let g:gen_tags#project_root = l:sub
-  else
+    return l:sub
+  endif
+
+  return ''
+endfunction
+
+"Find the root of the project
+"if the project managed by git, find the git root.
+"else return the current work directory.
+function! gen_tags#find_project_root() abort
+  if exists('g:gen_tags#project_root')
+    return g:gen_tags#project_root
+  endif
+
+  let g:gen_tags#project_root = gen_tags#git_root()
+  if empty(g:gen_tags#project_root)
     if has('win32') || has('win64')
       let l:path=getcwd()
       let l:path=substitute(l:path, '\\', '/', 'g')
