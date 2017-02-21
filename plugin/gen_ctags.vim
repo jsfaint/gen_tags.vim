@@ -208,6 +208,6 @@ augroup gen_ctags
     au BufWinEnter * call s:Add_DBs()
 
     if g:gen_tags#ctags_auto_gen
-      au BufReadPost * call AutoGenGtags()
+      au BufReadPost * call AutoGenCtags()
     endif
 augroup END
