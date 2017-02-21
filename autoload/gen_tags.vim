@@ -4,6 +4,11 @@
 " Description: This file contains some command function for other file.
 " ============================================================================
 
+"GLobal variables
+if !exists('g:gen_tags#verbose')
+  let g:gen_tags#verbose = 0
+endif
+
 function! gen_tags#git_root() abort
   if executable('git')
     let l:git_cmd = 'git rev-parse --show-toplevel'

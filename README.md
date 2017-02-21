@@ -128,6 +128,11 @@ The default `g:ctags_auto_gen` is 0
 Auto generate gtags when this variable is 1 and current file belongs to a git repo.<br>
 The default `g:gtags_auto_gen` is 0
 
+* `g:gen_tags#verbose`
+
+Verbose mode to echo some message<br>
+The default `g:gen_tags#verbose` is 0
+
 ----
 
 Thanks for reading :)<br>

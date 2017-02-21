@@ -88,7 +88,10 @@ endfunction
 
 "Generate ctags tags and set tags option
 function! s:Ctags_db_gen(filename, dir)
-  echon 'Generate ' | echohl NonText | echon 'project' | echohl None | echon ' ctags database in '
+  if g:gen_tags#verbose
+    echon 'Generate ' | echohl NonText | echon 'project' | echohl None | echon ' ctags database in '
+  endif
+
   let l:dir = s:get_project_ctags_dir()
 
   call s:make_ctags_dir(l:dir)
@@ -109,7 +112,9 @@ function! s:Ctags_db_gen(filename, dir)
     call s:add_ctags(l:file)
   endif
 
-  echohl Function | echon '[Background]' | echohl None
+  if g:gen_tags#verbose
+    echohl Function | echon '[Background]' | echohl None
+  endif
 endfunction
 
 function! s:Add_DBs()
