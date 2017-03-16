@@ -177,7 +177,7 @@ command! -nargs=0 GenCtags call s:Ctags_db_gen('', '')
 command! -nargs=0 EditExt call s:Edit_ext()
 command! -nargs=0 -bang ClearCtags call s:Ctags_clear('<bang>')
 
-function! UpdateCtags()
+function! s:UpdateCtags()
   let l:file = s:get_project_ctags_dir() . '/' . s:ctags_db
 
   if !filereadable(l:file)
@@ -187,7 +187,7 @@ function! UpdateCtags()
   call s:Ctags_db_gen('', '')
 endfunction
 
-function! AutoGenCtags() abort
+function! s:AutoGenCtags() abort
   " If not in git repo, return
   if empty(gen_tags#git_root())
     return
@@ -204,10 +204,10 @@ endfunction
 
 augroup gen_ctags
     au!
-    au BufWritePost * call UpdateCtags()
+    au BufWritePost * call s:UpdateCtags()
     au BufWinEnter * call s:Add_DBs()
 
     if g:gen_tags#ctags_auto_gen
-      au BufReadPost * call AutoGenCtags()
+      au BufReadPost * call s:AutoGenCtags()
     endif
 augroup END

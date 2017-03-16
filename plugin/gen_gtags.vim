@@ -88,7 +88,7 @@ function! s:Gtags_db_gen()
 
   "If gtags file exist, run update procedure.
   if filereadable(b:file)
-    call UpdateGtags()
+    call s:UpdateGtags()
     return
   endif
 
@@ -144,7 +144,7 @@ endfunction
 command! -nargs=0 GenGTAGS call s:Gtags_db_gen()
 command! -nargs=0 ClearGTAGS call s:Gtags_clear()
 
-function! UpdateGtags()
+function! s:UpdateGtags()
   let l:path = gen_tags#find_project_root()
   let l:file = l:path . '/' . s:file
 
@@ -160,7 +160,7 @@ function! UpdateGtags()
   call gen_tags#system_async(l:cmd)
 endfunction
 
-function! AutoGenGtags()
+function! s:AutoGenGtags()
   " If not in git repo, return
   if empty(gen_tags#git_root())
     return
@@ -178,10 +178,10 @@ endfunction
 
 augroup gen_gtags
     au!
-    au BufWritePost * call UpdateGtags()
+    au BufWritePost * call s:UpdateGtags()
     au BufWinEnter * call s:Add_DBs()
 
     if g:gen_tags#gtags_auto_gen
-      au BufReadPost * call AutoGenGtags()
+      au BufReadPost * call s:AutoGenGtags()
     endif
 augroup END
