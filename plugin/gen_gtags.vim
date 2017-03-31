@@ -10,6 +10,12 @@
 "   2. Clear GTAGS
 "   :ClearGTAGS
 " ============================================================================
+
+if exists('g:loaded_gentags#gtags') && g:loaded_gentags#gtags == 1
+  finish
+else
+  let g:loaded_gentags#gtags = 1
+endif
 let s:file = 'GTAGS'
 
 "Check cscope support

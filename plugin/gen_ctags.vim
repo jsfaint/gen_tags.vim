@@ -14,6 +14,12 @@
 "       :ClearCtags
 " ============================================================================
 
+if exists('g:loaded_gentags#ctags') && g:loaded_gentags#ctags == 1
+  finish
+else
+  let g:loaded_gentags#ctags = 1
+endif
+
 let s:tagdir = expand('$HOME/.cache/tags_dir')
 let s:ctags_db = 'prj_tags'
 let s:ext = 'ext.conf'
