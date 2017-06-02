@@ -1,20 +1,25 @@
 # gen_tags.vim
 
-  This plugin aim to simple the usage of [ctags](http://ctags.sourceforge.net/) and [gtags](http://www.gnu.org/software/global/) for [Vim](https://github.com/vim/vim) and [NeoVim](https://github.com/neovim/neovim).<br>
+  This plugin aim to simple the usage of [ctags](http://ctags.sourceforge.net/) and [gtags](http://www.gnu.org/software/global/) for [Vim](https://github.com/vim/vim) and [NeoVim](https://github.com/neovim/neovim).</br>
   It is used for generate and maintain tags for you.
 
   This plugin support both [ctags](http://ctags.sourceforge.net/) and [gtags(aka GNU global)](http://www.gnu.org/software/global/).
 
-  gen_tags.vim will detect git root and use it as the project root path.
+  `gen_tags.vim` will detect git root and use it as the project root path.
 
   Generate/Update ctags and gtags will run in background.
+
+# Completion with gtags
+
+  This plugin also provide a gtags completion source for [nvim-completion-manager](https://github.com/roxma/nvim-completion-manager)</br>
+  It's optional, if you don't use ncm, just ignore it :smile:
 
 ## Difference between ctags and gtags
 
   GNU global(aka gtags) is more powerful than ctags, which support definition, reference, calling, called, include, string and etc, but ctags only support definition.
 
-  As we can use GNU global why did I still support ctags in this plugin?<br>
-  That's because GNU global only support 6 languages (C, C++, Yacc, Java, PHP4 and assembly) natively.<br>
+  As we can use GNU global why did I still support ctags in this plugin?</br>
+  That's because GNU global only support 6 languages (C, C++, Yacc, Java, PHP4 and assembly) natively.</br>
   ctags can support more languages(41 showed on the website).
 
   Actually global can support more languages with Pygments plugin parser, for more details please refer `PLUGIN_HOWTO.pygments` in global document.
@@ -23,12 +28,12 @@
 
 * Neobundle
 
-  Add `NeoBundle 'jsfaint/gen_tags.vim'` to your vimrc<br>
+  Add `NeoBundle 'jsfaint/gen_tags.vim'` to your vimrc</br>
   Then launch `vim` and run `:NeobundleCheck`
 
 * Vundle
 
-  Add `Plugin 'jsfaint/gen_tags.vim'` to your vimrc<br>
+  Add `Plugin 'jsfaint/gen_tags.vim'` to your vimrc</br>
   Then launch `vim` and run `:PluginInstall`
 
 * Traditional method
@@ -45,7 +50,7 @@
 
   * `:EditExt`
 
-    Edit an extend configuration file for this project, use for add third-party library ctags database<br>
+    Edit an extend configuration file for this project, use for add third-party library ctags database</br>
     The extend database will be generate automatically.
 
     e.g.: For libpcap under `e:\src\libpcap-1.3.0` add the following content to `ext.conf`
@@ -63,7 +68,7 @@
 
 ## gen_gtags.vim
 
-  GTAGS support the third-party library by set an environment variable `GTAGSLIBPATH`<br>
+  GTAGS support the third-party library by set an environment variable `GTAGSLIBPATH`</br>
   But you can take a more straightforward way to do the same thing, by create a symbol link of the library
 
   * Linux/OS X
@@ -116,34 +121,34 @@ Set to 1 if you want to disable gtags support
 
 * `g:gen_tags#ctags_opts`
 
-Set ctags options. The `-R` is set by default, so there is no need to add `-R` in `g:ctags_opts`.<br>
+Set ctags options. The `-R` is set by default, so there is no need to add `-R` in `g:ctags_opts`.</br>
 The default `g:ctags_opts` is '', you need to set it in your vimrc :smile:
 
 * `g:gen_tags#gtags_split`
 
-Set gtags find display behavior. The default `g:gtags_split` is ''.<br>
-'' means don't split the display.<br>
-'h' means horizontal splitting.<br>
-'v' means vertical splitting.<br>
+Set gtags find display behavior. The default `g:gtags_split` is ''.</br>
+'' means don't split the display.</br>
+'h' means horizontal splitting.</br>
+'v' means vertical splitting.</br>
 
 * `g:gen_tags#ctags_auto_gen`
 
-Auto generate ctags when this variable is 1 and current file belongs to a git repo.<br>
+Auto generate ctags when this variable is 1 and current file belongs to a git repo.</br>
 The default `g:ctags_auto_gen` is 0
 
 * `g:gen_tags#gtags_auto_gen`
 
-Auto generate gtags when this variable is 1 and current file belongs to a git repo.<br>
+Auto generate gtags when this variable is 1 and current file belongs to a git repo.</br>
 The default `g:gtags_auto_gen` is 0
 
 * `g:gen_tags#verbose`
 
-Verbose mode to echo some message<br>
+Verbose mode to echo some message</br>
 The default `g:gen_tags#verbose` is 0
 
 ----
 
-Thanks for reading :)<br>
+Thanks for reading :)</br>
 If you like this plugin, please star it on github!
 
 And one more thing, bug reports and pull-requests are greatly appreciated :)
