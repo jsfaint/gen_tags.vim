@@ -24,7 +24,11 @@ let s:tagdir = expand('$HOME/.cache/tags_dir')
 let s:ctags_db = 'prj_tags'
 let s:ext = 'ext.conf'
 
-if !executable('ctags')
+if !exists('g:gen_tags#ctags_bin')
+  let g:gen_tags#ctags_bin = 'ctags'
+endif
+
+if !executable(g:gen_tags#ctags_bin)
   echomsg 'ctags not found'
   echomsg 'gen_tags.vim need ctags to generate tags'
   finish
@@ -102,12 +106,14 @@ function! s:Ctags_db_gen(filename, dir)
 
   call s:make_ctags_dir(l:dir)
 
+  let l:ctags_bin = g:gen_tags#ctags_bin
+
   if empty(a:filename)
     let l:file = l:dir . '/' . s:ctags_db
-    let l:cmd = 'ctags -f '. l:file . ' -R ' . g:gen_tags#ctags_opts .' ' . gen_tags#find_project_root()
+    let l:cmd = l:ctags_bin . ' -f '. l:file . ' -R ' . g:gen_tags#ctags_opts .' ' . gen_tags#find_project_root()
   else
     let l:file = a:filename
-    let l:cmd = 'ctags -f '. l:file . ' -R ' . g:gen_tags#ctags_opts . ' ' . a:dir
+    let l:cmd = l:ctags_bin . ' -f '. l:file . ' -R ' . g:gen_tags#ctags_opts . ' ' . a:dir
   endif
 
   call gen_tags#system_async(l:cmd)
