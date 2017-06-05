@@ -2,9 +2,10 @@
 
 from cm import register_source, getLogger, Base
 import subprocess
+import platform
 
 register_source(name='gtags',
-                priority=8,
+                priority=6,
                 abbreviation='gtags',
                 word_pattern=r'\w+',
                 scoping=True,
@@ -64,10 +65,18 @@ class Source(Base):
 
         # invoke global
         command = ['global', '-q', '-c', base]
+        if platform.system().lower() == 'windows':
+            startupinfo = subprocess.STARTUPINFO()
+            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
+            startupinfo.wShowWindow = subprocess.SW_HIDE
+        else:
+            startupinfo = None
+
         proc = subprocess.Popen(command,
-                stdin=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stderr=subprocess.DEVNULL)
+                                stdin=subprocess.PIPE,
+                                stdout=subprocess.PIPE,
+                                stderr=subprocess.DEVNULL,
+                                startupinfo=startupinfo)
 
         output = proc.communicate(timeout=30)
 
