@@ -7,7 +7,8 @@ register_source(name='gtags',
                 priority=8,
                 abbreviation='gtags',
                 word_pattern=r'\w+',
-                cm_refresh_patterns=r'\w+')
+                scoping=True,
+                scopes=['c', 'cpp', 'php', 'java'])
 
 logger = getLogger(__name__)
 
