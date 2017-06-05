@@ -37,22 +37,22 @@ endfunction
 "if the project managed by git, find the git root.
 "else return the current work directory.
 function! gen_tags#find_project_root() abort
-  if exists('g:gen_tags#project_root')
-    return g:gen_tags#project_root
+  if exists('s:project_root')
+    return s:project_root
   endif
 
-  let g:gen_tags#project_root = gen_tags#git_root()
-  if empty(g:gen_tags#project_root)
+  let s:project_root = gen_tags#git_root()
+  if empty(s:project_root)
     if has('win32') || has('win64')
       let l:path=getcwd()
       let l:path=substitute(l:path, '\\', '/', 'g')
-      let g:gen_tags#project_root = l:path
+      let s:project_root = l:path
     else
-      let g:gen_tags#project_root = getcwd()
+      let s:project_root = getcwd()
     endif
   endif
 
-  return g:gen_tags#project_root
+  return s:project_root
 endfunction
 
 function! gen_tags#system_async(cmd, ...) abort
