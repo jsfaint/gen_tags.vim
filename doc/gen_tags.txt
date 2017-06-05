@@ -120,6 +120,11 @@ g:loaded_gentags#gtags                           *g:loaded_gentags#gtags*
 Set to 1 if you want to disable gtags support
 
 ------------------------------------------------------------------------------
+g:gen_tags#ctags_bin                            *g:gen_tags#ctags_bin*
+
+Set location of ctags. The default is 'ctags'
+
+------------------------------------------------------------------------------
 g:gen_tags#ctags_opts                            *g:gen_tags#ctags_opts*
 
 Set ctags options. The `-R` is set by default,
