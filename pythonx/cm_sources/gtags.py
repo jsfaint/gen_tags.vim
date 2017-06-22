@@ -17,8 +17,8 @@ class Source(Base):
 
     GTAGS_DB_NOT_FOUND_ERROR = 3
 
-    def __init__(self, vim):
-        super().__init__(vim)
+    def __init__(self, nvim):
+        super().__init__(nvim)
         self._checked = False
 
         try:
@@ -64,6 +64,9 @@ class Source(Base):
 
         # invoke global
         command = ['global', '-q', '-c', base]
+
+        if self.nvim.options['ignorecase']:
+            command.append('-i')
 
         proc = subprocess.Popen(command,
                                 stdin=subprocess.PIPE,
