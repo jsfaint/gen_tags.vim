@@ -2,7 +2,6 @@
 
 from cm import register_source, getLogger, Base
 import subprocess
-import platform
 
 register_source(name='gtags',
                 priority=6,
@@ -65,18 +64,11 @@ class Source(Base):
 
         # invoke global
         command = ['global', '-q', '-c', base]
-        if platform.system().lower() == 'windows':
-            startupinfo = subprocess.STARTUPINFO()
-            startupinfo.dwFlags |= subprocess.STARTF_USESHOWWINDOW
-            startupinfo.wShowWindow = subprocess.SW_HIDE
-        else:
-            startupinfo = None
 
         proc = subprocess.Popen(command,
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE,
-                                stderr=subprocess.DEVNULL,
-                                startupinfo=startupinfo)
+                                stderr=subprocess.DEVNULL)
 
         output = proc.communicate(timeout=30)
 
@@ -86,6 +78,7 @@ class Source(Base):
 
         if global_exitcode != 0:
             self.print_global_error(global_exitcode)
+            return []
 
         matches = output[0].decode('utf8').splitlines()
 
