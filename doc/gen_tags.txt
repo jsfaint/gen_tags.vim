@@ -14,15 +14,17 @@ CONTENTS                                                 *gen_tags-contents*
 
 ==============================================================================
 1. Introduction                                         *gen_ctags-introduction*
+Async plugin for Vim/NeoVim to ease the use of ctags/gtags
+It is used for generate and maintain tags for you with multiple platform support, tested on Windows/Linux/macOS.
 
-This plugin aim to simple the usage of ctags and  for Vim and NeoVim.
-It is used for generate and maintain tags for you.
-
-This plugin support both ctags and gtags(aka GNU global).
-
-gen_tags.vim will detect git root and use it as the project root path.
+`gen_tags.vim` will detect git root and use it as the project root path.
 
 Generate/Update ctags and gtags will run in background.
+
+------------------------------------------------------------------------------
+`gen_tags.vim` also provide a gtags completion source for
+nvim-completion-manager(AKA NCM), it's optional, if you don't use ncm, just
+ignore it :)
 
 ------------------------------------------------------------------------------
 GNU global(aka gtags) is more powerful than ctags, which support definition,
@@ -46,7 +48,7 @@ But you can take a more straightforward way to do the same thing,
 by create a symbol link of the library
 
 
-* Linux/OS X
+* Linux/macOS
 >
   ln -s /usr/include/ .
 <
