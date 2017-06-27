@@ -63,9 +63,7 @@ function! s:Gtags_db_gen() abort
   "Backup cwd
   let b:bak = s:Backup_cwd(l:path)
 
-  if g:gen_tags#verbose
-    echon 'Generate ' | echohl NonText | echon 'GTAGS' | echohl None | echon ' in ' |echohl Function | echon '[Background]' | echohl None
-  endif
+  call gen_tags#echo('Generate GTAGS in background')
   call gen_tags#system_async(l:cmd, function('s:gtags_db_gen_done'))
 endfunction
 
@@ -91,9 +89,7 @@ function! s:UpdateGtags() abort
     return
   endif
 
-  if g:gen_tags#verbose
-    echon 'Update ' | echohl NonText | echon 'GTAGS' | echohl None | echon ' in ' |echohl Function | echon '[Background]' | echohl None
-  endif
+  call gen_tags#echo('Update GTAGS in background')
 
   let l:cmd = 'global -u'
   call gen_tags#system_async(l:cmd)

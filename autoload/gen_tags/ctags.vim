@@ -70,9 +70,7 @@ endfunction
 
 "Generate ctags tags and set tags option
 function! s:Ctags_db_gen(filename, dir) abort
-  if g:gen_tags#verbose
-    echon 'Generate ' | echohl NonText | echon 'project' | echohl None | echon ' ctags database in '
-  endif
+  call gen_tags#echo('Generate project ctags database in backgroud')
 
   let l:dir = s:get_project_ctags_dir()
 
@@ -94,10 +92,6 @@ function! s:Ctags_db_gen(filename, dir) abort
   let l:ret = stridx(&tags, l:dir)
   if l:ret == -1
     call s:add_ctags(l:file)
-  endif
-
-  if g:gen_tags#verbose
-    echohl Function | echon '[Background]' | echohl None
   endif
 endfunction
 
