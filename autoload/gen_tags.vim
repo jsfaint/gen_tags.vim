@@ -55,8 +55,51 @@ function! gen_tags#find_project_root() abort
   return s:project_root
 endfunction
 
+"Check if job status
+function! s:check_job(cmd) abort
+  for l:item in s:job_list
+    if a:cmd ==# l:item['cmd']
+      let l:index = index(s:job_list, l:item)
+      let l:job = l:item
+    endif
+  endfor
+
+  "Non-exist in list, return none
+  if !exists('l:job')
+    return 'none'
+  endif
+
+  let l:job_id = l:job['id']
+
+  "Check job status
+  if has('nvim')
+    try
+      call jobpid(l:job_id)
+      return 'run'
+    catch
+      return 'exit'
+    endtry
+  elseif has('job')
+    if job_status(l:job_id) ==# 'dead'
+      call remove(s:job_list, l:index)
+      return 'exit'
+    else
+      return 'run'
+    endif
+  endif
+endfunction
+
 function! gen_tags#system_async(cmd, ...) abort
   let l:cmd = a:cmd
+
+  if !exists('s:job_list')
+    let s:job_list = []
+  endif
+
+  if s:check_job(l:cmd) ==# 'run'
+    call gen_tags#echo('The same job is still running')
+    return
+  end
 
   if a:0 != 0
     let s:cb = a:1
@@ -70,9 +113,9 @@ function! gen_tags#system_async(cmd, ...) abort
   endfunction
 
   if has('nvim')
-    call jobstart(l:cmd, {'on_exit': function('s:wrap')})
+    let l:job_id = jobstart(l:cmd, {'on_exit': function('s:wrap')})
   elseif has('job')
-    call job_start(l:cmd, {'close_cb': function('s:wrap')})
+    let l:job_id = job_start(l:cmd, {'close_cb': function('s:wrap')})
   else
     if has('unix')
       let l:cmd = l:cmd . ' &'
@@ -82,7 +125,12 @@ function! gen_tags#system_async(cmd, ...) abort
 
     call system(l:cmd)
     call s:wrap()
+
+    return
   endif
+
+  "Record job info
+  call add(s:job_list, {'id': l:job_id, 'cmd': l:cmd})
 endfunction
 
 "Fix shellslash for windows
@@ -99,4 +147,10 @@ endfunction
 function! gen_tags#get_db_name(path) abort
   let l:fold = substitute(a:path, '/\|\\\|\ \|:\|\.', '', 'g')
   return l:fold
+endfunction
+
+function! gen_tags#echo(str) abort
+  if g:gen_tags#verbose
+    echomsg a:str
+  endif
 endfunction
