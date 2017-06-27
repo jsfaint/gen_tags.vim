@@ -58,18 +58,21 @@ endfunction
 function! gen_tags#system_async(cmd, ...) abort
   let l:cmd = a:cmd
 
+  if a:0 != 0
+    let s:cb = a:1
+  endif
+
+  function! s:wrap(...) abort
+    if exists('s:cb')
+      call s:cb()
+      unlet s:cb
+    endif
+  endfunction
+
   if has('nvim')
-    if a:0 == 0
-      call jobstart(l:cmd)
-    else
-      call jobstart(l:cmd, {'on_exit': a:1})
-    endif
+    call jobstart(l:cmd, {'on_exit': function('s:wrap')})
   elseif has('job')
-    if a:0 == 0
-      call job_start(l:cmd)
-    else
-      call job_start(l:cmd, {'close_cb': a:1})
-    endif
+    call job_start(l:cmd, {'close_cb': function('s:wrap')})
   else
     if has('unix')
       let l:cmd = l:cmd . ' &'
@@ -78,9 +81,7 @@ function! gen_tags#system_async(cmd, ...) abort
     endif
 
     call system(l:cmd)
-    if a:0 != 0
-      call a:1()
-    endif
+    call s:wrap()
   endif
 endfunction
 
