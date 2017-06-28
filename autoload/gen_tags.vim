@@ -188,6 +188,10 @@ augroup gen_tags
 augroup end
 
 function! s:vim_on_exit() abort
+  if !exists('s:job_list')
+    return
+  endif
+
   for l:item in s:job_list
     let l:job_id = l:item['id']
     let l:status = s:job_status(l:job_id)
