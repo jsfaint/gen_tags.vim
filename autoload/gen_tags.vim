@@ -64,28 +64,18 @@ function! s:check_job(cmd) abort
     endif
   endfor
 
-  "Non-exist in list, return none
+  "Not exist in list, return none
   if !exists('l:job')
     return 'none'
   endif
 
   let l:job_id = l:job['id']
 
-  "Check job status
-  if has('nvim')
-    try
-      call jobpid(l:job_id)
-      return 'run'
-    catch
-      return 'exit'
-    endtry
-  elseif has('job')
-    if job_status(l:job_id) ==# 'dead'
-      call remove(s:job_list, l:index)
-      return 'exit'
-    else
-      return 'run'
-    endif
+  let l:status = s:job_status(l:job_id)
+
+  "Remove from list, if job exit
+  if s:job_status(l:job_id) ==# 'exit'
+    call remove(s:job_list, l:index)
   endif
 endfunction
 
@@ -101,32 +91,10 @@ function! gen_tags#system_async(cmd, ...) abort
     return
   end
 
-  if a:0 != 0
-    let s:cb = a:1
-  endif
-
-  function! s:wrap(...) abort
-    if exists('s:cb')
-      call s:cb()
-      unlet s:cb
-    endif
-  endfunction
-
-  if has('nvim')
-    let l:job_id = jobstart(l:cmd, {'on_exit': function('s:wrap')})
-  elseif has('job')
-    let l:job_id = job_start(l:cmd, {'close_cb': function('s:wrap')})
+  if a:0 == 0
+    let l:job_id = s:job_start(l:cmd)
   else
-    if has('unix')
-      let l:cmd = l:cmd . ' &'
-    else
-      let l:cmd = 'cmd /c start ' . l:cmd
-    endif
-
-    call system(l:cmd)
-    call s:wrap()
-
-    return
+    let l:job_id = s:job_start(l:cmd, a:1)
   endif
 
   "Record job info
@@ -153,4 +121,78 @@ function! gen_tags#echo(str) abort
   if g:gen_tags#verbose
     echomsg a:str
   endif
+endfunction
+
+function! s:job_start(cmd, ...) abort
+  if has('nvim')
+    if a:0 == 0
+      let l:job_id = jobstart(a:cmd)
+    else
+      let l:job_id = jobstart(a:cmd, {'on_exit': a:1})
+    endif
+  elseif has('job')
+    if a:0 == 0
+      let l:job_id = job_start(a:cmd)
+    else
+      let l:job_id = job_start(a:cmd, {'close_cb': a:1})
+    endif
+  else
+    if has('unix')
+      let l:cmd = a:cmd . ' &'
+    else
+      let l:cmd = 'cmd /c start ' . a:cmd
+    endif
+
+    call system(l:cmd)
+    if a:0 != 0
+      call a:1()
+    endif
+
+    let l:job_id = -1
+  endif
+
+  return l:job_id
+endfunction
+
+function! s:job_stop(job_id) abort
+  if has('nvim')
+    call jobstop(a:job_id)
+  elseif has('job')
+    call job_stop(a:job_id)
+  endif
+endfunction
+
+function! s:job_status(job_id) abort
+  let l:job_id = a:job_id
+
+  "Check job status
+  if has('nvim')
+    try
+      call jobpid(l:job_id)
+      return 'run'
+    catch
+      return 'exit'
+    endtry
+  elseif has('job')
+    if job_status(l:job_id) ==# 'dead'
+      return 'exit'
+    else
+      return 'run'
+    endif
+  endif
+endfunction
+
+augroup gen_tags
+  au!
+  au VimLeave * call s:vim_on_exit()
+augroup end
+
+function! s:vim_on_exit() abort
+  for l:item in s:job_list
+    let l:job_id = l:item['id']
+    let l:status = s:job_status(l:job_id)
+    if l:status ==# 'run'
+      call s:job_stop(l:job_id)
+    endif
+  endfor
 endfunction
