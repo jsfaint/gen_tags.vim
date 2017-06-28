@@ -1,5 +1,5 @@
 " ============================================================================
-" File: gen_ctags.vim
+" File: ctags.vim
 " Arthur: Jia Sui <jsfaint@gmail.com>
 " Description:  1. Generate ctags under the given folder.
 "               2. Add db when vim is open.
@@ -14,35 +14,7 @@
 "       :ClearCtags
 " ============================================================================
 
-if exists('g:loaded_gentags#ctags') && g:loaded_gentags#ctags == 1
-  finish
-else
-  let g:loaded_gentags#ctags = 1
-endif
-
-let s:tagdir = expand('$HOME/.cache/tags_dir')
-let s:ctags_db = 'prj_tags'
-let s:ext = 'ext.conf'
-
-if !exists('g:gen_tags#ctags_bin')
-  let g:gen_tags#ctags_bin = 'ctags'
-endif
-
-if !executable(g:gen_tags#ctags_bin)
-  echomsg 'ctags not found'
-  echomsg 'gen_tags.vim need ctags to generate tags'
-  finish
-endif
-
-if !exists('g:gen_tags#ctags_opts')
-  let g:gen_tags#ctags_opts = ''
-endif
-
-if !exists('g:gen_tags#ctags_auto_gen')
-  let g:gen_tags#ctags_auto_gen = 0
-endif
-
-function! s:get_project_ctags_dir()
+function! s:get_project_ctags_dir() abort
   let l:dir = s:tagdir . '/' . gen_tags#get_db_name(gen_tags#find_project_root())
 
   let l:dir = gen_tags#fix_path_for_windows(l:dir)
@@ -50,13 +22,13 @@ function! s:get_project_ctags_dir()
   return l:dir
 endfunction
 
-function! s:get_project_ctags_name()
+function! s:get_project_ctags_name() abort
   let l:file = s:get_project_ctags_dir() . '/' . s:ctags_db
 
   return l:file
 endfunction
 
-function! s:get_extend_ctags_list()
+function! s:get_extend_ctags_list() abort
   let l:file = s:get_project_ctags_dir() . '/' . s:ext
 
   if filereadable(l:file)
@@ -67,14 +39,14 @@ function! s:get_extend_ctags_list()
   return []
 endfunction
 
-function! s:get_extend_ctags_name(item)
+function! s:get_extend_ctags_name(item) abort
   let l:file = s:get_project_ctags_dir() . '/' . gen_tags#get_db_name(a:item)
 
   return l:file
 endfunction
 
 "Create ctags root dir and cwd db dir.
-function! s:make_ctags_dir(dir)
+function! s:make_ctags_dir(dir) abort
   if !isdirectory(s:tagdir)
     call mkdir(s:tagdir, 'p')
   endif
@@ -84,12 +56,12 @@ function! s:make_ctags_dir(dir)
   endif
 endfunction
 
-function! s:add_ctags(file)
+function! s:add_ctags(file) abort
   exec 'set tags' . '+=' . a:file
 endfunction
 
 "Only add ctags db as extension database
-function! s:add_ext()
+function! s:add_ext() abort
   for l:item in s:get_extend_ctags_list()
     let l:file = s:get_extend_ctags_name(l:item)
     call s:add_ctags(l:file)
@@ -97,10 +69,8 @@ function! s:add_ext()
 endfunction
 
 "Generate ctags tags and set tags option
-function! s:Ctags_db_gen(filename, dir)
-  if g:gen_tags#verbose
-    echon 'Generate ' | echohl NonText | echon 'project' | echohl None | echon ' ctags database in '
-  endif
+function! s:Ctags_db_gen(filename, dir) abort
+  call gen_tags#echo('Generate project ctags database in backgroud')
 
   let l:dir = s:get_project_ctags_dir()
 
@@ -123,13 +93,9 @@ function! s:Ctags_db_gen(filename, dir)
   if l:ret == -1
     call s:add_ctags(l:file)
   endif
-
-  if g:gen_tags#verbose
-    echohl Function | echon '[Background]' | echohl None
-  endif
 endfunction
 
-function! s:Add_DBs()
+function! s:Add_DBs() abort
   let l:file = s:get_project_ctags_name()
   if filereadable(l:file)
     call s:add_ctags(l:file)
@@ -138,7 +104,7 @@ function! s:Add_DBs()
 endfunction
 
 "Edit extend conf file
-function! s:Edit_ext()
+function! s:Edit_ext() abort
   augroup gen_ctags
     autocmd BufWritePost ext.conf call s:Ext_db_gen()
   augroup END
@@ -150,7 +116,7 @@ function! s:Edit_ext()
 endfunction
 
 "Geterate extend ctags
-function! s:Ext_db_gen()
+function! s:Ext_db_gen() abort
   for l:item in s:get_extend_ctags_list()
     let l:file = s:get_extend_ctags_name(l:item)
     call s:Ctags_db_gen(l:file, l:item)
@@ -162,7 +128,7 @@ function! s:Ext_db_gen()
 endfunction
 
 "Delete exist tags file
-function! s:Ctags_clear(bang)
+function! s:Ctags_clear(bang) abort
   if empty(a:bang)
     "Remove project ctags
     let l:file = s:get_project_ctags_name()
@@ -184,12 +150,7 @@ function! s:Ctags_clear(bang)
   endif
 endfunction
 
-"Command list
-command! -nargs=0 GenCtags call s:Ctags_db_gen('', '')
-command! -nargs=0 EditExt call s:Edit_ext()
-command! -nargs=0 -bang ClearCtags call s:Ctags_clear('<bang>')
-
-function! s:UpdateCtags()
+function! s:UpdateCtags() abort
   let l:file = s:get_project_ctags_dir() . '/' . s:ctags_db
 
   if !filereadable(l:file)
@@ -214,7 +175,29 @@ function! s:AutoGenCtags() abort
   call s:Ctags_db_gen('', '')
 endfunction
 
-augroup gen_ctags
+function! gen_tags#ctags#init() abort
+  if exists('g:loaded_gentags#ctags') && g:loaded_gentags#ctags == 1
+    return
+  endif
+
+  let s:tagdir = expand('$HOME/.cache/tags_dir')
+  let s:ctags_db = 'prj_tags'
+  let s:ext = 'ext.conf'
+
+  if !exists('g:gen_tags#ctags_opts')
+    let g:gen_tags#ctags_opts = ''
+  endif
+
+  if !exists('g:gen_tags#ctags_auto_gen')
+    let g:gen_tags#ctags_auto_gen = 0
+  endif
+
+  "Command list
+  command! -nargs=0 GenCtags call s:Ctags_db_gen('', '')
+  command! -nargs=0 EditExt call s:Edit_ext()
+  command! -nargs=0 -bang ClearCtags call s:Ctags_clear('<bang>')
+
+  augroup gen_ctags
     au!
     au BufWritePost * call s:UpdateCtags()
     au BufWinEnter * call s:Add_DBs()
@@ -222,4 +205,7 @@ augroup gen_ctags
     if g:gen_tags#ctags_auto_gen
       au BufReadPost * call s:AutoGenCtags()
     endif
-augroup END
+  augroup END
+
+  let g:loaded_gentags#ctags = 1
+endfunction

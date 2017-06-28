@@ -1,17 +1,15 @@
 # gen_tags.vim
 
-  This plugin aim to simple the usage of [ctags](http://ctags.sourceforge.net/) and [gtags](http://www.gnu.org/software/global/) for [Vim](https://github.com/vim/vim) and [NeoVim](https://github.com/neovim/neovim).</br>
-  It is used for generate and maintain tags for you.
-
-  This plugin support both [ctags](http://ctags.sourceforge.net/) and [gtags(aka GNU global)](http://www.gnu.org/software/global/).
+  Async plugin for [Vim](https://github.com/vim/vim)/[NeoVim](https://github.com/neovim/neovim) to ease the use of [ctags](http://ctags.sourceforge.net/)/[gtags](http://www.gnu.org/software/global/).</br>
+  It is used for generate and maintain tags for you with multiple platform support, tested on Windows/Linux/macOS.
 
   `gen_tags.vim` will detect git root and use it as the project root path.
 
   Generate/Update ctags and gtags will run in background.
 
-# Completion with gtags
+## Completion with gtags
 
-  This plugin also provide a gtags completion source for [nvim-completion-manager](https://github.com/roxma/nvim-completion-manager)</br>
+  `gen_tags.vim` also provide a gtags completion source for [nvim-completion-manager](https://github.com/roxma/nvim-completion-manager)</br>
   It's optional, if you don't use ncm, just ignore it :smile:
 
 ## Difference between ctags and gtags
@@ -26,21 +24,21 @@
 
 ## Installation
 
-* Neobundle
+* [Neobundle](https://github.com/shougo/neobundle.vim)
 
   Add `NeoBundle 'jsfaint/gen_tags.vim'` to your vimrc</br>
-  Then launch `vim` and run `:NeobundleCheck`
+  Then launch `vim`/`nvim` and run `:NeobundleCheck`
 
-* Vundle
+* [vim-plug](https://github.com/junegunn/vim-plug)
 
-  Add `Plugin 'jsfaint/gen_tags.vim'` to your vimrc</br>
-  Then launch `vim` and run `:PluginInstall`
+  Add `Plug 'jsfaint/gen_tags.vim'` to your vimrc</br>
+  Then launch `vim`/'nvim' and run `:PlugInstall`
 
 * Traditional method
 
   Unzip the zip file under your .vim(*unix) or vimfiles(windows) directory.
 
-## gen_ctags.vim
+## Ctags support
 
 ### Commands For Ctags
 
@@ -66,12 +64,12 @@
     :ClearCtags!     Remove tags files, ext.conf and the folder.
     ```
 
-## gen_gtags.vim
+## Gtags support
 
   GTAGS support the third-party library by set an environment variable `GTAGSLIBPATH`</br>
   But you can take a more straightforward way to do the same thing, by create a symbol link of the library
 
-  * Linux/OS X
+  * Linux/macOS
 
     ```bash
     ln -s /usr/include/ .
@@ -98,6 +96,7 @@
   `ctrl+]` is the default mapping support by Vim for definition
 
   The following mapping is set for GTAGS find function which use cscope interface (`if_cscope`).
+
   ```text
   Ctrl+\ c    Find functions calling this function
   Ctrl+\ d    Find functions called by this function
