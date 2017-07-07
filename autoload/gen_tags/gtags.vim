@@ -35,7 +35,7 @@ function! s:Gtags_db_gen() abort
     return
   endif
 
-  let l:cmd = 'gtags -c ' . l:path
+  let l:cmd = 'gtags ' . l:path
 
   function! s:Backup_cwd(path) abort
     let l:bak = getcwd()
