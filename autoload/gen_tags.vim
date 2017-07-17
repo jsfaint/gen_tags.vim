@@ -123,19 +123,33 @@ function! gen_tags#echo(str) abort
   endif
 endfunction
 
+function! s:job_stdout(job_id, data, ...) abort
+  call gen_tags#echo(a:data)
+endfunction
+
 function! s:job_start(cmd, ...) abort
   if has('nvim')
-    if a:0 == 0
-      let l:job_id = jobstart(a:cmd)
-    else
-      let l:job_id = jobstart(a:cmd, {'on_exit': a:1})
+    let l:job = {
+          \ 'on_stdout': function('s:job_stdout'),
+          \ 'on_stderr': function('s:job_stdout'),
+          \ }
+
+    if a:0 != 0
+      let l:job.on_exit = a:1
     endif
+
+    let l:job_id = jobstart(a:cmd, l:job)
   elseif has('job')
-    if a:0 == 0
-      let l:job_id = job_start(a:cmd)
-    else
-      let l:job_id = job_start(a:cmd, {'close_cb': a:1})
+    let l:job = {
+          \ 'out_cb': function('s:job_stdout'),
+          \ 'err_cb': function('s:job_stdout'),
+          \ }
+
+    if a:0 != 0
+      let l:job.exit_cb = a:1
     endif
+
+    let l:job_id = job_start(a:cmd, l:job)
   else
     if has('unix')
       let l:cmd = a:cmd . ' &'
