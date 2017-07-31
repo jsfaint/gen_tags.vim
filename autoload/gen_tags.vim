@@ -74,7 +74,7 @@ function! s:check_job(cmd) abort
   let l:status = s:job_status(l:job_id)
 
   "Remove from list, if job exit
-  if s:job_status(l:job_id) ==# 'exit'
+  if l:status ==# 'exit'
     call remove(s:job_list, l:index)
   endif
 endfunction
@@ -124,7 +124,13 @@ function! gen_tags#echo(str) abort
 endfunction
 
 function! s:job_stdout(job_id, data, ...) abort
-  call gen_tags#echo(a:data)
+  if type(a:data) == 1 "string
+    call gen_tags#echo(a:data)
+  elseif type(a:data) == 3 "list
+    for l:item in a:data
+      call gen_tags#echo(l:item)
+    endfor
+  endif
 endfunction
 
 function! s:job_start(cmd, ...) abort
