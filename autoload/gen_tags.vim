@@ -124,7 +124,13 @@ function! gen_tags#echo(str) abort
 endfunction
 
 function! s:job_stdout(job_id, data, ...) abort
-  call gen_tags#echo(a:data)
+  if type(a:data) == 1 "string
+    call gen_tags#echo(a:data)
+  elseif type(a:data) == 3 "list
+    for l:item in a:data
+      call gen_tags#echo(l:item)
+    endfor
+  endif
 endfunction
 
 function! s:job_start(cmd, ...) abort
