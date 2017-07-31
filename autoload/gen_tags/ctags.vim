@@ -15,11 +15,15 @@
 " ============================================================================
 
 function! s:get_project_ctags_dir() abort
-  let l:dir = s:tagdir . '/' . gen_tags#get_db_name(gen_tags#find_project_root())
+  let l:root = gen_tags#find_project_root()
 
-  let l:dir = gen_tags#fix_path_for_windows(l:dir)
+  if g:gen_tags#ctags_use_cache_dir == 0 && !empty(gen_tags#git_root())
+    let l:tagdir = l:root . '/.git/tags_dir'
+  else
+    let l:tagdir = expand('$HOME/.cache/tags_dir') . '/' . gen_tags#get_db_name(l:root)
+  endif
 
-  return l:dir
+  return gen_tags#fix_path_for_windows(l:tagdir)
 endfunction
 
 function! s:get_project_ctags_name() abort
@@ -47,10 +51,6 @@ endfunction
 
 "Create ctags root dir and cwd db dir.
 function! s:make_ctags_dir(dir) abort
-  if !isdirectory(s:tagdir)
-    call mkdir(s:tagdir, 'p')
-  endif
-
   if !isdirectory(a:dir)
     call mkdir(a:dir, 'p')
   endif
@@ -180,7 +180,6 @@ function! gen_tags#ctags#init() abort
     return
   endif
 
-  let s:tagdir = expand('$HOME/.cache/tags_dir')
   let s:ctags_db = 'prj_tags'
   let s:ext = 'ext.conf'
 
@@ -190,6 +189,10 @@ function! gen_tags#ctags#init() abort
 
   if !exists('g:gen_tags#ctags_auto_gen')
     let g:gen_tags#ctags_auto_gen = 0
+  endif
+
+  if !exists('g:gen_tags#ctags_use_cache_dir')
+    let g:gen_tags#ctags_use_cache_dir = 1
   endif
 
   "Command list

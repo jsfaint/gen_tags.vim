@@ -28,8 +28,8 @@ ignore it :)
 
 ------------------------------------------------------------------------------
 GNU global(aka gtags) is more powerful than ctags, which support definition,
-reference, calling, called, include, string and etc,
-but ctags only support definition.
+reference, calling, called, include, string and etc.
+But ctags only support definition.
 
 As we can use GNU global why did I still support ctags in this plugin?
 That's because GNU global only support 6 languages  natively.
@@ -130,8 +130,23 @@ Set location of ctags. The default is 'ctags'
 g:gen_tags#ctags_opts                            *g:gen_tags#ctags_opts*
 
 Set ctags options. The `-R` is set by default,
-so there is no need to add `-R` in `g:ctags_opts`.
-The default `g:ctags_opts` is '', you need to set it in your vimrc
+so there is no need to add `-R` in `g:gen_tags#ctags_opts`.
+The default `g:gen_tags#ctags_opts` is '', you need to set it in your vimrc
+
+------------------------------------------------------------------------------
+g:gen_tags#ctags_use_cache_dir             *g:gen_tags#ctags_use_cache_dir*
+
+**This option only works for git-repo.**
+Set the path of ctags tags. If this variable is set to 1,
+`gen_tags.vim` will use project direcotry to store ctags tags.
+The default `g:gen_tags#ctags_use_cache_dir` is 1, you need to set it in  your vimrc.
+
+0:
+  git repo: `<project folder>/.git/tags_dir`
+  non-git: `$HOME/.cache/tags_dir/<project name>`
+
+1:
+  `$HOME/.cache/tags_dir/<project name>`
 
 ------------------------------------------------------------------------------
 g:gen_tags#gtags_split                           *g:gen_tags#gtags_split*
@@ -147,14 +162,14 @@ g:gen_tags#ctags_auto_gen                       *g:gen_tags#ctags_auto_gen*
 
 Auto generate ctags when this variable is 1 and current file belongs to
 a git repo
-The default `g:ctags_auto_gen` is 0
+The default `g:gen_tags#ctags_auto_gen` is 0
 
 ------------------------------------------------------------------------------
 g:gen_tags#gtags_auto_gen                       *g:gen_tags#gtags_auto_gen*
 
 Auto generate gtags when this variable is 1 and current file belongs to
 a git repo.
-The default `g:gtags_auto_gen` is 0
+The default `g:gen_tags#gtags_auto_gen` is 0
 
 ------------------------------------------------------------------------------
 g:gen_tags#verbose                              *g:gen_tags#verbose*

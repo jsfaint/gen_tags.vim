@@ -124,8 +124,22 @@ Set location of ctags. The default is 'ctags'
 
 * `g:gen_tags#ctags_opts`
 
-Set ctags options. The `-R` is set by default, so there is no need to add `-R` in `g:ctags_opts`.</br>
-The default `g:ctags_opts` is '', you need to set it in your vimrc :smile:
+Set ctags options. The `-R` is set by default, so there is no need to add `-R` in `g:gen_tags#ctags_opts`.</br>
+The default `g:gen_tags#ctags_opts` is '', you need to set it in your vimrc :smile:
+
+* `g:gen_tags#ctags_use_cache_dir`
+
+**This option only works for git-repo.**
+Set the path of ctags tags. If this variable is set to 1, `gen_tags.vim` will use cache direcotry to store ctags tags.</br>
+The default `g:gen_tags#ctags_use_cache_dir` is 1, you need to set it in  your vimrc.
+
+0:
+  git repo: `<project folder>/.git/tags_dir`
+
+  non-git: `$HOME/.cache/tags_dir/<project name>`
+
+1:
+  `$HOME/.cache/tags_dir/<project name>`
 
 * `g:gen_tags#gtags_split`
 
@@ -137,12 +151,12 @@ Set gtags find display behavior. The default `g:gtags_split` is ''.</br>
 * `g:gen_tags#ctags_auto_gen`
 
 Auto generate ctags when this variable is 1 and current file belongs to a git repo.</br>
-The default `g:ctags_auto_gen` is 0
+The default `g:gen_tags#ctags_auto_gen` is 0
 
 * `g:gen_tags#gtags_auto_gen`
 
 Auto generate gtags when this variable is 1 and current file belongs to a git repo.</br>
-The default `g:gtags_auto_gen` is 0
+The default `g:gen_tags#gtags_auto_gen` is 0
 
 * `g:gen_tags#verbose`
 
