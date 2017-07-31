@@ -74,7 +74,7 @@ function! s:check_job(cmd) abort
   let l:status = s:job_status(l:job_id)
 
   "Remove from list, if job exit
-  if s:job_status(l:job_id) ==# 'exit'
+  if l:status ==# 'exit'
     call remove(s:job_list, l:index)
   endif
 endfunction
