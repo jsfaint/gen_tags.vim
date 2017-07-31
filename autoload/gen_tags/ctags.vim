@@ -200,7 +200,7 @@ function! gen_tags#ctags#init() abort
 
   if !exists('g:gen_tags#ctags_use_cache_dir')
     let g:gen_tags#ctags_use_cache_dir = 1
-  else
+  endif
 
   "Command list
   command! -nargs=0 GenCtags call s:Ctags_db_gen('', '')
