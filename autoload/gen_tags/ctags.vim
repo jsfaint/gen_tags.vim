@@ -22,9 +22,9 @@ function! s:get_project_ctags_dir() abort
     let l:dir = l:tagdir . '/' . gen_tags#get_db_name(l:root)
   else
     if empty(gen_tags#git_root())
-      let l:tagdir = l:root . '/.tag_dir'
+      let l:tagdir = l:root . '/.tags_dir'
     else
-      let l:tagdir = l:root . '/.git/tag_dir'
+      let l:tagdir = l:root . '/.git/tags_dir'
     endif
 
     let l:dir = l:tagdir
