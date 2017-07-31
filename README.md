@@ -129,12 +129,14 @@ The default `g:gen_tags#ctags_opts` is '', you need to set it in your vimrc :smi
 
 * `g:gen_tags#ctags_use_cache_dir`
 
+**This option only works for git-repo.**
 Set the path of ctags tags. If this variable is set to 1, `gen_tags.vim` will use cache direcotry to store ctags tags.</br>
 The default `g:gen_tags#ctags_use_cache_dir` is 1, you need to set it in  your vimrc.
 
 0:
   git repo: `<project folder>/.git/tags_dir`
-  non-git: `<project folder>/.tag_dir`
+
+  non-git: `$HOME/.cache/tags_dir/<project name>`
 
 1:
   `$HOME/.cache/tags_dir/<project name>`

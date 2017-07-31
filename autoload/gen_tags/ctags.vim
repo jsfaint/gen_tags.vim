@@ -17,20 +17,13 @@
 function! s:get_project_ctags_dir() abort
   let l:root = gen_tags#find_project_root()
 
-  if g:gen_tags#ctags_use_cache_dir == 1
-    let l:tagdir = expand('$HOME/.cache/tags_dir')
-    let l:dir = l:tagdir . '/' . gen_tags#get_db_name(l:root)
+  if g:gen_tags#ctags_use_cache_dir == 0 && !empty(gen_tags#git_root())
+    let l:tagdir = l:root . '/.git/tags_dir'
   else
-    if empty(gen_tags#git_root())
-      let l:tagdir = l:root . '/.tags_dir'
-    else
-      let l:tagdir = l:root . '/.git/tags_dir'
-    endif
-
-    let l:dir = l:tagdir
+    let l:tagdir = expand('$HOME/.cache/tags_dir') . '/' . gen_tags#get_db_name(l:root)
   endif
 
-  return gen_tags#fix_path_for_windows(l:dir)
+  return gen_tags#fix_path_for_windows(l:tagdir)
 endfunction
 
 function! s:get_project_ctags_name() abort
