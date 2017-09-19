@@ -151,13 +151,20 @@ function! s:Ctags_clear(bang) abort
 endfunction
 
 function! s:UpdateCtags() abort
-  let l:file = s:get_project_ctags_dir() . '/' . s:ctags_db
+  let l:tagfile = s:get_project_ctags_dir() . '/' . s:ctags_db
 
-  if !filereadable(l:file)
+  if !filereadable(l:tagfile)
     return
   endif
 
-  call s:Ctags_db_gen('', '')
+  let l:file = expand('<afile>')
+
+  "Prune tags content for saved file
+  if g:gen_tags#ctags_prune
+    call s:ctags_prune(l:tagfile, l:file)
+  endif
+
+  call s:ctags_update(l:file)
 endfunction
 
 function! s:AutoGenCtags() abort
@@ -195,6 +202,11 @@ function! gen_tags#ctags#init() abort
     let g:gen_tags#ctags_use_cache_dir = 1
   endif
 
+  "Prune tags file before incremental update
+  if !exists('g:gen_tags#ctags_prune')
+    let g:gen_tags#ctags_prune = 0
+  endif
+
   "Command list
   command! -nargs=0 GenCtags call s:Ctags_db_gen('', '')
   command! -nargs=0 EditExt call s:Edit_ext()
@@ -211,4 +223,58 @@ function! gen_tags#ctags#init() abort
   augroup END
 
   let g:loaded_gentags#ctags = 1
+endfunction
+
+"Prune tagfile
+function! s:ctags_prune(tagfile, file) abort
+  if !filereadable(a:tagfile)
+    return
+  endif
+
+  "Disable undofile
+  if has('persistent-undo')
+    let l:undostatus = &undofile
+    set noundofile
+  endif
+
+  "Dsiable some options
+  let l:event = &eventignore
+  let l:fold = &foldmethod
+  let l:swapfile = &swapfile
+
+  set eventignore=FileType
+  set nofoldenable
+  set noswapfile
+
+  "Open tagfile
+  exec 'silent edit ' . a:tagfile
+
+  "Delete specified lines
+  if has('win32')
+    exec '%g/' . escape(a:file, ' \/') . '/d'
+  else
+    exec '%g/' . escape(a:file, ' /') . '/d'
+  endif
+
+  exec 'silent write'
+  exec 'silent bd'
+
+  "Restore options
+  let &eventignore = l:event
+  let &foldmethod = l:fold
+  let &swapfile = l:swapfile
+
+  "Restore undofile setting
+  if has('persistent-undo')
+    let &undofile = l:undostatus
+  endif
+endfunction
+
+function! s:ctags_update(file) abort
+  let l:dir = s:get_project_ctags_dir()
+  let l:file = l:dir . '/' . s:ctags_db
+  let l:cmd = g:gen_tags#ctags_bin . ' -f '. l:file . ' ' . g:gen_tags#ctags_opts .
+        \ ' -a ' .  gen_tags#find_project_root() . '/' . a:file
+
+  call gen_tags#system_async(l:cmd)
 endfunction
