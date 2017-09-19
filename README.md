@@ -32,7 +32,7 @@
 * [vim-plug](https://github.com/junegunn/vim-plug)
 
   Add `Plug 'jsfaint/gen_tags.vim'` to your vimrc</br>
-  Then launch `vim`/'nvim' and run `:PlugInstall`
+  Then launch `vim/nvim` and run `:PlugInstall`
 
 * Traditional method
 
