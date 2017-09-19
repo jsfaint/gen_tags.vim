@@ -29,6 +29,11 @@ function! s:Gtags_db_gen() abort
   let l:path = gen_tags#find_project_root()
   let b:file = l:path . '/' . s:file
 
+  "Check if current path in the blacklist
+  if gen_tags#isblacklist(l:path)
+    return
+  endif
+
   "If gtags file exist, run update procedure.
   if filereadable(b:file)
     call s:UpdateGtags()

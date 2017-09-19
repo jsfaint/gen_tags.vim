@@ -23,7 +23,7 @@ function! s:get_project_ctags_dir() abort
     let l:tagdir = expand('$HOME/.cache/tags_dir') . '/' . gen_tags#get_db_name(l:root)
   endif
 
-  return gen_tags#fix_path_for_windows(l:tagdir)
+  return gen_tags#fix_path(l:tagdir)
 endfunction
 
 function! s:get_project_ctags_name() abort
@@ -70,9 +70,15 @@ endfunction
 
 "Generate ctags tags and set tags option
 function! s:Ctags_db_gen(filename, dir) abort
-  call gen_tags#echo('Generate project ctags database in backgroud')
+  "Check if current path in the blacklist
+  if gen_tags#isblacklist(gen_tags#find_project_root())
+    return
+  endif
 
   let l:dir = s:get_project_ctags_dir()
+
+
+  call gen_tags#echo('Generate project ctags database in backgroud')
 
   call s:make_ctags_dir(l:dir)
 

@@ -172,6 +172,16 @@ a git repo.
 The default `g:gen_tags#gtags_auto_gen` is 0
 
 ------------------------------------------------------------------------------
+g:gen_tags#blacklist                            *g:gen_tags#blacklist*
+
+A list to set the blacklist, if the path in  blacklist is equal `gen_tags#find_project_root()`, the generation of ctags/gtags will be skipped.
+The default `g:gen_tags#blacklist` is []
+
+e.g.: You can set it in your vimrc as below, it will blacklist `$HOME` dir
+
+`let g:gen_tags#blacklist = ['$HOME']`
+
+------------------------------------------------------------------------------
 g:gen_tags#verbose                              *g:gen_tags#verbose*
 
 Verbose mode to echo some message.
