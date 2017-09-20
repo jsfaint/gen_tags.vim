@@ -163,6 +163,11 @@ The default `g:gen_tags#gtags_auto_gen` is 0
 Verbose mode to echo some message</br>
 The default `g:gen_tags#verbose` is 0
 
+* `g:gen_tags#ctags_prune`
+
+Prune tags from tagfile before incremental update
+The default `g:gen_tags#ctags_prune` is 0
+
 ----
 
 Thanks for reading :)</br>
