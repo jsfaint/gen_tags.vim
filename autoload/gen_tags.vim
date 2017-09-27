@@ -9,6 +9,11 @@ if !exists('g:gen_tags#verbose')
   let g:gen_tags#verbose = 0
 endif
 
+"Initial blacklist
+if !exists('g:gen_tags#blacklist')
+  let g:gen_tags#blacklist = []
+endif
+
 function! gen_tags#git_root() abort
   if executable('git')
     let l:git_cmd = 'git rev-parse --show-toplevel'
@@ -43,7 +48,7 @@ function! gen_tags#find_project_root() abort
 
   let s:project_root = gen_tags#git_root()
   if empty(s:project_root)
-    if has('win32') || has('win64')
+    if has('win32')
       let l:path=getcwd()
       let l:path=substitute(l:path, '\\', '/', 'g')
       let s:project_root = l:path
@@ -102,13 +107,13 @@ function! gen_tags#system_async(cmd, ...) abort
 endfunction
 
 "Fix shellslash for windows
-function! gen_tags#fix_path_for_windows(path) abort
-  if has('win32') || has('win64')
-    let l:path = substitute(a:path, '\\', '/', 'g')
-    return l:path
-  else
-    return a:path
+function! gen_tags#fix_path(path) abort
+  let l:path = expand(a:path)
+  if has('win32')
+    let l:path = substitute(l:path, '\\', '/', 'g')
   endif
+
+  return l:path
 endfunction
 
 "Get db name, remove / : with , beacause they are not valid filename
@@ -219,4 +224,23 @@ function! s:vim_on_exit() abort
       call s:job_stop(l:job_id)
     endif
   endfor
+endfunction
+
+"Check if current path is in blacklist
+function! gen_tags#isblacklist(path) abort
+  if !exists('g:gen_tags#blacklist') || g:gen_tags#blacklist == []
+    call gen_tags#echo('blacklist not set or blacklist is null')
+    return 0
+  endif
+
+  for l:dir in g:gen_tags#blacklist
+    let l:dir = fnamemodify(gen_tags#fix_path(l:dir), ':p:h')
+    if a:path ==# l:dir
+      call gen_tags#echo('Found path ' . a:path . ' in the blacklist')
+      return 1
+    endif
+  endfor
+
+  call gen_tags#echo('Did NOT found path ' . a:path . ' in the blacklist')
+  return 0
 endfunction
