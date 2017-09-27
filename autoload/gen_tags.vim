@@ -9,6 +9,10 @@ if !exists('g:gen_tags#verbose')
   let g:gen_tags#verbose = 0
 endif
 
+if !exists('g:gen_tags#blacklist')
+  let g:gen_tags#blacklist = []
+endif
+
 function! gen_tags#git_root() abort
   if executable('git')
     let l:git_cmd = 'git rev-parse --show-toplevel'
@@ -51,6 +55,16 @@ function! gen_tags#find_project_root() abort
       let s:project_root = getcwd()
     endif
   endif
+
+  let s:project_root = fnamemodify(s:project_root, ':p')
+
+  for l:blacklisted_root in g:gen_tags#blacklist
+    let l:normalized_root = fnamemodify(l:blacklisted_root, ':p')
+    if s:project ==# l:normalized_root
+      let s:project_root = ''
+      break
+    endif
+  endfor
 
   return s:project_root
 endfunction
