@@ -105,10 +105,10 @@ function! s:AutoGenGtags() abort
   let l:path = gen_tags#find_project_root()
   let b:file = l:path . '/' . s:file
   if filereadable(b:file)
-    return
+    call s:UpdateGtags()
+  else
+    call s:Gtags_db_gen()
   endif
-
-  call s:Gtags_db_gen()
 endfunction
 
 function! gen_tags#gtags#init() abort
