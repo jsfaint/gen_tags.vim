@@ -11,21 +11,21 @@
 "   :ClearGTAGS
 " ============================================================================
 
-function! s:add_gtags(file) abort
+function! s:gtags_add(file) abort
   if filereadable(a:file)
     let l:cmd = 'silent! cs add ' . a:file
     exec l:cmd
   endif
 endfunction
 
-function! s:Add_DBs() abort
+function! s:gtags_auto_load() abort
   let l:path = gen_tags#find_project_root()
   let l:file = l:path . '/' . s:file
-  call s:add_gtags(l:file)
+  call s:gtags_add(l:file)
 endfunction
 
 "Generate GTAGS
-function! s:Gtags_db_gen() abort
+function! s:gtags_db_gen() abort
   let l:path = gen_tags#find_project_root()
   let b:file = l:path . '/' . s:file
 
@@ -36,13 +36,13 @@ function! s:Gtags_db_gen() abort
 
   "If gtags file exist, run update procedure.
   if filereadable(b:file)
-    call s:UpdateGtags()
+    call s:gtags_update()
     return
   endif
 
   let l:cmd = 'gtags ' . l:path
 
-  function! s:Backup_cwd(path) abort
+  function! s:gtags_backup_cwd(path) abort
     let l:bak = getcwd()
     let $GTAGSPATH = a:path
     lcd $GTAGSPATH
@@ -50,7 +50,7 @@ function! s:Gtags_db_gen() abort
     return l:bak
   endfunction
 
-  function! s:Restore_cwd(bak) abort
+  function! s:gtags_restore_cwd(bak) abort
     "Restore cwd
     let $GTAGSPATH = a:bak
     lcd $GTAGSPATH
@@ -58,21 +58,21 @@ function! s:Gtags_db_gen() abort
   endfunction
 
   function! s:gtags_db_gen_done(...) abort
-    call s:Restore_cwd(b:bak)
+    call s:gtags_restore_cwd(b:bak)
 
-    call s:add_gtags(b:file)
+    call s:gtags_add(b:file)
     unlet b:file
     unlet b:bak
   endfunction
 
   "Backup cwd
-  let b:bak = s:Backup_cwd(l:path)
+  let b:bak = s:gtags_backup_cwd(l:path)
 
   call gen_tags#echo('Generate GTAGS in background')
   call gen_tags#system_async(l:cmd, function('s:gtags_db_gen_done'))
 endfunction
 
-function! s:Gtags_clear() abort
+function! s:gtags_clear() abort
   let l:path = gen_tags#find_project_root()
   let l:list = ['GTAGS', 'GPATH', 'GRTAGS']
 
@@ -86,7 +86,7 @@ function! s:Gtags_clear() abort
   endfor
 endfunction
 
-function! s:UpdateGtags() abort
+function! s:gtags_update() abort
   let l:path = gen_tags#find_project_root()
   let l:file = l:path . '/' . s:file
 
@@ -100,9 +100,9 @@ function! s:UpdateGtags() abort
   call gen_tags#system_async(l:cmd)
 endfunction
 
-function! s:AutoGenGtags() abort
-  " If not in git repo, return
-  if empty(gen_tags#git_root())
+function! s:gtags_auto_gen() abort
+  " If not in scm, return
+  if empty(gen_tags#get_scm_type())
     return
   endif
 
@@ -110,9 +110,9 @@ function! s:AutoGenGtags() abort
   let l:path = gen_tags#find_project_root()
   let b:file = l:path . '/' . s:file
   if filereadable(b:file)
-    call s:UpdateGtags()
+    call s:gtags_update()
   else
-    call s:Gtags_db_gen()
+    call s:gtags_db_gen()
   endif
 endfunction
 
@@ -166,16 +166,16 @@ function! gen_tags#gtags#init() abort
   endif
 
   "Command list
-  command! -nargs=0 GenGTAGS call s:Gtags_db_gen()
-  command! -nargs=0 ClearGTAGS call s:Gtags_clear()
+  command! -nargs=0 GenGTAGS call s:gtags_db_gen()
+  command! -nargs=0 ClearGTAGS call s:gtags_clear()
 
   augroup gen_gtags
     au!
-    au BufWritePost * call s:UpdateGtags()
-    au BufWinEnter * call s:Add_DBs()
+    au BufWritePost * call s:gtags_update()
+    au BufWinEnter * call s:gtags_auto_load()
 
     if g:gen_tags#gtags_auto_gen
-      au BufReadPost * call s:AutoGenGtags()
+      au BufReadPost * call s:gtags_auto_gen()
     endif
   augroup END
 

@@ -3,7 +3,7 @@
   Async plugin for [Vim](https://github.com/vim/vim)/[NeoVim](https://github.com/neovim/neovim) to ease the use of [ctags](http://ctags.sourceforge.net/)/[gtags](http://www.gnu.org/software/global/).</br>
   It is used for generate and maintain tags for you with multiple platform support, tested on Windows/Linux/macOS.
 
-  `gen_tags.vim` will detect git root and use it as the project root path.
+  `gen_tags.vim` will detect SCM(git, hg, svn) root and use it as the project root path.
 
   Generate/Update ctags and gtags will run in background.
 
@@ -134,7 +134,10 @@ Set the path of ctags tags. If this variable is set to 1, `gen_tags.vim` will us
 The default `g:gen_tags#ctags_use_cache_dir` is 1, you need to set it in  your vimrc.
 
 0:
-  git repo: `<project folder>/.git/tags_dir`
+  SCM repo:
+      git `<project folder>/.git/tags_dir`
+      hg `<project folder>/.hg/tags_dir`
+      svn `<project folder>/.svn/tags_dir`
 
   non-git: `$HOME/.cache/tags_dir/<project name>`
 
@@ -150,12 +153,12 @@ Set gtags find display behavior. The default `g:gtags_split` is ''.</br>
 
 * `g:gen_tags#ctags_auto_gen`
 
-Auto generate ctags when this variable is 1 and current file belongs to a git repo.</br>
+Auto generate ctags when this variable is 1 and current file belongs to a scm repo.</br>
 The default `g:gen_tags#ctags_auto_gen` is 0
 
 * `g:gen_tags#gtags_auto_gen`
 
-Auto generate gtags when this variable is 1 and current file belongs to a git repo.</br>
+Auto generate gtags when this variable is 1 and current file belongs to a scm repo.</br>
 The default `g:gen_tags#gtags_auto_gen` is 0
 
 * `g:gen_tags#blacklist`

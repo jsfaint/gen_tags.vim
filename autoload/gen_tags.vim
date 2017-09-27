@@ -14,54 +14,55 @@ if !exists('g:gen_tags#blacklist')
   let g:gen_tags#blacklist = []
 endif
 
-function! gen_tags#git_root() abort
-  if executable('git')
-    let l:git_cmd = 'git rev-parse --show-toplevel'
+"Detect scm type
+function! gen_tags#get_scm_type() abort
+  let l:scm_list = ['.git', '.hg', '.svn']
 
-    "check if in git repository.
-    silent let l:sub = system(l:git_cmd)
-    if v:shell_error == 0
-      let l:is_git = 1
-    else
-      let l:is_git = 0
+  for l:scm in l:scm_list
+    let l:dir = finddir(l:scm, '.;')
+    if !empty(l:dir)
+      return l:scm
     endif
-  else
-    let l:is_git = 0
-  endif
-
-  if l:is_git
-    silent let l:sub = system(l:git_cmd)
-    let l:sub = substitute(l:sub, '\r\|\n', '', 'g')
-    return l:sub
-  endif
+  endfor
 
   return ''
 endfunction
 
+"Find scm repo root
+function! gen_tags#find_scm_root() abort
+  "Detect scm type
+  let l:scm = gen_tags#get_scm_type()
+  if empty(l:scm)
+    return ''
+  endif
+
+  let l:dir = gen_tags#fix_path(finddir(l:scm, '.;'))
+
+  if l:dir ==# l:scm
+    return getcwd()
+  else
+    return substitute(l:dir, '/' . l:scm, '', 'g')
+  endif
+endfunction
+
 "Find the root of the project
-"if the project managed by git, find the git root.
+"if the project managed by git/hg/svn, find the repo root.
 "else return the current work directory.
 function! gen_tags#find_project_root() abort
   if exists('s:project_root')
     return s:project_root
   endif
 
-  let s:project_root = gen_tags#git_root()
+  let s:project_root = gen_tags#find_scm_root()
   if empty(s:project_root)
-    if has('win32')
-      let l:path=getcwd()
-      let l:path=substitute(l:path, '\\', '/', 'g')
-      let s:project_root = l:path
-    else
-      let s:project_root = getcwd()
-    endif
+    let s:project_root = gen_tags#fix_path(getcwd())
   endif
 
   return s:project_root
 endfunction
 
-"Check if job status
-function! s:check_job(cmd) abort
+"Prune exit job from job list
+function! s:job_prune(cmd) abort
   for l:item in s:job_list
     if a:cmd ==# l:item['cmd']
       let l:index = index(s:job_list, l:item)
@@ -92,7 +93,7 @@ function! gen_tags#system_async(cmd, ...) abort
     let s:job_list = []
   endif
 
-  if s:check_job(l:cmd) ==# 'run'
+  if s:job_prune(l:cmd) ==# 'run'
     call gen_tags#echo('The same job is still running')
     return
   end

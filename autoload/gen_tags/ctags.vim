@@ -14,26 +14,27 @@
 "       :ClearCtags
 " ============================================================================
 
-function! s:get_project_ctags_dir() abort
+function! s:ctags_get_db_dir() abort
   let l:root = gen_tags#find_project_root()
 
-  if g:gen_tags#ctags_use_cache_dir == 0 && !empty(gen_tags#git_root())
-    let l:tagdir = l:root . '/.git/tags_dir'
+  let l:type = gen_tags#get_scm_type()
+  if g:gen_tags#ctags_use_cache_dir == 0 && !empty(l:type)
+    let l:tagdir = l:root . '/' . l:type . '/tags_dir'
   else
-    let l:tagdir = expand('$HOME/.cache/tags_dir') . '/' . gen_tags#get_db_name(l:root)
+    let l:tagdir = '$HOME/.cache/tags_dir/' . gen_tags#get_db_name(l:root)
   endif
 
   return gen_tags#fix_path(l:tagdir)
 endfunction
 
-function! s:get_project_ctags_name() abort
-  let l:file = s:get_project_ctags_dir() . '/' . s:ctags_db
+function! s:ctags_get_db_name() abort
+  let l:file = s:ctags_get_db_dir() . '/' . s:ctags_db
 
   return l:file
 endfunction
 
-function! s:get_extend_ctags_list() abort
-  let l:file = s:get_project_ctags_dir() . '/' . s:ext
+function! s:ctags_get_extend_list() abort
+  let l:file = s:ctags_get_db_dir() . '/' . s:ext
 
   if filereadable(l:file)
     let l:list = readfile(l:file)
@@ -43,44 +44,44 @@ function! s:get_extend_ctags_list() abort
   return []
 endfunction
 
-function! s:get_extend_ctags_name(item) abort
-  let l:file = s:get_project_ctags_dir() . '/' . gen_tags#get_db_name(a:item)
+function! s:ctags_get_extend_name(item) abort
+  let l:file = s:ctags_get_db_dir() . '/' . gen_tags#get_db_name(a:item)
 
   return l:file
 endfunction
 
 "Create ctags root dir and cwd db dir.
-function! s:make_ctags_dir(dir) abort
+function! s:ctags_mkdir(dir) abort
   if !isdirectory(a:dir)
     call mkdir(a:dir, 'p')
   endif
 endfunction
 
-function! s:add_ctags(file) abort
+function! s:ctags_add(file) abort
   exec 'set tags' . '+=' . a:file
 endfunction
 
 "Only add ctags db as extension database
-function! s:add_ext() abort
-  for l:item in s:get_extend_ctags_list()
-    let l:file = s:get_extend_ctags_name(l:item)
-    call s:add_ctags(l:file)
+function! s:ctags_add_ext() abort
+  for l:item in s:ctags_get_extend_list()
+    let l:file = s:ctags_get_extend_name(l:item)
+    call s:ctags_add(l:file)
   endfor
 endfunction
 
 "Generate ctags tags and set tags option
-function! s:Ctags_db_gen(filename, dir) abort
+function! s:ctags_gen(filename, dir) abort
   "Check if current path in the blacklist
   if gen_tags#isblacklist(gen_tags#find_project_root())
     return
   endif
 
-  let l:dir = s:get_project_ctags_dir()
+  let l:dir = s:ctags_get_db_dir()
 
 
   call gen_tags#echo('Generate project ctags database in backgroud')
 
-  call s:make_ctags_dir(l:dir)
+  call s:ctags_mkdir(l:dir)
 
   let l:ctags_bin = g:gen_tags#ctags_bin
 
@@ -97,35 +98,35 @@ function! s:Ctags_db_gen(filename, dir) abort
   "Search for existence tags string.
   let l:ret = stridx(&tags, l:dir)
   if l:ret == -1
-    call s:add_ctags(l:file)
+    call s:ctags_add(l:file)
   endif
 endfunction
 
-function! s:Add_DBs() abort
-  let l:file = s:get_project_ctags_name()
+function! s:ctags_auto_load() abort
+  let l:file = s:ctags_get_db_name()
   if filereadable(l:file)
-    call s:add_ctags(l:file)
-    call s:add_ext()
+    call s:ctags_add(l:file)
+    call s:ctags_add_ext()
   endif
 endfunction
 
 "Edit extend conf file
-function! s:Edit_ext() abort
+function! s:ctags_ext_edit() abort
   augroup gen_ctags
-    autocmd BufWritePost ext.conf call s:Ext_db_gen()
+    autocmd BufWritePost ext.conf call s:ctags_ext_gen()
   augroup END
 
-  let l:dir = s:get_project_ctags_dir()
-  call s:make_ctags_dir(l:dir)
+  let l:dir = s:ctags_get_db_dir()
+  call s:ctags_mkdir(l:dir)
   let l:file = l:dir . '/' . s:ext
   exec 'split' l:file
 endfunction
 
 "Geterate extend ctags
-function! s:Ext_db_gen() abort
-  for l:item in s:get_extend_ctags_list()
-    let l:file = s:get_extend_ctags_name(l:item)
-    call s:Ctags_db_gen(l:file, l:item)
+function! s:ctags_ext_gen() abort
+  for l:item in s:ctags_get_extend_list()
+    let l:file = s:ctags_get_extend_name(l:item)
+    call s:ctags_gen(l:file, l:item)
   endfor
 
   augroup gen_ctags
@@ -134,30 +135,30 @@ function! s:Ext_db_gen() abort
 endfunction
 
 "Delete exist tags file
-function! s:Ctags_clear(bang) abort
+function! s:ctags_clear(bang) abort
   if empty(a:bang)
     "Remove project ctags
-    let l:file = s:get_project_ctags_name()
+    let l:file = s:ctags_get_db_name()
     if filereadable(l:file)
       call delete(l:file)
     endif
 
     "Remove extend ctags
-    for l:item in s:get_extend_ctags_list()
-      let l:file = s:get_extend_ctags_name(l:item)
+    for l:item in s:ctags_get_extend_list()
+      let l:file = s:ctags_get_extend_name(l:item)
       if filereadable(l:file)
         call delete(l:file)
       endif
     endfor
   else
     "Remove all files include tag folder
-    let l:dir = s:get_project_ctags_dir()
+    let l:dir = s:ctags_get_db_dir()
     call delete(l:dir, 'rf')
   endif
 endfunction
 
-function! s:UpdateCtags() abort
-  let l:tagfile = s:get_project_ctags_dir() . '/' . s:ctags_db
+function! s:ctags_auto_update() abort
+  let l:tagfile = s:ctags_get_db_dir() . '/' . s:ctags_db
 
   if !filereadable(l:tagfile)
     return
@@ -173,19 +174,19 @@ function! s:UpdateCtags() abort
   call s:ctags_update(l:file)
 endfunction
 
-function! s:AutoGenCtags() abort
-  " If not in git repo, return
-  if empty(gen_tags#git_root())
+function! s:ctags_auto_gen() abort
+  " If not in scm, return
+  if empty(gen_tags#get_scm_type())
     return
   endif
 
   " If tags exist, return
-  let l:file = s:get_project_ctags_dir() . '/' . s:ctags_db
+  let l:file = s:ctags_get_db_dir() . '/' . s:ctags_db
   if filereadable(l:file)
     return
   endif
 
-  call s:Ctags_db_gen('', '')
+  call s:ctags_gen('', '')
 endfunction
 
 function! gen_tags#ctags#init() abort
@@ -214,17 +215,17 @@ function! gen_tags#ctags#init() abort
   endif
 
   "Command list
-  command! -nargs=0 GenCtags call s:Ctags_db_gen('', '')
-  command! -nargs=0 EditExt call s:Edit_ext()
-  command! -nargs=0 -bang ClearCtags call s:Ctags_clear('<bang>')
+  command! -nargs=0 GenCtags call s:ctags_gen('', '')
+  command! -nargs=0 EditExt call s:ctags_ext_edit()
+  command! -nargs=0 -bang ClearCtags call s:ctags_clear('<bang>')
 
   augroup gen_ctags
     au!
-    au BufWritePost * call s:UpdateCtags()
-    au BufWinEnter * call s:Add_DBs()
+    au BufWritePost * call s:ctags_auto_update()
+    au BufWinEnter * call s:ctags_auto_load()
 
     if g:gen_tags#ctags_auto_gen
-      au BufReadPost * call s:AutoGenCtags()
+      au BufReadPost * call s:ctags_auto_gen()
     endif
   augroup END
 
@@ -277,7 +278,7 @@ function! s:ctags_prune(tagfile, file) abort
 endfunction
 
 function! s:ctags_update(file) abort
-  let l:dir = s:get_project_ctags_dir()
+  let l:dir = s:ctags_get_db_dir()
   let l:file = l:dir . '/' . s:ctags_db
   let l:cmd = g:gen_tags#ctags_bin . ' -u -f '. l:file . ' ' . g:gen_tags#ctags_opts .
         \ ' -a ' .  gen_tags#find_project_root() . '/' . a:file
