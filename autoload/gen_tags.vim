@@ -234,7 +234,8 @@ function! gen_tags#isblacklist(path) abort
   endif
 
   for l:dir in g:gen_tags#blacklist
-    if gen_tags#fix_path(a:path) ==# gen_tags#fix_path(l:dir)
+    let l:dir = fnamemodify(gen_tags#fix_path(l:dir), ':p:h')
+    if a:path ==# l:dir
       call gen_tags#echo('Found path ' . a:path . ' in the blacklist')
       return 1
     endif
