@@ -81,6 +81,7 @@ function! s:check_job(cmd) abort
   "Remove from list, if job exit
   if l:status ==# 'exit'
     call remove(s:job_list, l:index)
+    return 'exit'
   endif
 endfunction
 
