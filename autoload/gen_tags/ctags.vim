@@ -254,7 +254,7 @@ function! s:ctags_prune(tagfile, file) abort
   set noswapfile
 
   "Open tagfile
-  exec 'silent edit ' . a:tagfile
+  exec 'silent tabedit ' . a:tagfile
 
   "Delete specified lines
   if has('win32')
@@ -265,7 +265,7 @@ function! s:ctags_prune(tagfile, file) abort
   endif
 
   exec 'silent write'
-  exec 'silent bd'
+  exec 'silent tabclose'
 
   "Restore options
   let &eventignore = l:event
