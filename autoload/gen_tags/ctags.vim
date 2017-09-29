@@ -258,7 +258,8 @@ function! s:ctags_prune(tagfile, file) abort
 
   "Delete specified lines
   if has('win32')
-    exec '%g/' . escape(a:file, ' \/') . '/d'
+    let l:file = substitute(a:file, '\\', '\\\\', '')
+    exec '%g/' . escape(l:file, ' \/') . '/d'
   else
     exec '%g/' . escape(a:file, ' /') . '/d'
   endif
