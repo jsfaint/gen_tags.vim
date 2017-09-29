@@ -220,12 +220,12 @@ function! gen_tags#ctags#init() abort
   command! -nargs=0 -bang ClearCtags call s:ctags_clear('<bang>')
 
   augroup gen_ctags
-    au!
-    au BufWritePost * call s:ctags_auto_update()
-    au BufWinEnter * call s:ctags_auto_load()
+    autocmd!
+    autocmd BufWritePost * call s:ctags_auto_update()
+    autocmd BufWinEnter * call s:ctags_auto_load()
 
     if g:gen_tags#ctags_auto_gen
-      au BufReadPost * call s:ctags_auto_gen()
+      autocmd BufReadPost * call s:ctags_auto_gen()
     endif
   augroup END
 
