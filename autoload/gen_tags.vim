@@ -110,7 +110,7 @@ endfunction
 
 "Fix shellslash for windows
 function! gen_tags#fix_path(path) abort
-  let l:path = expand(a:path)
+  let l:path = expand(a:path, 1)
   if has('win32')
     let l:path = substitute(l:path, '\\', '/', 'g')
   endif
