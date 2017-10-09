@@ -4,7 +4,7 @@
 " Description: This file contains some command function for other file.
 " ============================================================================
 
-"GLobal variables
+"Global variables
 if !exists('g:gen_tags#verbose')
   let g:gen_tags#verbose = 0
 endif
@@ -247,6 +247,6 @@ function! gen_tags#isblacklist(path) abort
     endif
   endfor
 
-  call gen_tags#echo('Did NOT found path ' . a:path . ' in the blacklist')
+  call gen_tags#echo('Did NOT find path ' . a:path . ' in the blacklist')
   return 0
 endfunction
