@@ -37,11 +37,8 @@ function! gen_tags#get_scm_info() abort
   endif
 
   "Get scm root
-  if l:scm['type'] ==# l:scm['root']
-    let l:scm['root'] = gen_tags#fix_path(getcwd())
-  else
-    let l:scm['root'] = substitute(l:scm['root'], '/' . l:scm['type'], '', 'g')
-  endif
+  let l:scm['root'] = fnamemodify(l:scm['root'], ':p:h')
+  let l:scm['root'] = substitute(l:scm['root'], '/' . l:scm['type'], '', 'g')
 
   return l:scm
 endfunction
