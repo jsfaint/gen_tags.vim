@@ -265,7 +265,7 @@ function! s:ctags_prune(tagfile, file) abort
   endif
 
   exec 'silent write'
-  exec 'silent tabclose'
+  exec 'silent bd!'
 
   "Restore options
   let &eventignore = l:event
