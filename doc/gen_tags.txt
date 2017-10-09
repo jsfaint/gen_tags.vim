@@ -77,7 +77,7 @@ The extend database will be generate automatically.
 :ClearCtags                                             *:ClearCtags*
 
 `:ClearCtags`      Remove tags files.
-`:ClearCtags!`     Remove tags files, ext.conf and the folder.
+`:ClearCtags!`     Remove all files, include db dir
 
 ------------------------------------------------------------------------------
 * command for gtags                                     *gen_tags-gtags*
@@ -88,7 +88,8 @@ Generate GTAGS
 
 :ClearGTAGS                                             *:ClearGTAGS*
 
-Clear GTAGS files
+`:ClearGTAGS`     Remove GTAGS files
+`:ClearGTAGS!`    Remove all files, include the db dir
 
 ==============================================================================
 4. Mappings                                             *gen_tags-mappings*
@@ -134,12 +135,12 @@ so there is no need to add `-R` in `g:gen_tags#ctags_opts`.
 The default `g:gen_tags#ctags_opts` is '', you need to set it in your vimrc
 
 ------------------------------------------------------------------------------
-g:gen_tags#ctags_use_cache_dir             *g:gen_tags#ctags_use_cache_dir*
+g:gen_tags#use_cache_dir                        *g:gen_tags#_use_cache_dir*
 
 **This option only works for scm-repo.**
-Set the path of ctags tags. If this variable is set to 1,
-`gen_tags.vim` will use project direcotry to store ctags tags.
-The default `g:gen_tags#ctags_use_cache_dir` is 1, you need to set it in  your vimrc.
+Set the path of tags. If this variable is set to 1,
+`gen_tags.vim` will use project direcotry to store tags.
+The default `g:gen_tags#use_cache_dir` is 1, you need to set it in  your vimrc.
 
 0:
   scm repo:

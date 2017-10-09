@@ -63,7 +63,7 @@
 
     ```viml
     :ClearCtags      Remove tags files.
-    :ClearCtags!     Remove tags files, ext.conf and the folder.
+    :ClearCtags!     Remove all files, include the db dir
     ```
 
 ## Gtags support
@@ -91,7 +91,10 @@
 
   * `:ClearGTAGS`
 
-    Clear GTAGS files
+    ```viml
+    :ClearGTAGS     Remove GTAGS files
+    :ClearGTAGS!    Remove all files, include the db dir
+    ```
 
 ### Key Mapping
 
@@ -129,11 +132,11 @@ Set location of ctags. The default is 'ctags'
 Set ctags options. The `-R` is set by default, so there is no need to add `-R` in `g:gen_tags#ctags_opts`.</br>
 The default `g:gen_tags#ctags_opts` is '', you need to set it in your vimrc :smile:
 
-* `g:gen_tags#ctags_use_cache_dir`
+* `g:gen_tags#use_cache_dir`
 
-**This option only works for git-repo.**
-Set the path of ctags tags. If this variable is set to 1, `gen_tags.vim` will use cache direcotry to store ctags tags.</br>
-The default `g:gen_tags#ctags_use_cache_dir` is 1, you need to set it in  your vimrc.
+**This option only works for scm-repo.**
+Set the path of tags. If this variable is set to 1, `gen_tags.vim` will use cache direcotry to store tags.</br>
+The default `g:gen_tags#use_cache_dir` is 1, you need to set it in  your vimrc.
 
 0:
   SCM repo:

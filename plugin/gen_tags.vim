@@ -24,7 +24,7 @@ if !get(g:, 'loaded_gentags#gtags', 0)
   elseif !has('cscope')
     echomsg 'Need cscope support'
     echomsg 'gen_gtags.vim need cscope support'
-  elseif !executable('gtags') && !executable('gtags.exe')
+  elseif !executable('gtags')
     echomsg 'GNU Global not found'
     echomsg 'gen_gtags.vim need GNU Global'
   endif

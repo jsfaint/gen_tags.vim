@@ -6,7 +6,7 @@
 " Required: This script requires enable cscope support and GNU global.
 " Usage:
 "   1. Generate GTAGS
-"   :GenGTAGS or <leader>gg
+"   :GenGTAGS
 "   2. Clear GTAGS
 "   :ClearGTAGS
 " ============================================================================
@@ -19,18 +19,19 @@ function! s:gtags_add(file) abort
 endfunction
 
 function! s:gtags_auto_load() abort
-  let l:path = gen_tags#find_project_root()
-  let l:file = l:path . '/' . s:file
+  let l:file = $GTAGSDBPATH . '/' . s:file
   call s:gtags_add(l:file)
 endfunction
 
 "Generate GTAGS
 function! s:gtags_db_gen() abort
-  let l:path = gen_tags#find_project_root()
-  let b:file = l:path . '/' . s:file
+  let l:src_dir = $GTAGSROOT
+  let l:db_dir = $GTAGSDBPATH
 
-  "Check if current path in the blacklist
-  if gen_tags#isblacklist(l:path)
+  let b:file = l:db_dir . '/' . s:file
+
+  "Check if project root in the blacklist
+  if gen_tags#isblacklist(l:src_dir)
     return
   endif
 
@@ -40,55 +41,41 @@ function! s:gtags_db_gen() abort
     return
   endif
 
-  let l:cmd = 'gtags ' . l:path
-
-  function! s:gtags_backup_cwd(path) abort
-    let l:bak = getcwd()
-    let $GTAGSPATH = a:path
-    lcd $GTAGSPATH
-
-    return l:bak
-  endfunction
-
-  function! s:gtags_restore_cwd(bak) abort
-    "Restore cwd
-    let $GTAGSPATH = a:bak
-    lcd $GTAGSPATH
-    let $GTAGSPATH = ''
-  endfunction
+  let l:cmd = 'gtags ' . l:db_dir
 
   function! s:gtags_db_gen_done(...) abort
-    call s:gtags_restore_cwd(b:bak)
-
     call s:gtags_add(b:file)
     unlet b:file
-    unlet b:bak
   endfunction
 
-  "Backup cwd
-  let b:bak = s:gtags_backup_cwd(l:path)
+  call gen_tags#mkdir(l:db_dir)
 
   call gen_tags#echo('Generate GTAGS in background')
   call gen_tags#system_async(l:cmd, function('s:gtags_db_gen_done'))
 endfunction
 
-function! s:gtags_clear() abort
-  let l:path = gen_tags#find_project_root()
+function! s:gtags_clear(bang) abort
+  let l:db_dir = $GTAGSDBPATH
   let l:list = ['GTAGS', 'GPATH', 'GRTAGS']
 
   execute 'cscope kill -1'
 
-  for l:item in l:list
-    let l:file = l:path . '/' . l:item
-    if filereadable(l:file)
-      call delete(l:file)
-    endif
-  endfor
+  if empty(a:bang)
+    for l:item in l:list
+      let l:file = l:db_dir . '/' . l:item
+      if filereadable(l:file)
+        call delete(l:file)
+      endif
+    endfor
+  else
+    "Remove all files include tag folder
+    let l:dir = gen_tags#get_db_dir()
+    call delete(l:dir, 'rf')
+  endif
 endfunction
 
 function! s:gtags_update() abort
-  let l:path = gen_tags#find_project_root()
-  let l:file = l:path . '/' . s:file
+  let l:file = $GTAGSDBPATH . '/' . s:file
 
   if !filereadable(l:file)
     return
@@ -107,14 +94,18 @@ function! s:gtags_auto_gen() abort
     return
   endif
 
-  " If tags exist, return
-  let l:path = gen_tags#find_project_root()
-  let b:file = l:path . '/' . s:file
-  if filereadable(b:file)
+  " If tags exist update it, otherwise generate new one.
+  let l:file = $GTAGSDBPATH . '/' . s:file
+  if filereadable(l:file)
     call s:gtags_update()
   else
     call s:gtags_db_gen()
   endif
+endfunction
+
+function! s:gtags_set_env() abort
+  let $GTAGSROOT = gen_tags#find_project_root()
+  let $GTAGSDBPATH = gen_tags#get_db_dir()
 endfunction
 
 function! gen_tags#gtags#init() abort
@@ -132,6 +123,8 @@ function! gen_tags#gtags#init() abort
   if !exists('g:gen_tags#gtags_auto_gen')
     let g:gen_tags#gtags_auto_gen = 0
   endif
+
+  call s:gtags_set_env()
 
   set cscopetag
   set cscopeprg=gtags-cscope
@@ -168,15 +161,17 @@ function! gen_tags#gtags#init() abort
 
   "Command list
   command! -nargs=0 GenGTAGS call s:gtags_db_gen()
-  command! -nargs=0 ClearGTAGS call s:gtags_clear()
+  command! -nargs=0 ClearGTAGS call s:gtags_clear('<bang>')
 
   augroup gen_gtags
-    au!
-    au BufWritePost * call s:gtags_update()
-    au BufWinEnter * call s:gtags_auto_load()
+    autocmd!
+    autocmd BufWritePost * call s:gtags_update()
+    autocmd BufWinEnter * call s:gtags_auto_load()
+
+    autocmd BufReadPost * call s:gtags_set_env()
 
     if g:gen_tags#gtags_auto_gen
-      au BufReadPost * call s:gtags_auto_gen()
+      autocmd BufReadPost * call s:gtags_auto_gen()
     endif
   augroup END
 

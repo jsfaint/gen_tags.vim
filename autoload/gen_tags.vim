@@ -14,6 +14,11 @@ if !exists('g:gen_tags#blacklist')
   let g:gen_tags#blacklist = []
 endif
 
+"Use cache dir by default
+if !exists('g:gen_tags#use_cache_dir')
+  let g:gen_tags#use_cache_dir = 1
+endif
+
 "Get scm repo info
 function! gen_tags#get_scm_info() abort
   let l:scm = {'type': '', 'root': ''}
@@ -248,4 +253,25 @@ function! gen_tags#isblacklist(path) abort
 
   call gen_tags#echo('Did NOT find path ' . a:path . ' in the blacklist')
   return 0
+endfunction
+
+"Get db dir according to project type and g:gen_tags#use_cache_dir
+function! gen_tags#get_db_dir() abort
+  let l:scm = gen_tags#get_scm_info()
+
+  if g:gen_tags#use_cache_dir == 0 && !empty(l:scm['type'])
+    let l:tagdir = l:scm['root'] . '/' . l:scm['type'] . '/tags_dir'
+  else
+    let l:root = gen_tags#find_project_root()
+    let l:tagdir = '$HOME/.cache/tags_dir/' . gen_tags#get_db_name(l:root)
+  endif
+
+  return gen_tags#fix_path(l:tagdir)
+endfunction
+
+"Create db root dir and cwd db dir.
+function! gen_tags#mkdir(dir) abort
+  if !isdirectory(a:dir)
+    call mkdir(a:dir, 'p')
+  endif
 endfunction
