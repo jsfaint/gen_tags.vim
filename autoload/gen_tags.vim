@@ -39,21 +39,25 @@ function! gen_tags#find_scm_root() abort
   let l:dir = gen_tags#fix_path(finddir(l:scm, '.;'))
 
   if l:dir ==# l:scm
-    return getcwd()
+    return gen_tags#fix_path(getcwd())
   else
     return substitute(l:dir, '/' . l:scm, '', 'g')
   endif
 endfunction
 
 "Find the root of the project
-"if the project managed by git/hg/svn, find the repo root.
+"if the project managed by git/hg/svn, return the repo root.
 "else return the current work directory.
 function! gen_tags#find_project_root() abort
-  if exists('s:project_root')
-    return s:project_root
+  if !exists('s:project_root')
+    let s:project_root = ''
   endif
 
-  let s:project_root = gen_tags#find_scm_root()
+  let l:scm_root = gen_tags#find_scm_root()
+  if !empty(l:scm_root)
+    return l:scm_root
+  endif
+
   if empty(s:project_root)
     let s:project_root = gen_tags#fix_path(getcwd())
   endif
