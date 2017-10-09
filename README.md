@@ -1,5 +1,7 @@
 # gen_tags.vim
 
+[![Join the chat at https://gitter.im/gen_tags-vim/Lobby](https://badges.gitter.im/gen_tags-vim/Lobby.svg)](https://gitter.im/gen_tags-vim/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
   Async plugin for [Vim](https://github.com/vim/vim)/[NeoVim](https://github.com/neovim/neovim) to ease the use of [ctags](http://ctags.sourceforge.net/)/[gtags](http://www.gnu.org/software/global/).</br>
   It is used for generate and maintain tags for you with multiple platform support, tested on Windows/Linux/macOS.
 
