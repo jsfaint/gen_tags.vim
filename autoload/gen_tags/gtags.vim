@@ -102,7 +102,8 @@ endfunction
 
 function! s:gtags_auto_gen() abort
   " If not in scm, return
-  if empty(gen_tags#get_scm_type())
+  let l:scm = gen_tags#get_scm_info()
+  if empty(l:scm['type'])
     return
   endif
 

@@ -15,12 +15,12 @@
 " ============================================================================
 
 function! s:ctags_get_db_dir() abort
-  let l:root = gen_tags#find_project_root()
+  let l:scm = gen_tags#get_scm_info()
 
-  let l:type = gen_tags#get_scm_type()
-  if g:gen_tags#ctags_use_cache_dir == 0 && !empty(l:type)
-    let l:tagdir = l:root . '/' . l:type . '/tags_dir'
+  if g:gen_tags#ctags_use_cache_dir == 0 && !empty(l:scm['type'])
+    let l:tagdir = l:scm['root'] . '/' . l:scm['type'] . '/tags_dir'
   else
+    let l:root = gen_tags#find_project_root()
     let l:tagdir = '$HOME/.cache/tags_dir/' . gen_tags#get_db_name(l:root)
   endif
 
@@ -176,7 +176,8 @@ endfunction
 
 function! s:ctags_auto_gen() abort
   " If not in scm, return
-  if empty(gen_tags#get_scm_type())
+  let l:scm = gen_tags#get_scm_info()
+  if empty(l:scm['type'])
     return
   endif
 

@@ -14,35 +14,36 @@ if !exists('g:gen_tags#blacklist')
   let g:gen_tags#blacklist = []
 endif
 
-"Detect scm type
-function! gen_tags#get_scm_type() abort
+"Get scm repo info
+function! gen_tags#get_scm_info() abort
+  let l:scm = {'type': '', 'root': ''}
+
+  "Supported scm repo
   let l:scm_list = ['.git', '.hg', '.svn']
 
-  for l:scm in l:scm_list
-    let l:dir = finddir(l:scm, '.;')
+  "Detect scm type
+  for l:item in l:scm_list
+    let l:dir = finddir(l:item, '.;')
     if !empty(l:dir)
-      return l:scm
+      let l:scm['type'] = l:item
+      let l:scm['root'] = gen_tags#fix_path(l:dir)
+      break
     endif
   endfor
 
-  return ''
-endfunction
-
-"Find scm repo root
-function! gen_tags#find_scm_root() abort
-  "Detect scm type
-  let l:scm = gen_tags#get_scm_type()
-  if empty(l:scm)
-    return ''
+  "Not a scm repo, return
+  if empty(l:scm['type'])
+    return l:scm
   endif
 
-  let l:dir = gen_tags#fix_path(finddir(l:scm, '.;'))
-
-  if l:dir ==# l:scm
-    return gen_tags#fix_path(getcwd())
+  "Get scm root
+  if l:scm['type'] ==# l:scm['root']
+    let l:scm['root'] = gen_tags#fix_path(getcwd())
   else
-    return substitute(l:dir, '/' . l:scm, '', 'g')
+    let l:scm['root'] = substitute(l:scm['root'], '/' . l:scm['type'], '', 'g')
   endif
+
+  return l:scm
 endfunction
 
 "Find the root of the project
@@ -53,9 +54,10 @@ function! gen_tags#find_project_root() abort
     let s:project_root = ''
   endif
 
-  let l:scm_root = gen_tags#find_scm_root()
-  if !empty(l:scm_root)
-    return l:scm_root
+  "If it is scm repo, use scm folder as project root
+  let l:scm = gen_tags#get_scm_info()
+  if !empty(l:scm['type'])
+    return l:scm['root']
   endif
 
   if empty(s:project_root)
