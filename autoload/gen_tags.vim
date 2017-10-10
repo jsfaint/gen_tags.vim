@@ -26,7 +26,7 @@ function! gen_tags#get_scm_info() abort
     let l:dir = finddir(l:item, '.;')
     if !empty(l:dir)
       let l:scm['type'] = l:item
-      let l:scm['root'] = gen_tags#fix_path(l:dir)
+      let l:scm['root'] = l:dir
       break
     endif
   endfor
@@ -37,7 +37,7 @@ function! gen_tags#get_scm_info() abort
   endif
 
   "Get scm root
-  let l:scm['root'] = fnamemodify(l:scm['root'], ':p:h')
+  let l:scm['root'] = gen_tags#fix_path(fnamemodify(l:scm['root'], ':p:h'))
   let l:scm['root'] = substitute(l:scm['root'], '/' . l:scm['type'], '', 'g')
 
   return l:scm
