@@ -23,7 +23,7 @@ Generate/Update ctags and gtags will run in background.
 
 ------------------------------------------------------------------------------
 `gen_tags.vim` also provide a gtags completion source for
-nvim-completion-manager(AKA NCM), it's optional, if you don't use ncm, just
+nvim-completion-manager(AKA NCM) and deoplete.nvim, it's optional, if you don't use ncm, just
 ignore it :)
 
 ------------------------------------------------------------------------------

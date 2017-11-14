@@ -11,8 +11,8 @@
 
 ## Completion with gtags
 
-  `gen_tags.vim` also provide a gtags completion source for [nvim-completion-manager](https://github.com/roxma/nvim-completion-manager)</br>
-  It's optional, if you don't use ncm, just ignore it :smile:
+  `gen_tags.vim` also provide a gtags completion source for [nvim-completion-manager](https://github.com/roxma/nvim-completion-manager) and [deoplete.nvim](https://github.com/Shougo/deoplete.nvim)</br>
+  It's optional, if you don't use ncm or deoplete, just ignore it :smile:
 
 ## Difference between ctags and gtags
 
