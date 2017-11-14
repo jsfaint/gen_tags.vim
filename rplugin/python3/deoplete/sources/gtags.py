@@ -17,22 +17,6 @@ class Source(Base):
         self.input_pattern = (r'\w+')
         self.rank = 100
 
-    def print_global_error(self, global_exitcode):
-        if global_exitcode == 1:
-            error_message = '[gtags] Error: file does not exists'
-        elif global_exitcode == 2:
-            error_message = '[gtags] Error: invalid argumnets\n'
-        elif global_exitcode == 3:
-            error_message = '[gtags] Error: GTAGS not found'
-        elif global_exitcode == 126:
-            error_message = '[gtags] Error: permission denied\n'
-        elif global_exitcode == 127:
-            error_message = '[gtags] Error: \'global\' command not found\n'
-        else:
-            error_message = '[gtags] Error: global command failed\n'
-
-        deoplete.util.error(self.vim, error_message)
-
     def check_executable(self):
         if not find_executable("global"):
             return False
@@ -78,7 +62,6 @@ class Source(Base):
             return []
 
         if global_exitcode != 0:
-            self.print_global_error(global_exitcode)
             return []
 
         matches = output[0].decode('utf8').splitlines()
