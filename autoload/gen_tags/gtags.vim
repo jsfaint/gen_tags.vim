@@ -161,7 +161,7 @@ function! gen_tags#gtags#init() abort
 
   "Command list
   command! -nargs=0 GenGTAGS call s:gtags_db_gen()
-  command! -nargs=0 ClearGTAGS call s:gtags_clear('<bang>')
+  command! -nargs=0 -bang ClearGTAGS call s:gtags_clear('<bang>')
 
   augroup gen_gtags
     autocmd!
