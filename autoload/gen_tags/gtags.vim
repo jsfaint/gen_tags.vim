@@ -56,7 +56,7 @@ endfunction
 
 function! s:gtags_clear(bang) abort
   let l:db_dir = $GTAGSDBPATH
-  let l:list = ['GTAGS', 'GPATH', 'GRTAGS']
+  let l:list = ['GTAGS', 'GPATH', 'GRTAGS', 'GSYMS']
 
   execute 'cscope kill -1'
 
