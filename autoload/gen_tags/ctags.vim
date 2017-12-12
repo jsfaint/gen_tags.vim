@@ -37,13 +37,6 @@ function! s:ctags_get_extend_name(item) abort
   return l:file
 endfunction
 
-"Create ctags root dir and cwd db dir.
-function! gen_tags#mkdir(dir) abort
-  if !isdirectory(a:dir)
-    call mkdir(a:dir, 'p')
-  endif
-endfunction
-
 function! s:ctags_add(file) abort
   exec 'set tags' . '+=' . a:file
 endfunction
