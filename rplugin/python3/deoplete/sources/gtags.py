@@ -13,7 +13,6 @@ class Source(Base):
 
         self.name = 'gtags'
         self.mark = '[gtags]'
-        self.filetypes = ['c', 'cpp', 'java', 'php']
         self.input_pattern = (r'\w+')
         self.rank = 100
 
