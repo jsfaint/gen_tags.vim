@@ -6,9 +6,7 @@ import subprocess
 register_source(name='gtags',
                 priority=6,
                 abbreviation='gtags',
-                word_pattern=r'\w+',
-                scoping=True,
-                scopes=['c', 'cpp', 'php', 'java'])
+                word_pattern=r'\w+')
 
 
 class Source(Base):
