@@ -1,6 +1,5 @@
 from deoplete.source.base import Base
 from distutils.spawn import find_executable
-import deoplete.util
 import subprocess
 
 
