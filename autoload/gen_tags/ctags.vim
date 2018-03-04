@@ -63,14 +63,17 @@ function! s:ctags_gen(filename, dir) abort
 
   call gen_tags#mkdir(l:dir)
 
-  let l:ctags_bin = g:gen_tags#ctags_bin
+  let l:cmd = [g:gen_tags#ctags_bin]
+
+  "Extra flag in universal ctags, enable reference tags
+  let l:cmd += ['--extras=+r']
 
   if empty(a:filename)
     let l:file = l:dir . '/' . s:ctags_db
-    let l:cmd = l:ctags_bin . ' -f '. l:file . ' -R ' . g:gen_tags#ctags_opts . ' ' . gen_tags#find_project_root()
+    let l:cmd += ['-f', l:file, '-R', g:gen_tags#ctags_opts, gen_tags#find_project_root()]
   else
     let l:file = a:filename
-    let l:cmd = l:ctags_bin . ' -f '. l:file . ' -R ' . g:gen_tags#ctags_opts . ' ' . a:dir
+    let l:cmd += ['-f', l:file, '-R', g:gen_tags#ctags_opts, a:dir]
   endif
 
   call gen_tags#system_async(l:cmd)
@@ -258,8 +261,9 @@ endfunction
 function! s:ctags_update(file) abort
   let l:dir = gen_tags#get_db_dir()
   let l:file = l:dir . '/' . s:ctags_db
-  let l:cmd = g:gen_tags#ctags_bin . ' -u -f '. l:file . ' ' . g:gen_tags#ctags_opts .
-        \ ' -a ' .  gen_tags#find_project_root() . '/' . a:file
+
+  let l:cmd = [g:gen_tags#ctags_bin, '-u', '-f', l:file, g:gen_tags#ctags_opts,
+        \ '-a', gen_tags#find_project_root(), '/', a:file]
 
   call gen_tags#system_async(l:cmd)
 endfunction
