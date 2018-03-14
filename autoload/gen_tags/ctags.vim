@@ -39,6 +39,7 @@ endfunction
 
 function! s:ctags_add(file) abort
   exec 'set tags' . '+=' . a:file
+  silent! doautocmd User GenTags#CtagsLoaded
 endfunction
 
 "Only add ctags db as extension database

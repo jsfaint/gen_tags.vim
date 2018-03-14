@@ -187,6 +187,26 @@ The default `g:gen_tags#verbose` is 0
 Prune tags from tagfile before incremental update
 The default `g:gen_tags#ctags_prune` is 0
 
+## Events
+
+* GenTags#CtagsLoaded
+
+There are two events will be triggered after the ctags was loaded
+
+```vim
+autocmd User GenTags#CtagsLoaded echo "hello world"
+```
+
+* GenTags#GtagsLoaded
+
+There are two events will be triggered after the gtags was loaded
+
+```vim
+autocmd User GenTags#GtagsLoaded nnoremap gd <c-]>
+```
+
+The idea comes from @butterflyfish in [gen_tags.vim#32](https://github.com/jsfaint/gen_tags.vim/issues/32)
+
 ----
 
 Thanks for reading :)</br>

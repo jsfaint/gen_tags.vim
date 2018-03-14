@@ -15,6 +15,7 @@ function! s:gtags_add(file) abort
   if filereadable(a:file)
     let l:cmd = 'silent! cs add ' . a:file
     exec l:cmd
+    silent! doautocmd User GenTags#GtagsLoaded
   endif
 endfunction
 

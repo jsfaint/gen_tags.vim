@@ -11,6 +11,7 @@ CONTENTS                                                 *gen_tags-contents*
 3. Commands ........................................... |gen_tags-commands|
 4. Mappings ........................................... |gen_tags-mapping|
 5. Options ............................................ |gen_tags-options|
+6. Events ............................................. |gen_tags-events|
 
 ==============================================================================
 1. Introduction                                         *gen_ctags-introduction*
@@ -196,6 +197,27 @@ g:gen_tags#ctags_prune                                *g:gen_tags#ctags_prune*
 
 Prune tags from tagfile before incremental update
 The default `g:gen_tags#ctags_prune` is 0
+
+==============================================================================
+5. Events                                             *gen_tags-events*
+
+GenTags#CtagsLoaded                             *GenTags#CtagsLoaded*
+
+There are two events will be triggered after the ctags was loaded
+
+>
+  autocmd User GenTags#CtagsLoaded echo "hello world"
+<
+
+GenTags#GtagsLoaded                              *GenTags#GtagsLoaded*
+
+There are two events will be triggered after the gtags was loaded
+
+>
+  autocmd User GenTags#GtagsLoaded nnoremap gd <c-]>
+<
+
+The idea comes from @butterflyfish in https://github.com/jsfaint/gen_tags.vim/issues/32
 
 ------------------------------------------------------------------------------
 vim:tw=78:ts=8:ft=help:norl:
