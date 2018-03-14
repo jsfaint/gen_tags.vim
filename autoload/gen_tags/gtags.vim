@@ -83,7 +83,7 @@ function! s:gtags_update() abort
 
   call gen_tags#echo('Update GTAGS in background')
 
-  let l:cmd = 'global -u'
+  let l:cmd = ['global', '-u']
   call gen_tags#system_async(l:cmd)
 endfunction
 
