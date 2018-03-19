@@ -50,6 +50,10 @@ function! s:ctags_add_ext() abort
   endfor
 endfunction
 
+function! s:is_universal_ctags() abort
+  return system(g:gen_tags#ctags_bin . ' --version') =~? '\<\%(Universal\) Ctags\>' ? 1 : 0
+endfunction
+
 "Generate ctags tags and set tags option
 function! s:ctags_gen(filename, dir) abort
   "Check if current path in the blacklist
@@ -67,7 +71,9 @@ function! s:ctags_gen(filename, dir) abort
   let l:cmd = [g:gen_tags#ctags_bin]
 
   "Extra flag in universal ctags, enable reference tags
-  let l:cmd += ['--extras=+r']
+  if s:is_universal_ctags()
+    let l:cmd += ['--extras=+r']
+  endif
 
   if empty(a:filename)
     let l:file = l:dir . '/' . s:ctags_db
