@@ -42,7 +42,7 @@ function! s:gtags_db_gen() abort
     return
   endif
 
-  let l:cmd = 'gtags ' . l:db_dir
+  let l:cmd = ['gtags', l:db_dir]
 
   function! s:gtags_db_gen_done(...) abort
     call s:gtags_add(b:file)
