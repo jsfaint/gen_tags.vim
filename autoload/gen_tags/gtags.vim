@@ -145,6 +145,8 @@ function! gen_tags#gtags#init() abort
   set cscopetag
   set cscopeprg=gtags-cscope
 
+  set nocscoperelative
+
   "Hotkey for cscope
   if g:gen_tags#gtags_default_map == 1
     nmap <C-\>c :cs find c <C-R>=expand('<cword>')<CR><CR>
