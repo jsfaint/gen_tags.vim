@@ -45,6 +45,9 @@ function! s:gtags_db_gen() abort
   let l:cmd = ['gtags', l:db_dir]
 
   function! s:gtags_db_gen_done(...) abort
+    if !exists('b:file')
+      return
+    endif
     call s:gtags_add(b:file)
     unlet b:file
   endfunction
