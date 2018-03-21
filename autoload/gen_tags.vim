@@ -173,9 +173,9 @@ function! s:job_start(cmd, ...) abort
     let l:job_id = job_start(a:cmd, l:job)
   else
     if has('unix')
-      let l:cmd = a:cmd . ' &'
+      let l:cmd = [a:cmd, '&']
     else
-      let l:cmd = 'cmd /c start ' . a:cmd
+      let l:cmd = ['cmd', '/c', 'start', a:cmd]
     endif
 
     call system(l:cmd)
