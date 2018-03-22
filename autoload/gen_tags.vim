@@ -72,7 +72,15 @@ endfunction
 "Prune exit job from job list
 function! s:job_prune(cmd) abort
   for l:item in s:job_list
-    if a:cmd ==# l:item['cmd']
+    let l:cmd = a:cmd
+    let l:item_cmd = l:item['cmd']
+    if type(l:cmd) == type([])
+      let l:cmd = string(l:cmd)
+    endif
+    if type(l:item_cmd) == type([])
+      let l:item_cmd = string(l:item_cmd)
+    endif
+    if l:cmd ==# l:item_cmd
       let l:index = index(s:job_list, l:item)
       let l:job = l:item
     endif
