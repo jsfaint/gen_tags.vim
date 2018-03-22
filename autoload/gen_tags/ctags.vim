@@ -51,7 +51,13 @@ function! s:ctags_add_ext() abort
 endfunction
 
 function! s:is_universal_ctags() abort
-  return system(g:gen_tags#ctags_bin . ' --version') =~? '\<\%(Universal\) Ctags\>' ? 1 : 0
+  if exists('s:ctags_version')
+    return s:ctags_version
+  endif
+
+  let s:ctags_version = system(g:gen_tags#ctags_bin . ' --version') =~? '\<\%(Universal\) Ctags\>' ? 1 : 0
+
+  return s:ctags_version
 endfunction
 
 "Generate ctags tags and set tags option
