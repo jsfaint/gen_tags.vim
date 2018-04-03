@@ -132,7 +132,7 @@ endfunction
 
 "Delete exist tags file
 function! s:ctags_clear(bang) abort
-  if empty(a:bang)
+  if empty(a:bang) || !has('patch-7.4.1107')
     "Remove project ctags
     let l:file = s:ctags_get_db_name()
     if filereadable(l:file)
