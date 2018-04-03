@@ -178,7 +178,7 @@ function! s:job_start(cmd, ...) abort
       let l:cmd = ['cmd', '/c', 'start', a:cmd]
     endif
 
-    call system(l:cmd)
+    call system(join(l:cmd, " "))
     if a:0 != 0
       call a:1()
     endif
