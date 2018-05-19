@@ -8,6 +8,14 @@ if !exists('g:gen_tags#ctags_bin')
   let g:gen_tags#ctags_bin = 'ctags'
 endif
 
+if !exists('g:gen_tags#gtags_bin')
+  let g:gen_tags#gtags_bin = 'gtags'
+endif
+
+if !exists('g:gen_tags#global_bin')
+  let g:gen_tags#global_bin = 'global'
+endif
+
 if !get(g:, 'loaded_gentags#ctags', 0)
   if executable(g:gen_tags#ctags_bin)
     call gen_tags#ctags#init()
@@ -19,12 +27,12 @@ endif
 
 "Initial gtags support
 if !get(g:, 'loaded_gentags#gtags', 0)
-  if has('cscope') && executable('gtags')
+  if has('cscope') && executable(g:gen_tags#gtags_bin)
     call gen_tags#gtags#init()
   elseif !has('cscope')
     echomsg 'Need cscope support'
     echomsg 'gen_gtags.vim need cscope support'
-  elseif !executable('gtags')
+  elseif !executable(g:gen_tags#gtags_bin)
     echomsg 'GNU Global not found'
     echomsg 'gen_gtags.vim need GNU Global'
   endif
