@@ -42,7 +42,7 @@ function! s:gtags_db_gen() abort
     return
   endif
 
-  let l:cmd = ['gtags', l:db_dir]
+  let l:cmd = [g:gen_tags#gtags_bin, l:db_dir, g:gen_tags#gtags_opts]
 
   function! s:gtags_db_gen_done(...) abort
     if !exists('b:file')
@@ -87,7 +87,7 @@ function! s:gtags_update() abort
 
   call gen_tags#echo('Update GTAGS in background')
 
-  let l:cmd = ['global', '-u']
+  let l:cmd = [g:gen_tags#global_bin, '-u']
   call gen_tags#system_async(l:cmd)
 endfunction
 
@@ -126,6 +126,10 @@ function! gen_tags#gtags#init() abort
 
   if !exists('g:gen_tags#gtags_auto_gen')
     let g:gen_tags#gtags_auto_gen = 0
+  endif
+
+  if !exists('g:gen_tags#gtags_opts')
+    let g:gen_tags#gtags_opts = ''
   endif
 
   call s:gtags_set_env()

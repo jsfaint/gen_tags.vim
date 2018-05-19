@@ -130,10 +130,27 @@ g:gen_tags#ctags_bin                            *g:gen_tags#ctags_bin*
 Set location of ctags. The default is 'ctags'
 
 ------------------------------------------------------------------------------
+g:gen_tags#gtags_bin                            *g:gen_tags#gtags_bin*
+
+Set location of ctags. The default is 'gtags'
+
+------------------------------------------------------------------------------
+g:gen_tags#global_bin                           *g:gen_tags#global_bin*
+
+Set location of global; a binary of gtags. The default is 'global'
+
+------------------------------------------------------------------------------
 g:gen_tags#ctags_opts                            *g:gen_tags#ctags_opts*
 
 Set ctags options. The `-R` is set by default,
 so there is no need to add `-R` in `g:gen_tags#ctags_opts`.
+The default `g:gen_tags#ctags_opts` is '', you need to set it in your vimrc
+
+------------------------------------------------------------------------------
+g:gen_tags#gtags_opts                            *g:gen_tags#gtags_opts*
+
+Set gtags options. The database path is the default.
+The gtags options will be before the database path.
 The default `g:gen_tags#ctags_opts` is '', you need to set it in your vimrc
 
 ------------------------------------------------------------------------------
