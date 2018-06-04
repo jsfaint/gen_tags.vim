@@ -70,7 +70,7 @@ function! s:ctags_gen(filename, dir) abort
   let l:dir = gen_tags#get_db_dir()
 
 
-  call gen_tags#echo('Generate project ctags database in backgroud')
+  call gen_tags#echo('Generate project ctags database in background')
 
   call gen_tags#mkdir(l:dir)
 
@@ -89,13 +89,19 @@ function! s:ctags_gen(filename, dir) abort
     let l:cmd += ['-f', l:file, '-R', g:gen_tags#ctags_opts, a:dir]
   endif
 
-  call gen_tags#system_async(l:cmd)
+  function! s:ctags_db_gen_done(...) abort
+    let l:dir = gen_tags#get_db_dir()
 
-  "Search for existence tags string.
-  let l:ret = stridx(&tags, l:dir)
-  if l:ret == -1
-    call s:ctags_add(l:file)
-  endif
+    "Search for existence tags string.
+    let l:ret = stridx(&tags, l:dir)
+    if l:ret == -1
+      call s:ctags_add(l:file)
+    endif
+
+    call gen_tags#statusline#clear()
+  endfunction
+
+  call gen_tags#system_async(l:cmd, function('s:ctags_db_gen_done'))
 endfunction
 
 function! s:ctags_auto_load() abort
@@ -144,6 +150,7 @@ function! s:ctags_clear(bang) abort
       let l:file = s:ctags_get_extend_name(l:item)
       if filereadable(l:file)
         call delete(l:file)
+        exec 'set tags-=' l:file
       endif
     endfor
   else

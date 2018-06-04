@@ -247,6 +247,15 @@ following cscope comands in your vimrc.
 <
 For more details, please refer help |cscope|
 
+------------------------------------------------------------------------------
+g:gen_tags#statusline                           *g:gen_tags#statusline*
+
+Enable/Disable statusline feature.
+If |g:gen_tags#statusline| is 1, the statusline will show tags generating info,
+else nothing happened.
+
+The default |g:gen_tags#statusline| is 1
+
 ==============================================================================
 5. Events                                       *gen_tags-events*
 

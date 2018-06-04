@@ -50,6 +50,8 @@ function! s:gtags_db_gen() abort
     endif
     call s:gtags_add(b:file)
     unlet b:file
+
+    call gen_tags#statusline#clear()
   endfunction
 
   call gen_tags#mkdir(l:db_dir)

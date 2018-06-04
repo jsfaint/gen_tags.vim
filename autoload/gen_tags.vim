@@ -149,6 +149,8 @@ function! s:job_stdout(job_id, data, ...) abort
 endfunction
 
 function! s:job_start(cmd, ...) abort
+  call gen_tags#statusline#set('Generate tags in background, please stand by...')
+
   if has('nvim')
     let l:job = {
           \ 'on_stdout': function('s:job_stdout'),
@@ -182,6 +184,8 @@ function! s:job_start(cmd, ...) abort
     if a:0 != 0
       call a:1()
     endif
+
+    call gen_tags#statusline#clear()
 
     let l:job_id = -1
   endif
