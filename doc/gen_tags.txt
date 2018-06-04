@@ -98,8 +98,8 @@ Generate GTAGS
 
 `ctrl+]` is the default mapping support by Vim for definition
 
-The following mapping is set for GTAGS find function which uses the
-cscope interface (`if_cscope`).
+The following mapping is set for gtags when |g:gen_tags#gtags_default_map| is 1,
+which uses the |cscope| interface .
 >
   Ctrl+\ c    Find functions calling this function
   Ctrl+\ d    Find functions called by this function
@@ -172,15 +172,6 @@ The default `g:gen_tags#use_cache_dir` is 1, you need to set it in  your vimrc.
   `$HOME/.cache/tags_dir/<project name>`
 
 ------------------------------------------------------------------------------
-g:gen_tags#gtags_split                           *g:gen_tags#gtags_split*
-
-Set gtags find display behavior.
-The default `g:gtags_split` is ''
-  '' means don't split the display.
-  'h' means horizontal splitting.
-  'v' means vertical splitting.
-
-------------------------------------------------------------------------------
 g:gen_tags#ctags_auto_gen                       *g:gen_tags#ctags_auto_gen*
 
 Auto generate ctags when this variable is 1 and current file belongs to
@@ -211,10 +202,30 @@ Verbose mode to echo some message.
 The default `g:gen_tags#verbose` is 0
 
 ------------------------------------------------------------------------------
-g:gen_tags#ctags_prune                                *g:gen_tags#ctags_prune*
+g:gen_tags#ctags_prune                          *g:gen_tags#ctags_prune*
 
 Prune tags from tagfile before incremental update
 The default `g:gen_tags#ctags_prune` is 0
+
+------------------------------------------------------------------------------
+g:gen_tags#gtags_default_map                    *g:gen_tags#gtags_default_map*
+
+Enable/Disable default mapping for gtags_default_map.
+The default |g:gen_tags#gtags_default_map| is 1
+
+After set the |g:gen_tags#gtags_default_map| to 0, then you can map the
+following cscope comands in your vimrc.
+>
+    :cs find c <C-R>=expand('<cword>')<CR><CR>
+    :cs find d <C-R>=expand('<cword>')<CR><CR>
+    :cs find e <C-R>=expand('<cword>')<CR><CR>
+    :cs find f <C-R>=expand('<cfile>')<CR><CR>
+    :cs find g <C-R>=expand('<cword>')<CR><CR>
+    :cs find i <C-R>=expand('<cfile>')<CR><CR>
+    :cs find s <C-R>=expand('<cword>')<CR><CR>
+    :cs find t <C-R>=expand('<cword>')<CR><CR>
+<
+For more details, please refer help |cscope|
 
 ==============================================================================
 5. Events                                             *gen_tags-events*

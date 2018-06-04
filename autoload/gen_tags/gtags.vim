@@ -120,10 +120,6 @@ function! gen_tags#gtags#init() abort
   let s:file = 'GTAGS'
 
   "Options
-  if !exists('g:gen_tags#gtags_split')
-    let g:gen_tags#gtags_split = ''
-  endif
-
   if !exists('g:gen_tags#gtags_auto_gen')
     let g:gen_tags#gtags_auto_gen = 0
   endif
@@ -132,13 +128,17 @@ function! gen_tags#gtags#init() abort
     let g:gen_tags#gtags_opts = ''
   endif
 
+  if !exists('g:gen_tags#gtags_default_map')
+    let g:gen_tags#gtags_default_map = 1
+  endif
+
   call s:gtags_set_env()
 
   set cscopetag
   set cscopeprg=gtags-cscope
 
   "Hotkey for cscope
-  if empty(g:gen_tags#gtags_split)
+  if g:gen_tags#gtags_default_map == 1
     nmap <C-\>c :cs find c <C-R>=expand('<cword>')<CR><CR>
     nmap <C-\>d :cs find d <C-R>=expand('<cword>')<CR><CR>
     nmap <C-\>e :cs find e <C-R>=expand('<cword>')<CR><CR>
@@ -147,24 +147,6 @@ function! gen_tags#gtags#init() abort
     nmap <C-\>i :cs find i <C-R>=expand('<cfile>')<CR><CR>
     nmap <C-\>s :cs find s <C-R>=expand('<cword>')<CR><CR>
     nmap <C-\>t :cs find t <C-R>=expand('<cword>')<CR><CR>
-  elseif g:gen_tags#gtags_split ==# 'h'
-    nmap <C-\>c :scs find c <C-R>=expand('<cword>')<CR><CR>
-    nmap <C-\>d :scs find d <C-R>=expand('<cword>')<CR><CR>
-    nmap <C-\>e :scs find e <C-R>=expand('<cword>')<CR><CR>
-    nmap <C-\>f :scs find f <C-R>=expand('<cfile>')<CR><CR>
-    nmap <C-\>g :scs find g <C-R>=expand('<cword>')<CR><CR>
-    nmap <C-\>i :scs find i <C-R>=expand('<cfile>')<CR><CR>
-    nmap <C-\>s :scs find s <C-R>=expand('<cword>')<CR><CR>
-    nmap <C-\>t :scs find t <C-R>=expand('<cword>')<CR><CR>
-  elseif g:gen_tags#gtags_split ==# 'v'
-    nmap <C-\>c :vert scs find c <C-R>=expand('<cword>')<CR><CR>
-    nmap <C-\>d :vert scs find d <C-R>=expand('<cword>')<CR><CR>
-    nmap <C-\>e :vert scs find e <C-R>=expand('<cword>')<CR><CR>
-    nmap <C-\>f :vert scs find f <C-R>=expand('<cfile>')<CR><CR>
-    nmap <C-\>g :vert scs find g <C-R>=expand('<cword>')<CR><CR>
-    nmap <C-\>i :vert scs find i <C-R>=expand('<cfile>')<CR><CR>
-    nmap <C-\>s :vert scs find s <C-R>=expand('<cword>')<CR><CR>
-    nmap <C-\>t :vert scs find t <C-R>=expand('<cword>')<CR><CR>
   endif
 
   "Command list
