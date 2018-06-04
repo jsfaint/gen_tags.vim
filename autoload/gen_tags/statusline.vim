@@ -13,7 +13,7 @@ function! gen_tags#statusline#set(msg) abort
     let w:statusline = &statusline
   endif
 
-  if w:airline_active == 1
+  if get(w:, 'airline_active', 0)
     let w:airline_disabled = 1
   endif
 
@@ -27,7 +27,7 @@ function! gen_tags#statusline#clear() abort
     return
   endif
 
-  if w:airline_active == 1
+  if get(w:, 'airline_active', 0)
     let w:airline_disabled = 0
   endif
 
