@@ -26,10 +26,10 @@
 
 ## Installation
 
-* [Neobundle](https://github.com/shougo/neobundle.vim)
+* [dein.vim](https://github.com/shougo/dein.vim)
 
-  Add `NeoBundle 'jsfaint/gen_tags.vim'` to your vimrc</br>
-  Then launch `vim`/`nvim` and run `:NeobundleCheck`
+  Add `call dein#add('jsfaint/gen_tags.vim')` to your vimrc</br>
+  Then launch `vim`/`nvim` and run `:call dein#install()`
 
 * [vim-plug](https://github.com/junegunn/vim-plug)
 
@@ -100,7 +100,8 @@
 
   `ctrl+]` is the default mapping support by Vim for definition
 
-  The following mapping is set for GTAGS find function which use cscope interface (`if_cscope`).
+  The following mapping is set for gtags when `g:gen_tags#gtags_default_map` is 1,
+which uses the `cscope` interface .
 
   ```text
   Ctrl+\ c    Find functions calling this function
@@ -113,99 +114,9 @@
   Ctrl+\ t    Find this text string
   ```
 
-## Options
+## Detail Usage
 
-* `g:loaded_gentags#ctags`
-
-Set to 1 if you want to disable ctags support
-
-* `g:loaded_gentags#gtags`
-
-Set to 1 if you want to disable gtags support
-
-* `g:gen_tags#ctags_bin`
-
-Set location of ctags. The default is 'ctags'
-
-* `g:gen_tags#ctags_opts`
-
-Set ctags options. The `-R` is set by default, so there is no need to add `-R` in `g:gen_tags#ctags_opts`.</br>
-The default `g:gen_tags#ctags_opts` is '', you need to set it in your vimrc :smile:
-
-* `g:gen_tags#use_cache_dir`
-
-**This option only works for scm-repo.**
-Set the path of tags. If this variable is set to 1, `gen_tags.vim` will use cache direcotry to store tags.</br>
-The default `g:gen_tags#use_cache_dir` is 1, you need to set it in  your vimrc.
-
-0:
-  SCM repo:
-      git `<project folder>/.git/tags_dir`
-      hg `<project folder>/.hg/tags_dir`
-      svn `<project folder>/.svn/tags_dir`
-
-  non-git: `$HOME/.cache/tags_dir/<project name>`
-
-1:
-  `$HOME/.cache/tags_dir/<project name>`
-
-* `g:gen_tags#gtags_split`
-
-Set gtags find display behavior. The default `g:gtags_split` is ''.</br>
-'' means don't split the display.</br>
-'h' means horizontal splitting.</br>
-'v' means vertical splitting.</br>
-
-* `g:gen_tags#ctags_auto_gen`
-
-Auto generate ctags when this variable is 1 and current file belongs to a scm repo.</br>
-The default `g:gen_tags#ctags_auto_gen` is 0
-
-* `g:gen_tags#gtags_auto_gen`
-
-Auto generate gtags when this variable is 1 and current file belongs to a scm repo.</br>
-The default `g:gen_tags#gtags_auto_gen` is 0
-
-* `g:gen_tags#blacklist`
-
-A list to set the blacklist, if the path in  blacklist is equal `gen_tags#find_project_root()`, the generation of ctags/gtags will be skipped.
-The default `g:gen_tags#blacklist` is []
-
-e.g.: You can set it in your vimrc as below, it will blacklist `$HOME` dir
-
-```viml
-let g:gen_tags#blacklist = ['$HOME']
-```
-
-* `g:gen_tags#verbose`
-
-Verbose mode to echo some message</br>
-The default `g:gen_tags#verbose` is 0
-
-* `g:gen_tags#ctags_prune`
-
-Prune tags from tagfile before incremental update
-The default `g:gen_tags#ctags_prune` is 0
-
-## Events
-
-* GenTags#CtagsLoaded
-
-There are two events will be triggered after the ctags was loaded
-
-```vim
-autocmd User GenTags#CtagsLoaded echo "hello world"
-```
-
-* GenTags#GtagsLoaded
-
-There are two events will be triggered after the gtags was loaded
-
-```vim
-autocmd User GenTags#GtagsLoaded nnoremap gd <c-]>
-```
-
-The idea comes from @butterflyfish in [gen_tags.vim#32](https://github.com/jsfaint/gen_tags.vim/issues/32)
+For more details about the usage, please refer to the help document in vim by `:help gen_tags.vim`
 
 ----
 

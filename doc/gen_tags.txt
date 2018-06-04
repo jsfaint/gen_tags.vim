@@ -1,4 +1,4 @@
-*gen_tags.txt* Async plugin for vim and neovim to ease the use of ctags/gtags.
+*gen_tags.vim* Async plugin for vim and neovim to ease the use of ctags/gtags.
 
 Author: Jia Sui (https://github.com/jsfaint)
 Repository: https://github.com/jsfaint/gen_tags.vim
@@ -14,18 +14,17 @@ CONTENTS                                                 *gen_tags-contents*
 6. Events ............................................. |gen_tags-events|
 
 ==============================================================================
-1. Introduction                                         *gen_ctags-introduction*
+1. Introduction                                         *gen_tags-introduction*
 Async plugin for Vim/NeoVim to ease the use of ctags/gtags
 It is used to generate and maintain tags for you with multiple platform support, tested on Windows/Linux/macOS.
 
-`gen_tags.vim` will detect scm(git, hg, svn) root and use it as the project root path.
+|gen_tags.vim| will detect scm(git, hg, svn) root and use it as the project root path.
 
 Generating and updating ctags or gtags will run in the background.
 
 ------------------------------------------------------------------------------
-`gen_tags.vim` also provides a gtags completion source for
-nvim-completion-manager(AKA NCM) and deoplete.nvim, it's optional, if you don't use ncm, just
-ignore it :)
+|gen_tags.vim| also provides a gtags completion source for |NCM| and |deoplete|,
+it's optional, if you don't use ncm, just ignore it :)
 
 ------------------------------------------------------------------------------
 GNU global(aka gtags) is more powerful than ctags, which support definition,
@@ -112,7 +111,7 @@ which uses the |cscope| interface .
 <
 
 ==============================================================================
-5. Options                                             *gen_tags-options*
+5. Options                                       *gen_tags-options*
 
 ------------------------------------------------------------------------------
 g:loaded_gentags#ctags                           *g:loaded_gentags#ctags*
@@ -132,7 +131,7 @@ Set location of ctags. The default is 'ctags'
 ------------------------------------------------------------------------------
 g:gen_tags#gtags_bin                            *g:gen_tags#gtags_bin*
 
-Set location of ctags. The default is 'gtags'
+Set location of gtags. The default is 'gtags'
 
 ------------------------------------------------------------------------------
 g:gen_tags#global_bin                           *g:gen_tags#global_bin*
@@ -143,23 +142,26 @@ Set location of global; a binary of gtags. The default is 'global'
 g:gen_tags#ctags_opts                            *g:gen_tags#ctags_opts*
 
 Set ctags options. The `-R` is set by default,
-so there is no need to add `-R` in `g:gen_tags#ctags_opts`.
-The default `g:gen_tags#ctags_opts` is '', you need to set it in your vimrc
+so there is no need to add `-R` in |g:gen_tags#ctags_opts|.
+
+The default |g:gen_tags#ctags_opts| is '', you need to set it in your vimrc
 
 ------------------------------------------------------------------------------
 g:gen_tags#gtags_opts                            *g:gen_tags#gtags_opts*
 
 Set gtags options. The database path is the default.
 The gtags options will be before the database path.
-The default `g:gen_tags#ctags_opts` is '', you need to set it in your vimrc
+
+The default |g:gen_tags#ctags_opts| is '', you need to set it in your vimrc
 
 ------------------------------------------------------------------------------
 g:gen_tags#use_cache_dir                        *g:gen_tags#_use_cache_dir*
 
 **This option only works for scm-repo.**
 Set the path of tags. If this variable is set to 1,
-`gen_tags.vim` will use project direcotry to store tags.
-The default `g:gen_tags#use_cache_dir` is 1, you need to set it in  your vimrc.
+|gen_tags.vim| will use project direcotry to store tags.
+
+The default |g:gen_tags#use_cache_dir| is 1, you need to set it in  your vimrc.
 
 0:
   scm repo:
@@ -176,20 +178,25 @@ g:gen_tags#ctags_auto_gen                       *g:gen_tags#ctags_auto_gen*
 
 Auto generate ctags when this variable is 1 and current file belongs to
 a scm repo
-The default `g:gen_tags#ctags_auto_gen` is 0
+
+The default |g:gen_tags#ctags_auto_gen| is 0
 
 ------------------------------------------------------------------------------
 g:gen_tags#gtags_auto_gen                       *g:gen_tags#gtags_auto_gen*
 
 Auto generate gtags when this variable is 1 and current file belongs to
 a scm repo.
-The default `g:gen_tags#gtags_auto_gen` is 0
+
+The default |g:gen_tags#gtags_auto_gen| is 0
 
 ------------------------------------------------------------------------------
 g:gen_tags#blacklist                            *g:gen_tags#blacklist*
 
-A list to set the blacklist, if the path in  blacklist is equal `gen_tags#find_project_root()`, the generation of ctags/gtags will be skipped.
-The default `g:gen_tags#blacklist` is []
+A list to set the blacklist
+If the path in blacklist is equal `gen_tags#find_project_root()`,
+the generation of ctags/gtags will be skipped.
+
+The default |g:gen_tags#blacklist| is []
 
 e.g.: You can set it in your vimrc as below, it will blacklist `$HOME` dir
 
@@ -199,18 +206,21 @@ e.g.: You can set it in your vimrc as below, it will blacklist `$HOME` dir
 g:gen_tags#verbose                              *g:gen_tags#verbose*
 
 Verbose mode to echo some message.
-The default `g:gen_tags#verbose` is 0
+
+The default |g:gen_tags#verbose| is 0
 
 ------------------------------------------------------------------------------
 g:gen_tags#ctags_prune                          *g:gen_tags#ctags_prune*
 
 Prune tags from tagfile before incremental update
-The default `g:gen_tags#ctags_prune` is 0
+
+The default |g:gen_tags#ctags_prune| is 0
 
 ------------------------------------------------------------------------------
 g:gen_tags#gtags_default_map                    *g:gen_tags#gtags_default_map*
 
 Enable/Disable default mapping for gtags_default_map.
+
 The default |g:gen_tags#gtags_default_map| is 1
 
 After set the |g:gen_tags#gtags_default_map| to 0, then you can map the
@@ -228,7 +238,7 @@ following cscope comands in your vimrc.
 For more details, please refer help |cscope|
 
 ==============================================================================
-5. Events                                             *gen_tags-events*
+5. Events                                       *gen_tags-events*
 
 GenTags#CtagsLoaded                             *GenTags#CtagsLoaded*
 
@@ -238,7 +248,7 @@ There are two events will be triggered after the ctags was loaded
   autocmd User GenTags#CtagsLoaded echo "hello world"
 <
 
-GenTags#GtagsLoaded                              *GenTags#GtagsLoaded*
+GenTags#GtagsLoaded                             *GenTags#GtagsLoaded*
 
 There are two events will be triggered after the gtags was loaded
 
