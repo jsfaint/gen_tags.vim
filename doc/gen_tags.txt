@@ -202,6 +202,16 @@ e.g.: You can set it in your vimrc as below, it will blacklist `$HOME` dir
 
 `let g:gen_tags#blacklist = ['$HOME']`
 
+If you want to contain the sub-directory of some folders
+Please refer this issue https://github.com/jsfaint/gen_tags.vim/issues/43
+
+For example:
+
+>
+  let g:gen_tags#blacklist = split(glob('~/.vim/plugged/*'))
+  let g:gen_tags#blacklist += split(glob('~/.vim/*'))
+<
+
 ------------------------------------------------------------------------------
 g:gen_tags#verbose                              *g:gen_tags#verbose*
 
