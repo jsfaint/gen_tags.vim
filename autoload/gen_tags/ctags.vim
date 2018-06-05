@@ -90,18 +90,16 @@ function! s:ctags_gen(filename, dir) abort
   endif
 
   function! s:ctags_db_gen_done(...) abort
-    let l:dir = gen_tags#get_db_dir()
-
-    "Search for existence tags string.
-    let l:ret = stridx(&tags, l:dir)
-    if l:ret == -1
-      call s:ctags_add(l:file)
-    endif
-
     call gen_tags#statusline#clear()
   endfunction
 
   call gen_tags#system_async(l:cmd, function('s:ctags_db_gen_done'))
+
+  "Search for existence tags string.
+  let l:ret = stridx(&tags, l:dir)
+  if l:ret == -1
+    call s:ctags_add(l:file)
+  endif
 endfunction
 
 function! s:ctags_auto_load() abort
