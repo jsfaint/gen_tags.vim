@@ -5,7 +5,7 @@
 " ============================================================================
 
 function! gen_tags#statusline#set(msg) abort
-  if get(g:, 'gen_tags#statusline', 0)
+  if ! get(g:, 'gen_tags#statusline', 0)
     return
   endif
 
@@ -23,7 +23,7 @@ function! gen_tags#statusline#set(msg) abort
 endfunction
 
 function! gen_tags#statusline#clear() abort
-  if get(g:, 'gen_tags#statusline', 0)
+  if ! get(g:, 'gen_tags#statusline', 0)
     return
   endif
 
