@@ -70,7 +70,7 @@ function! s:ctags_gen(filename, dir) abort
   let l:dir = gen_tags#get_db_dir()
 
 
-  call gen_tags#echo('Generate project ctags database in background')
+  call gen_tags#echo('Generating ctags in background')
 
   call gen_tags#mkdir(l:dir)
 

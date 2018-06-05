@@ -254,7 +254,7 @@ Enable/Disable statusline feature.
 If |g:gen_tags#statusline| is 1, the statusline will show tags generating info,
 else nothing happened.
 
-The default |g:gen_tags#statusline| is 1
+The default |g:gen_tags#statusline| is 0
 
 ==============================================================================
 5. Events                                       *gen_tags-events*

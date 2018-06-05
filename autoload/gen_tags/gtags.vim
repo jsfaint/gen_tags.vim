@@ -56,7 +56,7 @@ function! s:gtags_db_gen() abort
 
   call gen_tags#mkdir(l:db_dir)
 
-  call gen_tags#echo('Generate GTAGS in background')
+  call gen_tags#echo('Generating GTAGS in background')
   call gen_tags#system_async(l:cmd, function('s:gtags_db_gen_done'))
 endfunction
 
