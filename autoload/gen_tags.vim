@@ -148,6 +148,10 @@ function! s:job_stdout(job_id, data, ...) abort
   endif
 endfunction
 
+function! s:job_exit(job_id, data, ...) abort
+  call gen_tags#statusline#clear()
+endfunction
+
 function! s:job_start(cmd, ...) abort
   call gen_tags#statusline#set('Generating tags in background, please stand by...')
 
@@ -155,6 +159,7 @@ function! s:job_start(cmd, ...) abort
     let l:job = {
           \ 'on_stdout': function('s:job_stdout'),
           \ 'on_stderr': function('s:job_stdout'),
+          \ 'on_exit': function('s:job_exit'),
           \ }
 
     if a:0 != 0
@@ -166,6 +171,7 @@ function! s:job_start(cmd, ...) abort
     let l:job = {
           \ 'out_cb': function('s:job_stdout'),
           \ 'err_cb': function('s:job_stdout'),
+          \ 'exit_cb': function('s:job_exit'),
           \ }
 
     if a:0 != 0
