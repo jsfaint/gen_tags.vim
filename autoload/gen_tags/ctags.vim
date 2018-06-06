@@ -81,12 +81,16 @@ function! s:ctags_gen(filename, dir) abort
     let l:cmd += ['--extras=+r']
   endif
 
+  if !empty(g:gen_tags#ctags_opts)
+    let l:cmd += [g:gen_tags#ctags_opts]
+  endif
+
   if empty(a:filename)
     let l:file = l:dir . '/' . s:ctags_db
-    let l:cmd += ['-f', l:file, '-R', g:gen_tags#ctags_opts, gen_tags#find_project_root()]
+    let l:cmd += ['-f', l:file, '-R', gen_tags#find_project_root()]
   else
     let l:file = a:filename
-    let l:cmd += ['-f', l:file, '-R', g:gen_tags#ctags_opts, a:dir]
+    let l:cmd += ['-f', l:file, '-R', a:dir]
   endif
 
   call gen_tags#system_async(l:cmd)
