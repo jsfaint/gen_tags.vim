@@ -45,6 +45,8 @@ function! s:gtags_db_gen() abort
   let l:cmd = [g:gen_tags#gtags_bin, l:db_dir, g:gen_tags#gtags_opts]
 
   function! s:gtags_db_gen_done(...) abort
+    call gen_tags#statusline#clear()
+
     if !exists('b:file')
       return
     endif
@@ -54,7 +56,7 @@ function! s:gtags_db_gen() abort
 
   call gen_tags#mkdir(l:db_dir)
 
-  call gen_tags#echo('Generate GTAGS in background')
+  call gen_tags#echo('Generating GTAGS in background')
   call gen_tags#system_async(l:cmd, function('s:gtags_db_gen_done'))
 endfunction
 
