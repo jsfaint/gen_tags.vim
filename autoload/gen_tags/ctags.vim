@@ -155,7 +155,8 @@ function! s:ctags_auto_update() abort
     return
   endif
 
-  let l:file = expand('<afile>')
+  let l:file = fnamemodify(gen_tags#fix_path('<afile>'), ':p')
+  let l:file = gen_tags#fix_path(l:file)
 
   "Prune tags content for saved file
   if g:gen_tags#ctags_prune
@@ -272,7 +273,7 @@ function! s:ctags_update(file) abort
   let l:dir = gen_tags#get_db_dir()
   let l:file = l:dir . '/' . s:ctags_db
 
-  let l:cmd += ['-u', '-f', l:file, '-a', gen_tags#find_project_root() . '/' . a:file]
+  let l:cmd += ['-u', '-f', l:file, '-a', a:file]
 
   call gen_tags#system_async(l:cmd)
 endfunction

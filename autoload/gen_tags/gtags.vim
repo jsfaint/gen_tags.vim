@@ -88,7 +88,7 @@ function! s:gtags_update() abort
   endif
 
   "check file size
-  if getfsize(expand(l:file)) == 0
+  if getfsize(gen_tags#fix_path(l:file)) == 0
     call delete(l:file)
   endif
 
