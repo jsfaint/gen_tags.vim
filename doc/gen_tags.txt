@@ -33,7 +33,7 @@ But ctags only supports definitions.
 
 Since we can use GNU global why did I still support ctags in this plugin?
 That's because GNU global only support 6 languages natively.
-`Supported Launages: C, C++, Yacc, Java, PHP4 and assembly`
+`Supported Languages: C, C++, Yacc, Java, PHP4 and assembly`
 
 ctags can support more languages(41 showed on the website).
 
@@ -63,7 +63,7 @@ by create a symbol link of the library
 3. Commands                                             *gen_tags-commands*
 
 ------------------------------------------------------------------------------
-* command for ctags                                     *gen_tags-ctags*
+* Commands for ctags                                     *gen_tags-ctags*
 
 :GenCtags                                               *:GenCtags*
 
@@ -78,10 +78,10 @@ The extend database will be generate automatically.
 :ClearCtags                                             *:ClearCtags*
 
 `:ClearCtags`      Remove tags files.
-`:ClearCtags!`     Remove all files, include db dir
+`:ClearCtags!`     Remove all files, include db directory
 
 ------------------------------------------------------------------------------
-* command for gtags                                     *gen_tags-gtags*
+* Commands for gtags                                     *gen_tags-gtags*
 
 :GenGTAGS                                               *:GenGTAGS*
 
@@ -90,7 +90,7 @@ Generate GTAGS
 :ClearGTAGS                                             *:ClearGTAGS*
 
 `:ClearGTAGS`     Remove GTAGS files
-`:ClearGTAGS!`    Remove all files, include the db dir
+`:ClearGTAGS!`    Remove all files, include the db directory
 
 ==============================================================================
 4. Mappings                                             *gen_tags-mappings*
@@ -152,19 +152,19 @@ g:gen_tags#gtags_opts                            *g:gen_tags#gtags_opts*
 Set gtags options. The database path is the default.
 The gtags options will be before the database path.
 
-The default |g:gen_tags#ctags_opts| is '', you need to set it in your vimrc
+The default |g:gen_tags#gtags_opts| is '', you need to set it in your vimrc
 
 ------------------------------------------------------------------------------
 g:gen_tags#use_cache_dir                        *g:gen_tags#_use_cache_dir*
 
 **This option only works for scm-repo.**
 Set the path of tags. If this variable is set to 1,
-|gen_tags.vim| will use project direcotry to store tags.
+|gen_tags.vim| will use project directory to store tags.
 
 The default |g:gen_tags#use_cache_dir| is 1, you need to set it in  your vimrc.
 
 0:
-  scm repo:
+  scm repository:
     git  `<project folder>/.git/tags_dir`
     hg   `<project folder>/.hg/tags_dir`
     scn  `<project folder>/.svn/tags_dir`
@@ -177,7 +177,7 @@ The default |g:gen_tags#use_cache_dir| is 1, you need to set it in  your vimrc.
 g:gen_tags#ctags_auto_gen                       *g:gen_tags#ctags_auto_gen*
 
 Auto generate ctags when this variable is 1 and current file belongs to
-a scm repo
+a scm repository.
 
 The default |g:gen_tags#ctags_auto_gen| is 0
 
@@ -185,7 +185,7 @@ The default |g:gen_tags#ctags_auto_gen| is 0
 g:gen_tags#gtags_auto_gen                       *g:gen_tags#gtags_auto_gen*
 
 Auto generate gtags when this variable is 1 and current file belongs to
-a scm repo.
+a scm repository.
 
 The default |g:gen_tags#gtags_auto_gen| is 0
 
@@ -206,7 +206,6 @@ If you want to contain the sub-directory of some folders
 Please refer this issue https://github.com/jsfaint/gen_tags.vim/issues/43
 
 For example:
-
 >
   let g:gen_tags#blacklist = split(glob('~/.vim/plugged/*'))
   let g:gen_tags#blacklist += split(glob('~/.vim/*'))
@@ -222,7 +221,7 @@ The default |g:gen_tags#verbose| is 0
 ------------------------------------------------------------------------------
 g:gen_tags#ctags_prune                          *g:gen_tags#ctags_prune*
 
-Prune tags from tagfile before incremental update
+Prune tags from tagfile for incremental update
 
 The default |g:gen_tags#ctags_prune| is 0
 
@@ -234,7 +233,7 @@ Enable/Disable default mapping for gtags_default_map.
 The default |g:gen_tags#gtags_default_map| is 1
 
 After set the |g:gen_tags#gtags_default_map| to 0, then you can map the
-following cscope comands in your vimrc.
+following cscope commands in your vimrc.
 >
     :cs find c <C-R>=expand('<cword>')<CR><CR>
     :cs find d <C-R>=expand('<cword>')<CR><CR>
