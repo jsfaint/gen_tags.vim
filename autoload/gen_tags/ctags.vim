@@ -67,23 +67,13 @@ function! s:ctags_gen(filename, dir) abort
     return
   endif
 
+  "Generate tags directory
   let l:dir = gen_tags#get_db_dir()
-
+  call gen_tags#mkdir(l:dir)
 
   call gen_tags#echo('Generating ctags in background')
 
-  call gen_tags#mkdir(l:dir)
-
-  let l:cmd = [g:gen_tags#ctags_bin]
-
-  "Extra flag in universal ctags, enable reference tags
-  if s:is_universal_ctags()
-    let l:cmd += ['--extras=+r']
-  endif
-
-  if !empty(g:gen_tags#ctags_opts)
-    let l:cmd += [g:gen_tags#ctags_opts]
-  endif
+  let l:cmd = s:ctags_cmd_pre()
 
   if empty(a:filename)
     let l:file = l:dir . '/' . s:ctags_db
@@ -277,11 +267,27 @@ function! s:ctags_prune(tagfile, file) abort
 endfunction
 
 function! s:ctags_update(file) abort
+  let l:cmd = s:ctags_cmd_pre()
+
   let l:dir = gen_tags#get_db_dir()
   let l:file = l:dir . '/' . s:ctags_db
 
-  let l:cmd = [g:gen_tags#ctags_bin, '-u', '-f', l:file, g:gen_tags#ctags_opts,
-        \ '-a', gen_tags#find_project_root(), '/', a:file]
+  let l:cmd += ['-u', '-f', l:file, '-a', gen_tags#find_project_root() . '/' . a:file]
 
   call gen_tags#system_async(l:cmd)
+endfunction
+
+function! s:ctags_cmd_pre() abort
+  let l:cmd = [g:gen_tags#ctags_bin]
+
+  "Extra flag in universal ctags, enable reference tags
+  if s:is_universal_ctags()
+    let l:cmd += ['--extras=+r']
+  endif
+
+  if !empty(g:gen_tags#ctags_opts)
+    let l:cmd += [g:gen_tags#ctags_opts]
+  endif
+
+  return l:cmd
 endfunction
