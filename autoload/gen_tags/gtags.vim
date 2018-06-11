@@ -87,6 +87,11 @@ function! s:gtags_update() abort
     return
   endif
 
+  "check file size
+  if getfsize(expand(l:file)) == 0
+    call delete(l:file)
+  endif
+
   call gen_tags#echo('Update GTAGS in background')
 
   let l:cmd = [g:gen_tags#global_bin, '-u']
