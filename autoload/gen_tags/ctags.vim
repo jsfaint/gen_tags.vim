@@ -38,7 +38,9 @@ function! s:ctags_get_extend_name(item) abort
 endfunction
 
 function! s:ctags_add(file) abort
-  exec 'set tags' . '+=' . a:file
+  let l:file = escape(a:file, ' ')
+  exec 'set tags' . '+=' . expand(l:file)
+
   silent! doautocmd User GenTags#CtagsLoaded
 endfunction
 
