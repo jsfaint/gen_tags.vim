@@ -154,6 +154,7 @@ endfunction
 
 function! s:job_start(cmd, ...) abort
   call gen_tags#statusline#set('Generating tags in background, please stand by...')
+  call gen_tags#echo(string(a:cmd))
 
   if has('nvim')
     let l:job = {
