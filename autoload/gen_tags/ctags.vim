@@ -83,8 +83,6 @@ function! s:ctags_gen(filename, dir) abort
     let l:cmd += ['-f', l:file, '-R', expand(a:dir)]
   endif
 
-  echomsg 'l:cmd: ' . string(l:cmd)
-
   call gen_tags#system_async(l:cmd)
 
   "Search for existence tags string.
