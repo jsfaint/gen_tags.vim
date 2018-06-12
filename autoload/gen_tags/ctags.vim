@@ -77,11 +77,13 @@ function! s:ctags_gen(filename, dir) abort
 
   if empty(a:filename)
     let l:file = l:dir . '/' . s:ctags_db
-    let l:cmd += ['-f', l:file, '-R', gen_tags#find_project_root()]
+    let l:cmd += ['-f', l:file, '-R', expand(gen_tags#find_project_root())]
   else
     let l:file = a:filename
-    let l:cmd += ['-f', l:file, '-R', a:dir]
+    let l:cmd += ['-f', l:file, '-R', expand(a:dir)]
   endif
+
+  echomsg 'l:cmd: ' . string(l:cmd)
 
   call gen_tags#system_async(l:cmd)
 
@@ -156,7 +158,7 @@ function! s:ctags_auto_update() abort
   endif
 
   let l:file = fnamemodify(gen_tags#fix_path('<afile>'), ':p')
-  let l:file = gen_tags#fix_path(l:file)
+  let l:file = expand(l:file)
 
   "Prune tags content for saved file
   if g:gen_tags#ctags_prune
@@ -247,7 +249,7 @@ function! s:ctags_prune(tagfile, file) abort
 
   "Delete specified lines
   if has('win32')
-    let l:file = substitute(a:file, '\\', '\\\\', '')
+    let l:file = escape(a:file, ' \')
     exec '%g/' . escape(l:file, ' \/') . '/d'
   else
     exec '%g/' . escape(a:file, ' /') . '/d'
@@ -271,9 +273,9 @@ function! s:ctags_update(file) abort
   let l:cmd = s:ctags_cmd_pre()
 
   let l:dir = gen_tags#get_db_dir()
-  let l:file = l:dir . '/' . s:ctags_db
+  let l:file = expand(l:dir . '/' . s:ctags_db)
 
-  let l:cmd += ['-u', '-f', l:file, '-a', a:file]
+  let l:cmd += ['-u', '-f', l:file, '-a', expand(a:file)]
 
   call gen_tags#system_async(l:cmd)
 endfunction
