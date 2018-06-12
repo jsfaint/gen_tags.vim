@@ -126,22 +126,23 @@ function! s:ctags_ext_gen() abort
   augroup END
 endfunction
 
+function! s:ctags_remove_file(file) abort
+  if filereadable(a:file)
+    call delete(a:file)
+  endif
+endfunction
+
 "Delete exist tags file
 function! s:ctags_clear(bang) abort
   if empty(a:bang) || !has('patch-7.4.1107')
     "Remove project ctags
     let l:file = s:ctags_get_db_name()
-    if filereadable(l:file)
-      call delete(l:file)
-    endif
+    call s:ctags_remove_file(l:file)
 
     "Remove extend ctags
     for l:item in s:ctags_get_extend_list()
       let l:file = s:ctags_get_extend_name(l:item)
-      if filereadable(l:file)
-        call delete(l:file)
-        exec 'set tags-=' l:file
-      endif
+      call s:ctags_remove_file(l:file)
     endfor
   else
     "Remove all files include tag folder
