@@ -42,7 +42,12 @@ function! s:gtags_db_gen() abort
     return
   endif
 
-  let l:cmd = [g:gen_tags#gtags_bin, l:db_dir, g:gen_tags#gtags_opts]
+  let l:cmd = [g:gen_tags#gtags_bin, l:db_dir]
+
+  "Add gtags options
+  if exists('g:gen_tags#gtags_opts')
+    let l:cmd += gen_tags#opt_converter(g:gen_tags#gtags_opts)
+  endif
 
   function! s:gtags_db_gen_done(...) abort
     call gen_tags#statusline#clear()
@@ -129,10 +134,6 @@ function! gen_tags#gtags#init() abort
   "Options
   if !exists('g:gen_tags#gtags_auto_gen')
     let g:gen_tags#gtags_auto_gen = 0
-  endif
-
-  if !exists('g:gen_tags#gtags_opts')
-    let g:gen_tags#gtags_opts = ''
   endif
 
   if !exists('g:gen_tags#gtags_default_map')

@@ -286,3 +286,13 @@ function! gen_tags#mkdir(dir) abort
     call mkdir(a:dir, 'p')
   endif
 endfunction
+
+function! gen_tags#opt_converter(opt) abort
+  if type(a:opt) == 1 "string
+    let l:cmd = split(a:opt, '\ ')
+  elseif type(a:opt) == 3 "list
+    let l:cmd = a:opt
+  endif
+
+  return l:cmd
+endfunction

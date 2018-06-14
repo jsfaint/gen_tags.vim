@@ -144,16 +144,32 @@ g:gen_tags#ctags_opts                            *g:gen_tags#ctags_opts*
 Set ctags options. The `-R` is set by default,
 so there is no need to add `-R` in |g:gen_tags#ctags_opts|.
 
-The default |g:gen_tags#ctags_opts| is '', you need to set it in your vimrc
+|g:gen_tags#ctags_opts| is not defined by default.
+You need to set it in your vimrc as |string| or |list|
 
+For example:
+>
+  let g:gen_tags#ctags_opts = '--c++-kinds=+px --c-kinds=+px'
+<
+or
+>
+  let g:gen_tags#ctags_opts = ['--c++-kinds=+px', '--c-kinds=+px']
+>
 ------------------------------------------------------------------------------
 g:gen_tags#gtags_opts                            *g:gen_tags#gtags_opts*
 
 Set gtags options. The database path is the default.
 The gtags options will be before the database path.
 
-The default |g:gen_tags#gtags_opts| is '', you need to set it in your vimrc
-
+|g:gen_tags#gtags_opts| is not defined by default.
+You need to set it in your vimrc as |string| or |list|
+>
+  let g:gen_tags#ctags_opts = '-c --verbose'
+<
+or
+>
+  let g:gen_tags#ctags_opts = ['-c', '--verbose']
+>
 ------------------------------------------------------------------------------
 g:gen_tags#use_cache_dir                        *g:gen_tags#_use_cache_dir*
 

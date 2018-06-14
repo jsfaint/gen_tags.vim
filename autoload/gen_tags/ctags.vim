@@ -193,10 +193,6 @@ function! gen_tags#ctags#init() abort
   let s:ctags_db = 'prj_tags'
   let s:ext = 'ext.conf'
 
-  if !exists('g:gen_tags#ctags_opts')
-    let g:gen_tags#ctags_opts = ''
-  endif
-
   if !exists('g:gen_tags#ctags_auto_gen')
     let g:gen_tags#ctags_auto_gen = 0
   endif
@@ -289,9 +285,11 @@ function! s:ctags_cmd_pre() abort
     let l:cmd += ['--extras=+r']
   endif
 
-  if !empty(g:gen_tags#ctags_opts)
-    let l:cmd += [g:gen_tags#ctags_opts]
+  if !exists('g:gen_tags#ctags_opts')
+    return l:cmd
   endif
+
+  let l:cmd += gen_tags#opt_converter(g:gen_tags#ctags_opts)
 
   return l:cmd
 endfunction
