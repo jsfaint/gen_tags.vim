@@ -14,6 +14,11 @@ if !exists('g:gen_tags#blacklist')
   let g:gen_tags#blacklist = []
 endif
 
+"Initial glob blacklist
+if !exists('g:gen_tags#blacklist_re')
+  let g:gen_tags#blacklist_re = []
+endif
+
 "Use cache dir by default
 if !exists('g:gen_tags#use_cache_dir')
   let g:gen_tags#use_cache_dir = 1
@@ -249,7 +254,8 @@ endfunction
 
 "Check if current path is in blacklist
 function! gen_tags#isblacklist(path) abort
-  if !exists('g:gen_tags#blacklist') || g:gen_tags#blacklist == []
+  if (!exists('g:gen_tags#blacklist') || g:gen_tags#blacklist == []) &&
+        \ (!exists('g:gen_tags#blacklist_re') || g:gen_tags#blacklist_re == [])
     call gen_tags#echo('blacklist not set or blacklist is null')
     return 0
   endif
@@ -261,6 +267,13 @@ function! gen_tags#isblacklist(path) abort
       return 1
     endif
   endfor
+
+  for l:re in g:gen_tags#blacklist_re
+    if a:path =~ l:re
+      call gen_tags#echo('Found path ' . a:path . ' to be a blacklisted pattern')
+      return 1
+    endif
+  end
 
   call gen_tags#echo('Did NOT find path ' . a:path . ' in the blacklist')
   return 0
