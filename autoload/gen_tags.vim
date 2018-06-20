@@ -273,7 +273,7 @@ function! gen_tags#isblacklist(path) abort
       call gen_tags#echo('Found path ' . a:path . ' to be a blacklisted pattern')
       return 1
     endif
-  end
+  endfor
 
   call gen_tags#echo('Did NOT find path ' . a:path . ' in the blacklist')
   return 0
