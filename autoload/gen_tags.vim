@@ -172,7 +172,7 @@ function! s:job_start(cmd, ...) abort
       let l:job.on_exit = a:1
     endif
 
-    let l:job_id = jobstart(a:cmd, l:job)
+    let l:job_id = jobstart(join(a:cmd), l:job)
   elseif has('job')
     let l:job = {
           \ 'out_cb': function('s:job_stdout'),

@@ -79,7 +79,12 @@ function! s:ctags_gen(filename, dir) abort
 
   if empty(a:filename)
     let l:file = l:dir . '/' . s:ctags_db
-    let l:cmd += ['-f', l:file, '-R', expand(gen_tags#find_project_root())]
+    let l:cmd += ['-f', l:file]
+    if exists('g:gen_tags#find_tool') && g:gen_tags#find_tool != ''
+      let l:cmd += ['-L-']
+    else
+      let l:cmd += ['-R', expand(gen_tags#find_project_root())]
+    endif
   else
     let l:file = a:filename
     let l:cmd += ['-f', l:file, '-R', expand(a:dir)]
@@ -278,7 +283,13 @@ function! s:ctags_update(file) abort
 endfunction
 
 function! s:ctags_cmd_pre() abort
-  let l:cmd = [g:gen_tags#ctags_bin]
+  let l:cmd = []
+
+  if exists('g:gen_tags#find_tool') && g:gen_tags#find_tool != ''
+    let l:cmd += [g:gen_tags#find_tool, expand(gen_tags#find_project_root()), '|']
+  endif
+
+  let l:cmd += [g:gen_tags#ctags_bin]
 
   "Extra flag in universal ctags, enable reference tags
   if s:is_universal_ctags()
