@@ -77,17 +77,26 @@ function! s:ctags_gen(filename, dir) abort
 
   let l:cmd = s:ctags_cmd_pre()
 
+  if exists('g:gen_tags#find_tool') && g:gen_tags#find_tool != ''
+    let l:find_tool_cmd = [g:gen_tags#find_tool, expand((gen_tags#find_project_root()))]
+    let l:find_tool_opt = ['-L', '-']
+    let l:cmd = l:find_tool_cmd + ['|'] + l:cmd + l:find_tool_opt
+  endif
+
   if empty(a:filename)
     let l:file = l:dir . '/' . s:ctags_db
     let l:cmd += ['-f', l:file]
-    if exists('g:gen_tags#find_tool') && g:gen_tags#find_tool != ''
-      let l:cmd += ['-L-']
-    else
+    " Don't use recursive mode if find_tool exists
+    if !exists('g:gen_tags#find_tool')
       let l:cmd += ['-R', expand(gen_tags#find_project_root())]
     endif
   else
     let l:file = a:filename
-    let l:cmd += ['-f', l:file, '-R', expand(a:dir)]
+    let l:cmd += ['-f', l:file]
+    " Don't use recursive mode if find_tool exists
+    if !exists('g:gen_tags#find_tool')
+      let l:cmd += ['-R', expand(gen_tags#find_project_root())]
+    endif
   endif
 
   call gen_tags#system_async(l:cmd)
@@ -283,13 +292,7 @@ function! s:ctags_update(file) abort
 endfunction
 
 function! s:ctags_cmd_pre() abort
-  let l:cmd = []
-
-  if exists('g:gen_tags#find_tool') && g:gen_tags#find_tool != ''
-    let l:cmd += [g:gen_tags#find_tool, expand(gen_tags#find_project_root()), '|']
-  endif
-
-  let l:cmd += [g:gen_tags#ctags_bin]
+  let l:cmd = [g:gen_tags#ctags_bin]
 
   "Extra flag in universal ctags, enable reference tags
   if s:is_universal_ctags()
