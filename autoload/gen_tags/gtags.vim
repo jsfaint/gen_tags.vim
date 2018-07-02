@@ -49,6 +49,12 @@ function! s:gtags_db_gen() abort
     let l:cmd += gen_tags#opt_converter(g:gen_tags#gtags_opts)
   endif
 
+  if exists('g:gen_tags#find_tool') && g:gen_tags#find_tool != ''
+    let l:find_tool_cmd = [g:gen_tags#find_tool, expand((gen_tags#find_project_root()))]
+    let l:find_tool_opt = ['-f', '-']
+    let l:cmd = l:find_tool_cmd + ['|'] + l:cmd + l:find_tool_opt
+  endif
+
   function! s:gtags_db_gen_done(...) abort
     call gen_tags#statusline#clear()
 
