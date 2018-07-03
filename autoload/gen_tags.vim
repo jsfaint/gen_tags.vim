@@ -183,7 +183,11 @@ function! s:job_start(cmd, ...) abort
     if a:0 != 0
       let l:job.exit_cb = a:1
     endif
-    let l:cmd = ['/bin/sh', '-c', join(a:cmd)]
+    if has('unix')
+      let l:cmd = ['/bin/sh', '-c', join(a:cmd)]
+    else
+      let l:cmd = ['cmd', '/c', join(a:cmd)]
+    endif
     let l:job_id = job_start(l:cmd, l:job)
   else
     if has('unix')
