@@ -57,21 +57,13 @@ endfunction
 "if the project managed by git/hg/svn, return the repo root.
 "else return the current work directory.
 function! gen_tags#find_project_root() abort
-  if !exists('s:project_root')
-    let s:project_root = ''
-  endif
-
   "If it is scm repo, use scm folder as project root
   let l:scm = gen_tags#get_scm_info()
   if !empty(l:scm['type'])
     return l:scm['root']
   endif
 
-  if empty(s:project_root)
-    let s:project_root = gen_tags#fix_path(getcwd())
-  endif
-
-  return s:project_root
+  return gen_tags#fix_path(getcwd())
 endfunction
 
 "Prune exit job from job list
