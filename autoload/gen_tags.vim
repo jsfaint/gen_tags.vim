@@ -260,9 +260,15 @@ function! gen_tags#isblacklist(path) abort
     endif
   endfor
 
+  let l:abs_path = fnamemodify(a:path, ':p')
   for l:re in g:gen_tags#blacklist_re
     if a:path =~ l:re
       call gen_tags#echo('Found path ' . a:path . ' to be a blacklisted pattern')
+      return 1
+    endif
+
+    if l:abs_path =~ l:re
+      call gen_tags#echo('Found path ' . l:abs_path . ' to be a blacklisted pattern')
       return 1
     endif
   endfor
