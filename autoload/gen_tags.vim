@@ -164,7 +164,7 @@ function! s:job_start(cmd, ...) abort
       let l:job.on_exit = a:1
     endif
 
-    let l:job_id = jobstart(a:cmd, l:job)
+    let l:job_id = jobstart(join(a:cmd), l:job)
   elseif has('job')
     let l:job = {
           \ 'out_cb': function('s:job_stdout'),
@@ -175,8 +175,12 @@ function! s:job_start(cmd, ...) abort
     if a:0 != 0
       let l:job.exit_cb = a:1
     endif
-
-    let l:job_id = job_start(a:cmd, l:job)
+    if has('unix')
+      let l:cmd = ['/bin/sh', '-c', join(a:cmd)]
+    else
+      let l:cmd = ['cmd', '/c', join(a:cmd)]
+    endif
+    let l:job_id = job_start(l:cmd, l:job)
   else
     if has('unix')
       let l:cmd = a:cmd + ['&']
