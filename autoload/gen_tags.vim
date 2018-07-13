@@ -260,11 +260,13 @@ function! gen_tags#isblacklist(path) abort
     endif
   endfor
 
-  for l:re in g:gen_tags#blacklist_re
-    if a:path =~ l:re
-      call gen_tags#echo('Found path ' . a:path . ' to be a blacklisted pattern')
-      return 1
-    endif
+  for l:path in [a:path, fnamemodify(a:path, ':p')]
+    for l:re in g:gen_tags#blacklist_re
+      if a:path =~ l:re
+        call gen_tags#echo('Found path ' . a:path . ' to be a blacklisted pattern')
+        return 1
+      endif
+    endfor
   endfor
 
   call gen_tags#echo('Did NOT find path ' . a:path . ' in the blacklist')
