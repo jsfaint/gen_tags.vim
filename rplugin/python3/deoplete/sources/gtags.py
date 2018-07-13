@@ -48,7 +48,6 @@ class Source(Base):
             command.append('-i')
 
         proc = subprocess.Popen(command,
-                                cwd=ctx['cwd'],
                                 stdin=subprocess.PIPE,
                                 stdout=subprocess.PIPE,
                                 stderr=subprocess.DEVNULL)
