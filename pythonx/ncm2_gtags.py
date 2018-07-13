@@ -1,34 +1,38 @@
 # -*- coding: utf-8 -*-
 
-from cm import register_source, Base
+import vim
+from ncm2 import Ncm2Source, getLogger, Popen
 import subprocess
+from distutils.spawn import find_executable
 
-register_source(name='gtags',
-                priority=6,
-                abbreviation='gtags',
-                word_pattern=r'\w+')
+logger = getLogger(__name__)
 
 
-class Source(Base):
+class Source(Ncm2Source):
 
     GTAGS_DB_NOT_FOUND_ERROR = 3
 
-    def __init__(self, nvim):
-        super().__init__(nvim)
-        self._checked = False
+    def check_executable(self):
+        if not find_executable('global'):
+            return False
+        else:
+            return True
 
     def is_word_valid_for_search(self, word):
         FORRBIDDEN_CHARACTERS = [
-                '^', '$', '{', '}', '(', ')', '.',
-                '*', '+', '[', ']', '?', '\\'
-                ]
+            '^', '$', '{', '}', '(', ')', '.',
+            '*', '+', '[', ']', '?', '\\'
+            ]
 
         for forbbiden_char in FORRBIDDEN_CHARACTERS:
             if forbbiden_char in word:
                 return False
         return True
 
-    def cm_refresh(self, info, ctx):
+    def on_complete(self, ctx):
+        if not self.check_executable():
+            return []
+
         base = ctx['base']
 
         if not self.is_word_valid_for_search(base):
@@ -56,4 +60,11 @@ class Source(Base):
 
         matches = output[0].decode('utf8').splitlines()
 
-        self.complete(info, ctx, ctx['startcol'], matches)
+        logger.info('matches %s', matches)
+
+        self.complete(ctx, ctx['startccol'], matches)
+
+
+source = Source(vim)
+
+on_complete = source.on_complete
