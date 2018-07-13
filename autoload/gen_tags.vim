@@ -29,7 +29,7 @@ function! gen_tags#get_scm_info() abort
   let l:scm = {'type': '', 'root': ''}
 
   "Supported scm repo
-  let l:scm_list = ['.git', '.hg', '.svn']
+  let l:scm_list = ['.root', '.git', '.hg', '.svn']
 
   "Detect scm type
   for l:item in l:scm_list
