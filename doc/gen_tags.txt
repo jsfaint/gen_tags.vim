@@ -19,12 +19,13 @@ Async plugin for Vim/NeoVim to ease the use of ctags/gtags
 It is used to generate and maintain tags for you with multiple platform support, tested on Windows/Linux/macOS.
 
 |gen_tags.vim| will detect scm(git, hg, svn) root and use it as the project root path.
+But you can also create a folder named as `.root` to specify a directory as the project root path.
 
 Generating and updating ctags or gtags will run in the background.
 
 ------------------------------------------------------------------------------
-|gen_tags.vim| also provides a gtags completion source for |NCM| and |deoplete|,
-it's optional, if you don't use ncm, just ignore it :)
+|gen_tags.vim| also provides gtags completion source for |NCM2| and |deoplete|,
+it's optional, if you don't use ncm2 or deoplete, just ignore it :)
 
 ------------------------------------------------------------------------------
 GNU global(aka gtags) is more powerful than ctags, which support definition,
