@@ -62,7 +62,7 @@ function! s:gtags_db_gen() abort
   call gen_tags#mkdir(l:db_dir)
 
   call gen_tags#echo('Generating GTAGS in background')
-  call gen_tags#system_async(l:cmd, function('s:gtags_db_gen_done'))
+  call gen_tags#job#system_async(l:cmd, function('s:gtags_db_gen_done'))
 endfunction
 
 function! s:gtags_clear(bang) abort
@@ -100,7 +100,7 @@ function! s:gtags_update() abort
   call gen_tags#echo('Update GTAGS in background')
 
   let l:cmd = [g:gen_tags#global_bin, '-u']
-  call gen_tags#system_async(l:cmd)
+  call gen_tags#job#system_async(l:cmd)
 endfunction
 
 function! s:gtags_auto_gen() abort

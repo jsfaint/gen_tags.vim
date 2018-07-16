@@ -85,7 +85,7 @@ function! s:ctags_gen(filename, dir) abort
     let l:cmd += ['-f', l:file, '-R', expand(a:dir)]
   endif
 
-  call gen_tags#system_async(l:cmd)
+  call gen_tags#job#system_async(l:cmd)
 
   "Search for existence tags string.
   let l:ret = stridx(&tags, l:dir)
@@ -274,7 +274,7 @@ function! s:ctags_update(file) abort
 
   let l:cmd += ['-u', '-f', l:file, '-a', expand(a:file)]
 
-  call gen_tags#system_async(l:cmd)
+  call gen_tags#job#system_async(l:cmd)
 endfunction
 
 function! s:ctags_cmd_pre() abort
