@@ -247,9 +247,9 @@ function! s:ctags_prune(tagfile, file) abort
   "Delete specified lines
   if has('win32')
     let l:file = escape(a:file, ' \')
-    exec '%g/' . escape(l:file, ' \/') . '/d'
+    exec 'silent %g/' . escape(l:file, ' \/') . '/d'
   else
-    exec '%g/' . escape(a:file, ' /') . '/d'
+    exec 'silent %g/' . escape(a:file, ' /') . '/d'
   endif
 
   exec 'silent write'
