@@ -237,6 +237,9 @@ function! s:ctags_prune(tagfile, file) abort
   let l:fold = &foldmethod
   let l:swapfile = &swapfile
 
+  "Save current tab page
+  let l:pretabpage = tabpagenr('$') - tabpagenr()
+
   set eventignore=FileType
   set nofoldenable
   set noswapfile
@@ -259,6 +262,11 @@ function! s:ctags_prune(tagfile, file) abort
   let &eventignore = l:event
   let &foldmethod = l:fold
   let &swapfile = l:swapfile
+
+  "Restore current tab page
+  if l:pretabpage > 0
+      exec 'silent tabp' . l:pretabpage
+  endif
 
   "Restore undofile setting
   if has('persistent-undo')
