@@ -265,7 +265,7 @@ function! s:ctags_prune(tagfile, file) abort
 
   "Restore current tab page
   if l:pretabpage > 0
-      exec 'silent tabp' . l:pretabpage
+      exec 'silent tabp1'
   endif
 
   "Restore undofile setting
