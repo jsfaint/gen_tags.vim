@@ -202,6 +202,18 @@ function! gen_tags#ctags#init() abort
     let g:gen_tags#ctags_prune = 0
   endif
 
+  if has('python') || has('python3')
+    let s:ctags_prune_py = globpath(&runtimepath,'pythonx/prune.py',1)
+
+    if has('python3')
+      let s:pyfile_cmd = 'py3file'
+      let s:py_cmd = 'py3'
+    elseif has('python')
+      let s:pyfile_cmd = 'pyfile'
+      let s:py_cmd = 'py'
+    endif
+  endif
+
   "Command list
   command! -nargs=0 GenCtags call s:ctags_gen('', '')
   command! -nargs=0 EditExt call s:ctags_ext_edit()
@@ -226,52 +238,12 @@ function! s:ctags_prune(tagfile, file) abort
     return
   endif
 
-  "Disable undofile
-  if has('persistent-undo')
-    let l:undostatus = &undofile
-    set noundofile
+  if !(has('python') && has('python3'))
+    return
   endif
 
-  "Dsiable some options
-  let l:event = &eventignore
-  let l:fold = &foldmethod
-  let l:swapfile = &swapfile
-
-  "Save current tab page
-  let l:pretabpage = tabpagenr('$') - tabpagenr()
-
-  set eventignore=FileType
-  set nofoldenable
-  set noswapfile
-
-  "Open tagfile
-  exec 'silent tabedit ' . a:tagfile
-
-  "Delete specified lines
-  if has('win32')
-    let l:file = escape(a:file, ' \')
-    exec 'silent %g/' . escape(l:file, ' \/') . '/d'
-  else
-    exec 'silent %g/' . escape(a:file, ' /') . '/d'
-  endif
-
-  exec 'silent write'
-  exec 'silent bd!'
-
-  "Restore options
-  let &eventignore = l:event
-  let &foldmethod = l:fold
-  let &swapfile = l:swapfile
-
-  "Restore current tab page
-  if l:pretabpage > 0
-      exec 'silent tabp1'
-  endif
-
-  "Restore undofile setting
-  if has('persistent-undo')
-    let &undofile = l:undostatus
-  endif
+  execute s:pyfile_cmd s:ctags_prune_py
+  execute s:py_cmd 'prune("' . a:tagfile . '","'  .a:file . '")'
 endfunction
 
 function! s:ctags_update(file) abort
