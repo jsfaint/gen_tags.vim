@@ -252,7 +252,7 @@ function! s:ctags_update(file) abort
   let l:dir = gen_tags#get_db_dir()
   let l:file = expand(l:dir . '/' . s:ctags_db)
 
-  let l:cmd += ['-u', '-f', l:file, '-a', expand(a:file)]
+  let l:cmd += ['-f', l:file, '-a', expand(a:file)]
 
   call gen_tags#job#system_async(l:cmd)
 endfunction
