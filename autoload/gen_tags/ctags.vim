@@ -202,7 +202,7 @@ function! gen_tags#ctags#init() abort
     let g:gen_tags#ctags_prune = 0
   endif
 
-  if has('python') || has('python3')
+  if has('python3') || has('python')
     let s:ctags_prune_py = globpath(&runtimepath,'pythonx/prune.py',1)
 
     if has('python3')
@@ -238,7 +238,7 @@ function! s:ctags_prune(tagfile, file) abort
     return
   endif
 
-  if !(has('python') && has('python3'))
+  if !(has('python3') && has('python'))
     return
   endif
 
