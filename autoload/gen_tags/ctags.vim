@@ -238,7 +238,7 @@ function! s:ctags_prune(tagfile, file) abort
     return
   endif
 
-  if !(has('python3') && has('python'))
+  if !(exists('s:pyfile_cmd') && exists('s:py_cmd'))
     return
   endif
 
