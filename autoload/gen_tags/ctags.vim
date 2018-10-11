@@ -202,18 +202,6 @@ function! gen_tags#ctags#init() abort
     let g:gen_tags#ctags_prune = 0
   endif
 
-  if has('python3') || has('python')
-    let s:ctags_prune_py = globpath(&runtimepath,'pythonx/prune.py',1)
-
-    if has('python3')
-      let s:pyfile_cmd = 'py3file'
-      let s:py_cmd = 'py3'
-    elseif has('python')
-      let s:pyfile_cmd = 'pyfile'
-      let s:py_cmd = 'py'
-    endif
-  endif
-
   "Command list
   command! -nargs=0 GenCtags call s:ctags_gen('', '')
   command! -nargs=0 EditExt call s:ctags_ext_edit()
@@ -238,12 +226,11 @@ function! s:ctags_prune(tagfile, file) abort
     return
   endif
 
-  if !(exists('s:pyfile_cmd') && exists('s:py_cmd'))
-    return
-  endif
+  let pattern = '\t' . a:file . '\t'
+  let tags = readfile(a:tagfile)
 
-  execute s:pyfile_cmd s:ctags_prune_py
-  execute s:py_cmd 'prune("' . a:tagfile . '","'  .a:file . '")'
+  call filter(tags, 'v:val !~ pattern')
+  call writefile(tags, a:tagfile, 'b')
 endfunction
 
 function! s:ctags_update(file) abort
