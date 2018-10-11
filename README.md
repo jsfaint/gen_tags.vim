@@ -9,11 +9,6 @@
 
   Generate/Update ctags and gtags will run in background.
 
-## Completion with gtags
-
-  `gen_tags.vim` also provide gtags completion source for [ncm2](https://github.com/ncm2/ncm2) and [deoplete.nvim](https://github.com/Shougo/deoplete.nvim)</br>
-  It's optional, if you don't use ncm2 or deoplete, just ignore it :smile:
-
 ## Difference between ctags and gtags
 
   GNU global(aka gtags) is more powerful than ctags, which support definition, reference, calling, called, include, string and etc, but ctags only support definition.

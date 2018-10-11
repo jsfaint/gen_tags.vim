@@ -24,10 +24,6 @@ But you can also create a folder named as `.root` to specify a directory as the 
 Generating and updating ctags or gtags will run in the background.
 
 ------------------------------------------------------------------------------
-|gen_tags.vim| also provides gtags completion source for |NCM2| and |deoplete|,
-it's optional, if you don't use ncm2 or deoplete, just ignore it :)
-
-------------------------------------------------------------------------------
 GNU global(aka gtags) is more powerful than ctags, which support definition,
 reference, calling, called, include, string and etc.
 But ctags only supports definitions.
