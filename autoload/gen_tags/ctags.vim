@@ -159,7 +159,6 @@ function! s:ctags_auto_update() abort
   endif
 
   let l:file = fnamemodify(gen_tags#fix_path('<afile>'), ':p')
-  let l:file = expand(l:file)
 
   "Prune tags content for saved file
   if g:gen_tags#ctags_prune
@@ -226,10 +225,18 @@ function! s:ctags_prune(tagfile, file) abort
     return
   endif
 
-  let pattern = '\t' . a:file . '\t'
+  "Fix pattern for windows
+  if has('win32')
+    let l:pattern = escape(escape(a:file, '\'), '\')
+  else
+    let l:pattern = a:file
+  endif
+
+  let l:pattern = '\t' . l:pattern . '\t'
+
   let tags = readfile(a:tagfile)
 
-  call filter(tags, 'v:val !~ pattern')
+  call filter(tags, 'v:val !~ l:pattern')
   call writefile(tags, a:tagfile, 'b')
 endfunction
 
