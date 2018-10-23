@@ -38,7 +38,7 @@ function! s:gtags_db_gen() abort
 
   "If gtags file exist, run update procedure.
   if filereadable(b:file)
-    call s:gtags_update()
+    call s:gtags_update(1)
     return
   endif
 
@@ -86,21 +86,27 @@ function! s:gtags_clear(bang) abort
   endif
 endfunction
 
-function! s:gtags_update() abort
-  let l:file = $GTAGSDBPATH . '/' . s:file
+function! s:gtags_update(full) abort
+  let l:dbfile = $GTAGSDBPATH . '/' . s:file
 
-  if !filereadable(l:file)
+  if !filereadable(l:dbfile)
     return
   endif
 
   "check file size
-  if getfsize(gen_tags#fix_path(l:file)) == 0
-    call delete(l:file)
+  if getfsize(gen_tags#fix_path(l:dbfile)) == 0
+    call delete(l:dbfile)
   endif
 
   call gen_tags#echo('Update GTAGS in background')
 
-  let l:cmd = [g:gen_tags#global_bin, '-u']
+  if a:full
+    let l:cmd = [g:gen_tags#global_bin, '-u']
+  else
+    let l:srcfile = fnamemodify(gen_tags#fix_path('<afile>'), ':p')
+    let l:cmd = [g:gen_tags#global_bin, '--single-update', l:srcfile]
+  endif
+
   call gen_tags#job#system_async(l:cmd)
 endfunction
 
@@ -114,7 +120,7 @@ function! s:gtags_auto_gen() abort
   " If tags exist update it, otherwise generate new one.
   let l:file = $GTAGSDBPATH . '/' . s:file
   if filereadable(l:file)
-    call s:gtags_update()
+    call s:gtags_update(1)
   else
     call s:gtags_db_gen()
   endif
@@ -166,7 +172,7 @@ function! gen_tags#gtags#init() abort
 
   augroup gen_gtags
     autocmd!
-    autocmd BufWritePost * call s:gtags_update()
+    autocmd BufWritePost * call s:gtags_update(0)
     autocmd BufWinEnter * call s:gtags_auto_load()
 
     autocmd BufReadPost * call s:gtags_set_env()
