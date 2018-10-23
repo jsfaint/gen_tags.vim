@@ -42,6 +42,7 @@ function! s:gtags_db_gen() abort
     return
   endif
 
+  lcd $GTAGSROOT
   let l:cmd = [g:gen_tags#gtags_bin, l:db_dir]
 
   "Add gtags options
