@@ -104,6 +104,11 @@ function! s:gtags_update(full) abort
     let l:cmd = [g:gen_tags#global_bin, '-u']
   else
     let l:srcfile = fnamemodify(gen_tags#fix_path('<afile>'), ':p')
+
+    if !gen_tags#is_file_belongs(l:srcfile)
+      return
+    endif
+
     let l:cmd = [g:gen_tags#global_bin, '--single-update', l:srcfile]
   endif
 

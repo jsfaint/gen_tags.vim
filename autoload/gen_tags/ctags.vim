@@ -158,14 +158,17 @@ function! s:ctags_auto_update() abort
     return
   endif
 
-  let l:file = fnamemodify(gen_tags#fix_path('<afile>'), ':p')
+  let l:srcfile = fnamemodify(gen_tags#fix_path('<afile>'), ':p')
+  if !gen_tags#is_file_belongs(l:srcfile)
+    return
+  endif
 
   "Prune tags content for saved file
   if g:gen_tags#ctags_prune
-    call s:ctags_prune(l:tagfile, l:file)
+    call s:ctags_prune(l:tagfile, l:srcfile)
   endif
 
-  call s:ctags_update(l:file)
+  call s:ctags_update(l:srcfile)
 endfunction
 
 function! s:ctags_auto_gen() abort
