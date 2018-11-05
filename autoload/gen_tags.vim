@@ -158,7 +158,7 @@ endfunction
 "  0: file don't belong to project
 function! gen_tags#is_file_belongs(file) abort
   let l:root = gen_tags#find_project_root()
-  let l:srcpath = fnamemodify(a:file, ':p:h')
+  let l:srcpath = gen_tags#fix_path(fnamemodify(a:file, ':p:h'))
 
   if l:srcpath =~ l:root
     call gen_tags#echo('file ' . a:file . ' belongs to ' . l:root)
