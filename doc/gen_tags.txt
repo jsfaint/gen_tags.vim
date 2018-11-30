@@ -268,6 +268,13 @@ else nothing happened.
 
 The default |g:gen_tags#statusline| is 0
 
+------------------------------------------------------------------------------
+g:gen_tags#root_marker                          *g:gen_tags#root_marker*
+
+Custom the root_marker which used for specify the project root.
+
+The default |g:gen_tags#root_marker| is '.root'
+
 ==============================================================================
 5. Events                                       *gen_tags-events*
 
