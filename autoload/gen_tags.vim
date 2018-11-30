@@ -24,12 +24,17 @@ if !exists('g:gen_tags#use_cache_dir')
   let g:gen_tags#use_cache_dir = 1
 endif
 
+" Specify default root marker
+if !exists('g:gen_tags#root_marker')
+  let g:gen_tags#root_marker = '.root'
+endif
+
 "Get scm repo info
 function! gen_tags#get_scm_info() abort
   let l:scm = {'type': '', 'root': ''}
 
   "Supported scm repo
-  let l:scm_list = ['.root', '.git', '.hg', '.svn']
+  let l:scm_list = [g:gen_tags#root_marker, '.git', '.hg', '.svn']
 
   "Detect scm type
   for l:item in l:scm_list
