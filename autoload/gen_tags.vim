@@ -31,17 +31,16 @@ endif
 
 " search root path
 function! gen_tags#search_root(look)
-	let s:root=expand('%:p:h')
-	let s:path='%:p'
-	while(len(expand(s:path))>len(expand(s:path.':h')))
-		let s:path=s:path.':h'
-		let s:fcheck=expand(s:path).'/'.a:look
-		if filereadable(s:fcheck) || isdirectory(s:fcheck)
-			let s:root=expand(s:path)
-			return s:root
-		endif
-	endwhile
-	return ''
+  let s:root=''
+  let s:path='%:p'
+  while(len(expand(s:path))>len(expand(s:path.':h')))
+    let s:path=s:path.':h'
+    let s:fcheck=expand(s:path).'/'.a:look
+    if filereadable(s:fcheck) || isdirectory(s:fcheck)
+      let s:root=expand(s:path)
+    endif
+  endwhile
+  return ''
 endfunction
 
 "Get scm repo info
