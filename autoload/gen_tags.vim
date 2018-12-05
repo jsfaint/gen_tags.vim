@@ -29,6 +29,11 @@ if !exists('g:gen_tags#root_marker')
   let g:gen_tags#root_marker = '.root'
 endif
 
+" root path search reverse
+if !exists('g:gen_tags#root_reverse')
+  let g:gen_tags#root_reverse = 0
+endif
+
 "Get scm repo info
 function! gen_tags#get_scm_info() abort
   let l:scm = {'type': '', 'root': ''}
@@ -41,7 +46,10 @@ function! gen_tags#get_scm_info() abort
     let l:dirs = finddir(l:item, '.;', -1)
     if !empty(l:dirs)
       let l:scm['type'] = l:item
-      let l:scm['root'] = l:dirs[-1]
+      let l:scm['root'] = l:dirs[0]
+      if g:gen_tags#root_reverse == 1
+        let l:scm['root'] = l:dirs[-1]
+      endif
       break
     endif
   endfor
