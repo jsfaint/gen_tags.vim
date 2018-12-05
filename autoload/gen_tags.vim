@@ -29,6 +29,21 @@ if !exists('g:gen_tags#root_marker')
   let g:gen_tags#root_marker = '.root'
 endif
 
+" search root path
+function! gen_tags#search_root(look)
+	let s:root=expand('%:p:h')
+	let s:path='%:p'
+	while(len(expand(s:path))>len(expand(s:path.':h')))
+		let s:path=s:path.':h'
+		let s:fcheck=expand(s:path).'/'.a:look
+		if filereadable(s:fcheck) || isdirectory(s:fcheck)
+			let s:root=expand(s:path)
+			return s:root
+		endif
+	endwhile
+	return ''
+endfunction
+
 "Get scm repo info
 function! gen_tags#get_scm_info() abort
   let l:scm = {'type': '', 'root': ''}
@@ -38,7 +53,7 @@ function! gen_tags#get_scm_info() abort
 
   "Detect scm type
   for l:item in l:scm_list
-    let l:dir = finddir(l:item, '.;')
+    let l:dir = gen_tags#search_root(l:item)
     if !empty(l:dir)
       let l:scm['type'] = l:item
       let l:scm['root'] = l:dir
