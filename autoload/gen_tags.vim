@@ -29,6 +29,11 @@ if !exists('g:gen_tags#root_marker')
   let g:gen_tags#root_marker = '.root'
 endif
 
+" Assign root path
+if !exists('g:gen_tags#root_path')
+  let g:gen_tags#root_path = ''
+endif
+
 "Get scm repo info
 function! gen_tags#get_scm_info() abort
   let l:scm = {'type': '', 'root': ''}
@@ -62,6 +67,11 @@ endfunction
 "if the project managed by git/hg/svn, return the repo root.
 "else return the current work directory.
 function! gen_tags#find_project_root() abort
+  " Check assign root_path
+  if !empty(glob(g:gen_tags#root_path))
+    return g:gen_tags#root_path
+  endif
+
   "If it is scm repo, use scm folder as project root
   let l:scm = gen_tags#get_scm_info()
   if !empty(l:scm['type'])

@@ -275,6 +275,12 @@ Custom the root_marker which used for specify the project root.
 
 The default |g:gen_tags#root_marker| is '.root'
 
+------------------------------------------------------------------------------
+g:gen_tags#root_path                          *g:gen_tags#root_path*
+
+Assign root path to set the project root. If set |g:gen_tags#root_pat|, will
+ignore |g:gen_tags#root_marker|.
+
 ==============================================================================
 5. Events                                       *gen_tags-events*
 
