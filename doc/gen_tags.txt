@@ -278,7 +278,7 @@ The default |g:gen_tags#root_marker| is '.root'
 ------------------------------------------------------------------------------
 g:gen_tags#root_path                          *g:gen_tags#root_path*
 
-Assign root path to set the project root. If set |g:gen_tags#root_pat|, will
+Assign root path to set the project root. If set |g:gen_tags#root_path|, will
 ignore |g:gen_tags#root_marker|.
 
 ==============================================================================
