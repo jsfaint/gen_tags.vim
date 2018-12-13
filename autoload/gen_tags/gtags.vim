@@ -148,6 +148,10 @@ function! gen_tags#gtags#init() abort
     let g:gen_tags#gtags_auto_gen = 0
   endif
 
+  if !exists('g:gen_tags#gtags_auto_update')
+    let g:gen_tags#gtags_auto_update = 1
+  endif
+
   if !exists('g:gen_tags#gtags_default_map')
     let g:gen_tags#gtags_default_map = 1
   endif
@@ -177,7 +181,10 @@ function! gen_tags#gtags#init() abort
 
   augroup gen_gtags
     autocmd!
-    autocmd BufWritePost * call s:gtags_update(0)
+    if g:gen_tags#gtags_auto_update
+      autocmd BufWritePost * call s:gtags_update(0)
+    endif
+
     autocmd BufWinEnter * call s:gtags_auto_load()
 
     autocmd BufReadPost * call s:gtags_set_env()
