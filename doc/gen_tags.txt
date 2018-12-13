@@ -203,6 +203,20 @@ a scm repository.
 The default |g:gen_tags#gtags_auto_gen| is 0
 
 ------------------------------------------------------------------------------
+g:gen_tags#ctags_auto_update                 *g:gen_tags#ctags_auto_update*
+
+Auto update ctags on |BufWritePost|. Set 0 to disable it.
+
+The default |g:gen_tags#ctags_auto_update| is 1
+
+------------------------------------------------------------------------------
+g:gen_tags#gtags_auto_update                 *g:gen_tags#gtags_auto_update*
+
+Auto update gtags on |BufWritePost|. set 0 to disable it.
+
+The default |g:gen_tags#gtags_auto_update| is 1
+
+------------------------------------------------------------------------------
 g:gen_tags#blacklist                            *g:gen_tags#blacklist*
 
 A list to set the blacklist

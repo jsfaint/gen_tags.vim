@@ -199,6 +199,11 @@ function! gen_tags#ctags#init() abort
     let g:gen_tags#ctags_auto_gen = 0
   endif
 
+  if !exists('g:gen_tags#ctags_auto_update')
+    let g:gen_tags#ctags_auto_update = 1
+  endif
+
+
   "Prune tags file before incremental update
   if !exists('g:gen_tags#ctags_prune')
     let g:gen_tags#ctags_prune = 0
@@ -211,7 +216,9 @@ function! gen_tags#ctags#init() abort
 
   augroup gen_ctags
     autocmd!
-    autocmd BufWritePost * call s:ctags_auto_update()
+    if g:gen_tags#ctags_auto_update
+      autocmd BufWritePost * call s:ctags_auto_update()
+    endif
     autocmd BufWinEnter * call s:ctags_auto_load()
 
     if g:gen_tags#ctags_auto_gen
