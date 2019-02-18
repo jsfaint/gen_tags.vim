@@ -192,7 +192,7 @@ function! gen_tags#gtags#init() abort
 
     autocmd BufWinEnter * call s:gtags_auto_load()
 
-    autocmd BufReadPost * call s:gtags_set_env()
+    autocmd BufEnter * call s:gtags_set_env()
 
     if g:gen_tags#gtags_auto_gen
       autocmd BufReadPost * call s:gtags_auto_gen()
