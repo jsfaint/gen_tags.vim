@@ -112,6 +112,11 @@ function! s:gtags_update(full) abort
     let l:cmd = [g:gen_tags#global_bin, '--single-update', l:srcfile]
   endif
 
+  "Add global options
+  if exists('g:gen_tags#global_opts')
+    let l:cmd += gen_tags#opt_converter(g:gen_tags#global_opts)
+  endif
+
   call gen_tags#job#system_async(l:cmd)
 endfunction
 
