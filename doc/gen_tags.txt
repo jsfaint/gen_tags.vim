@@ -12,6 +12,7 @@ CONTENTS                                                 *gen_tags-contents*
 4. Mappings ........................................... |gen_tags-mapping|
 5. Options ............................................ |gen_tags-options|
 6. Events ............................................. |gen_tags-events|
+7. Global Parser ...................................... |gen_tags-global_parse|
 
 ==============================================================================
 1. Introduction                                         *gen_tags-introduction*
@@ -300,7 +301,7 @@ Assign root path to set the project root. If set |g:gen_tags#root_path|, will
 ignore |g:gen_tags#root_marker|.
 
 ==============================================================================
-5. Events                                       *gen_tags-events*
+6. Events                                       *gen_tags-events*
 
 GenTags#CtagsLoaded                             *GenTags#CtagsLoaded*
 
@@ -319,6 +320,64 @@ There are two events will be triggered after the gtags was loaded
 <
 
 The idea comes from @butterflyfish in https://github.com/jsfaint/gen_tags.vim/issues/32
+
+==============================================================================
+7. Global Parser                                *gen_tags-global_parse*
+gtags can use ctags or pygments to extend the supported languages.
+Here is a simple guide below :)
+
+------------------------------------------------------------------------------
+7.1 exuberant-ctags support
+
+1. Install exuberant-ctags
+2. Set environment variable
+On Linux/macOS, the path is /usr/share/gtags/gtags.conf, add this in your vimrc
+>
+    let $GTAGSCONF=/usr/share/gtags/gtags.conf
+    let $GTAGSLABEL=ctags
+<
+Or add to `.bashrc` or `.zshrc`
+>
+    export GTAGSCONF=/usr/share/gtags/gtags.conf
+    export GTAGSLABEL=ctags
+<
+On Windows, it's almost same except it use GUI to set environment variable.
+3. All done
+
+------------------------------------------------------------------------------
+7.2 universal-ctags support
+
+1. Install universal-ctags
+2. Set environment variable
+On Linux/macOS, the path is /usr/share/gtags/gtags.conf, add this in your vimrc
+>
+    let $GTAGSCONF=/usr/share/gtags/gtags.conf
+    let $GTAGSLABEL=new-ctags
+<
+Or add to `.bashrc` or `.zshrc`
+>
+    export GTAGSCONF=/usr/share/gtags/gtags.conf
+    export GTAGSLABEL=new-ctags
+<
+On Windows, it's almost same except it use GUI to set environment variable.
+3. All done
+
+------------------------------------------------------------------------------
+7.3 pygments support
+1. Install pygments
+2. Set environment variable
+On Linux/macOS, the path is /usr/share/gtags/gtags.conf, add this in your vimrc
+>
+    let $GTAGSCONF=/usr/share/gtags/gtags.conf
+    let $GTAGSLABEL=pygments
+<
+Or add to `.bashrc` or `.zshrc`
+>
+    export GTAGSCONF=/usr/share/gtags/gtags.conf
+    export GTAGSLABEL=pygments
+<
+On Windows, it's almost same except it use GUI to set environment variable.
+3. All done
 
 ------------------------------------------------------------------------------
 vim:tw=78:ts=8:ft=help:norl:
