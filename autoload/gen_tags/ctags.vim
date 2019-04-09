@@ -74,18 +74,7 @@ function! s:ctags_gen(filename, dir) abort
   call gen_tags#mkdir(l:dir)
 
   call gen_tags#echo('Generating ctags in background')
-
-  let l:cmd = s:ctags_cmd_pre()
-
-  if empty(a:filename)
-    let l:file = l:dir . '/' . s:ctags_db
-    let l:cmd += ['-f', l:file, '-R', expand(gen_tags#find_project_root())]
-  else
-    let l:file = a:filename
-    let l:cmd += ['-f', l:file, '-R', expand(a:dir)]
-  endif
-
-  call gen_tags#job#system_async(l:cmd)
+  let l:file = s:ctags_update_all(a:filename, a:dir)
 
   "Search for existence tags string.
   let l:ret = stridx(&tags, l:dir)
@@ -166,9 +155,10 @@ function! s:ctags_auto_update() abort
   "Prune tags content for saved file
   if g:gen_tags#ctags_prune
     call s:ctags_prune(l:tagfile, l:srcfile)
+    call s:ctags_update_single(l:srcfile)
+  else
+    call s:ctags_update_all('', '')
   endif
-
-  call s:ctags_update(l:srcfile)
 endfunction
 
 function! s:ctags_auto_gen() abort
@@ -250,7 +240,10 @@ function! s:ctags_prune(tagfile, file) abort
   call writefile(tags, a:tagfile, 'b')
 endfunction
 
-function! s:ctags_update(file) abort
+"s:ctags_update_single update tags file single file
+"NOTE: ctags append mode is buggy.
+"So if your project is not very large, just disable
+function! s:ctags_update_single(file) abort
   let l:cmd = s:ctags_cmd_pre()
 
   let l:dir = gen_tags#get_db_dir()
@@ -259,6 +252,25 @@ function! s:ctags_update(file) abort
   let l:cmd += ['-f', l:file, '-a', expand(a:file)]
 
   call gen_tags#job#system_async(l:cmd)
+endfunction
+
+"s:ctags_update_all generate tags for all the file and the tags name
+function! s:ctags_update_all(filename, dir) abort
+  let l:dir = gen_tags#get_db_dir()
+
+  let l:cmd = s:ctags_cmd_pre()
+
+  if empty(a:filename)
+    let l:file = l:dir . '/' . s:ctags_db
+    let l:cmd += ['-f', l:file, '-R', expand(gen_tags#find_project_root())]
+  else
+    let l:file = a:filename
+    let l:cmd += ['-f', l:file, '-R', expand(a:dir)]
+  endif
+
+  call gen_tags#job#system_async(l:cmd)
+
+  return l:file
 endfunction
 
 function! s:ctags_cmd_pre() abort
