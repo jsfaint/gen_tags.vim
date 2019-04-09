@@ -249,8 +249,12 @@ The default |g:gen_tags#verbose| is 0
 g:gen_tags#ctags_prune                          *g:gen_tags#ctags_prune*
 
 Prune tags from tagfile for incremental update
+If |g:gen_tags#ctags_prune| is set to `1`, prune mode and ctags append mode will
+be use. |gen_tags.vim| will first prune the old tags for current file and then
+re-generate it with `ctags -a`, but `ctags -a` is buggy. So if your code base
+is not very large, just leave this option to `0`
 
-The default |g:gen_tags#ctags_prune| is 0
+The default |g:gen_tags#ctags_prune| is `0`
 
 ------------------------------------------------------------------------------
 g:gen_tags#gtags_default_map                    *g:gen_tags#gtags_default_map*
