@@ -24,6 +24,11 @@ if !exists('g:gen_tags#use_cache_dir')
   let g:gen_tags#use_cache_dir = 1
 endif
 
+" Specify cache dir
+if !exists('g:gen_tags#cache_dir')
+    let g:gen_tags#cache_dir = '$HOME/.cache/tags_dir/'
+endif
+
 " Specify default root marker
 if !exists('g:gen_tags#root_marker')
   let g:gen_tags#root_marker = '.root'
@@ -144,7 +149,10 @@ function! gen_tags#get_db_dir() abort
     let l:tagdir = l:scm['root'] . '/' . l:scm['type'] . '/tags_dir'
   else
     let l:root = gen_tags#find_project_root()
-    let l:tagdir = '$HOME/.cache/tags_dir/' . gen_tags#get_db_name(l:root)
+    " If g:gen_tags#cache_dir doesn't have '/', then insert '/' when concatenating
+    let l:tagdir = g:gen_tags#cache_dir . 
+        \ (g:gen_tags#cache_dir[-1:] == '/' ? '' : '/') .
+        \ gen_tags#get_db_name(l:root)
   endif
 
   return gen_tags#fix_path(l:tagdir)

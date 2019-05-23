@@ -182,10 +182,17 @@ The default |g:gen_tags#use_cache_dir| is 1, you need to set it in  your vimrc.
     git  `<project folder>/.git/tags_dir`
     hg   `<project folder>/.hg/tags_dir`
     scn  `<project folder>/.svn/tags_dir`
-  non-git: `$HOME/.cache/tags_dir/<project name>`
+  non-git: |g:gen_tags#cache_dir|
 
 1:
-  `$HOME/.cache/tags_dir/<project name>`
+  use |g:gen_tags#cache_dir|
+
+------------------------------------------------------------------------------
+g:gen_tags#cache_dir                               *g:gen_tags#cache_dir*
+
+This option allow to specify your own cache dir.
+
+The default |g:gen_tags#cache_dir| is `'$HOME/.cache/tags_dir/'`
 
 ------------------------------------------------------------------------------
 g:gen_tags#ctags_auto_gen                       *g:gen_tags#ctags_auto_gen*
