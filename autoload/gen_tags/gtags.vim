@@ -42,7 +42,11 @@ function! s:gtags_db_gen() abort
     return
   endif
 
+  "Backup the current working directory and temporarily switch into the root
+  "directory for running gtags command.
+  let l:cwd = gen_tags#fix_path(getcwd())
   lcd $GTAGSROOT
+
   let l:cmd = [g:gen_tags#gtags_bin, l:db_dir]
 
   "Add gtags options
@@ -64,6 +68,9 @@ function! s:gtags_db_gen() abort
 
   call gen_tags#echo('Generating GTAGS in background')
   call gen_tags#job#system_async(l:cmd, function('s:gtags_db_gen_done'))
+
+  "Switch back to the original working directory.
+  execute 'lcd' fnameescape(l:cwd)
 endfunction
 
 function! s:gtags_clear(bang) abort
