@@ -153,3 +153,18 @@ function! s:vim_on_exit() abort
     endif
   endfor
 endfunction
+
+function! gen_tags#job#is_running() abort
+	if !exists('s:job_list')
+		return 0
+	endif
+	for l:item in s:job_list
+		let l:job_id = l:item['id']
+		let l:status = s:job_status(l:job_id)
+		if l:status ==# 'run'
+			return 1
+		endif
+	endfor
+	return 0
+endfunction
+
