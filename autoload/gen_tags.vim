@@ -48,22 +48,12 @@ function! gen_tags#get_scm_info() abort
 
   "Detect scm type
   for l:item in l:scm_list
-    let l:dir = finddir(l:item, '.;')
+    let l:dir = finddir(l:item, '.;'.l:scm['root'])
     if !empty(l:dir)
       let l:scm['type'] = l:item
-      let l:scm['root'] = l:dir
-      break
+      let l:scm['root'] = gen_tags#fix_path(fnamemodify(fnamemodify(l:dir, ':h'), ':p:h'))
     endif
   endfor
-
-  "Not a scm repo, return
-  if empty(l:scm['type'])
-    return l:scm
-  endif
-
-  "Get scm root
-  let l:scm['root'] = gen_tags#fix_path(fnamemodify(l:scm['root'], ':p:h'))
-  let l:scm['root'] = substitute(l:scm['root'], '/' . l:scm['type'], '', 'g')
 
   return l:scm
 endfunction
