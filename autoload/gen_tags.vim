@@ -44,13 +44,19 @@ function! gen_tags#get_scm_info() abort
   let l:scm = {'type': '', 'root': ''}
 
   "Supported scm repo
-  let l:scm_list = [g:gen_tags#root_marker, '.git', '.hg', '.svn']
+  let l:scm_list = [
+        \ [g:gen_tags#root_marker, 'dir'],
+        \ ['.git', 'file'],
+        \ ['.git', 'dir'],
+        \ ['.hg', 'dir'],
+        \ ['.svn', 'dir'],
+        \ ]
 
   "Detect scm type
   for l:item in l:scm_list
-    let l:dir = finddir(l:item, '.;'.l:scm['root'])
+    let l:dir = function('find'.l:item[1])(l:item[0], '.;'.l:scm['root'])
     if !empty(l:dir)
-      let l:scm['type'] = l:item
+      let l:scm['type'] = l:item[0]
       let l:scm['root'] = gen_tags#fix_path(fnamemodify(fnamemodify(l:dir, ':h'), ':p:h'))
     endif
   endfor
