@@ -1,6 +1,16 @@
 # gen_tags.vim
 
-[![Join the chat at https://gitter.im/gen_tags-vim/Lobby](https://badges.gitter.im/gen_tags-vim/Lobby.svg)](https://gitter.im/gen_tags-vim/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+This plugin was born from a little requirement of myself more than 10 years ago.
+After many changes then it become an usable plugin.
+I got many helps from the lovely people all over the world during the time.
+Thank you guys for all the help!
+
+For personal reason, I already migrate to lsp for a very long time.
+I haven't use ctags/gtags for years. Maybe it's time to say goodbye to this plugin.
+
+青山不改，绿水长流，我们后会有期。
+
+---
 
   Async plugin for [Vim](https://github.com/vim/vim)/[NeoVim](https://github.com/neovim/neovim) to ease the use of [ctags](http://ctags.io/)/[gtags](http://www.gnu.org/software/global/).</br>
   It is used for generate and maintain tags for you with multiple platform support, tested on Windows/Linux/macOS.
